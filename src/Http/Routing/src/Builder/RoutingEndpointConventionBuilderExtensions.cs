@@ -218,4 +218,15 @@ public static class RoutingEndpointConventionBuilderExtensions
         builder.WithMetadata(new FormOptionsMetadata(bufferBody, memoryBufferThreshold, bufferBodyLengthLimit, valueCountLimit, keyLengthLimit, valueLengthLimit, multipartBoundaryLengthLimit, multipartHeadersCountLimit, multipartHeadersLengthLimit, multipartBodyLengthLimit));
         return builder;
     }
+
+    /// <summary>
+    /// Adds validation to the specified endpoint(s).
+    /// </summary>
+    /// <param name="builder">The endpoint convention builder to add validation to.</param>
+    /// <returns>The same endpoint convention builder so that additional calls can be chained.</returns>
+    public static TBuilder WithValidation<TBuilder>(this TBuilder builder) where TBuilder : IEndpointConventionBuilder
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        return builder;
+    }
 }

@@ -5,14 +5,12 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Microsoft.AspNetCore.Analyzers.Infrastructure;
 using Microsoft.AspNetCore.App.Analyzers.Infrastructure;
 using Microsoft.AspNetCore.Http.RequestDelegateGenerator.StaticRouteHandlerModel;
 using Microsoft.AspNetCore.Http.RequestDelegateGenerator.StaticRouteHandlerModel.Emitters;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Operations;
 
 namespace Microsoft.AspNetCore.Http.RequestDelegateGenerator;
 
