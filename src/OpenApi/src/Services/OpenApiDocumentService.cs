@@ -2,9 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Metadata;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -92,6 +96,7 @@ internal sealed class OpenApiDocumentService(
         {
             Summary = GetSummary(description),
             Description = GetDescription(description),
+            Responses = GetResponses(description),
             Tags = tags,
         };
         return operation;
@@ -113,5 +118,52 @@ internal sealed class OpenApiDocumentService(
         // If no tags are specified, use the controller name as the tag. This effectively
         // allows us to group endpoints by the "resource" concept (e.g. users, todos, etc.)
         return [new OpenApiTag { Name = description.ActionDescriptor.RouteValues["controller"] }];
+    }
+
+    private static OpenApiResponses GetResponses(ApiDescription description)
+    {
+        var supportedResponseTypes = description.SupportedResponseTypes.DefaultIfEmpty(new ApiResponseType { StatusCode = 200 });
+
+        var responses = new OpenApiResponses();
+        foreach (var responseType in supportedResponseTypes)
+        {
+            var statusCode = responseType.IsDefaultResponse ? StatusCodes.Status200OK : responseType.StatusCode;
+            responses.Add(statusCode.ToString(CultureInfo.InvariantCulture), GetResponse(description, statusCode, responseType));
+        }
+        return responses;
+    }
+
+    private static OpenApiResponse GetResponse(ApiDescription apiDescription, int statusCode, ApiResponseType apiResponseType)
+    {
+        var description = ReasonPhrases.GetReasonPhrase(statusCode);
+
+        HashSet<string> responseContentTypes = [];
+
+        var explicitContentTypes = apiDescription.ActionDescriptor.EndpointMetadata
+            .OfType<ProducesAttribute>()
+            .SelectMany(attr => attr.ContentTypes);
+        foreach (var contentType in explicitContentTypes)
+        {
+            responseContentTypes.Add(contentType);
+        }
+
+        var apiResponseFormatContentTypes = apiResponseType.ApiResponseFormats
+            .Select(responseFormat => responseFormat.MediaType);
+        foreach (var contentType in apiResponseFormatContentTypes)
+        {
+            responseContentTypes.Add(contentType);
+        }
+
+        var content = new Dictionary<string, OpenApiMediaType>();
+        foreach (var contentType in responseContentTypes)
+        {
+            content[contentType] = new OpenApiMediaType();
+        }
+
+        return new OpenApiResponse
+        {
+            Description = description,
+            Content = content
+        };
     }
 }
