@@ -10,7 +10,7 @@
   </PropertyGroup>
   <Import Project="..\..\build\Build.Dll.Settings" />
   <PropertyGroup>
-    <TargetName>aspnetcorev2_outofprocess</TargetName>
+    <TargetName>httpplatformhandlerv2_outofprocess</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>

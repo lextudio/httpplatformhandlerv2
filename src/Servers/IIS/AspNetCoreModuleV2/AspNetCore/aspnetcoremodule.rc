@@ -10,7 +10,7 @@
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
-#define FileDescription "IIS ASP.NET Core Module V2. Commit: " CommitHash
+#define FileDescription "IIS HttpPlatformHandler Module V2. Commit: " CommitHash
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -19,12 +19,12 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 //1 11
 //BEGIN
-//    0x0001, 0x0000, 0x03e8, 0x0000, 0x03ed, 0x0000, 0x0010, 0x0000, 0x0010, 
-//    0x0001, 0x0025, 0x0031, 0x000d, 0x000a, 0x0000, 0x0000, 0x0010, 0x0001, 
-//    0x0025, 0x0031, 0x000d, 0x000a, 0x0000, 0x0000, 0x0010, 0x0001, 0x0025, 
-//    0x0031, 0x000d, 0x000a, 0x0000, 0x0000, 0x0010, 0x0001, 0x0025, 0x0031, 
-//    0x000d, 0x000a, 0x0000, 0x0000, 0x0010, 0x0001, 0x0025, 0x0031, 0x000d, 
-//    0x000a, 0x0000, 0x0000, 0x0010, 0x0001, 0x0025, 0x0031, 0x000d, 0x000a, 
+//    0x0001, 0x0000, 0x03e8, 0x0000, 0x03ed, 0x0000, 0x0010, 0x0000, 0x0010,
+//    0x0001, 0x0025, 0x0031, 0x000d, 0x000a, 0x0000, 0x0000, 0x0010, 0x0001,
+//    0x0025, 0x0031, 0x000d, 0x000a, 0x0000, 0x0000, 0x0010, 0x0001, 0x0025,
+//    0x0031, 0x000d, 0x000a, 0x0000, 0x0000, 0x0010, 0x0001, 0x0025, 0x0031,
+//    0x000d, 0x000a, 0x0000, 0x0000, 0x0010, 0x0001, 0x0025, 0x0031, 0x000d,
+//    0x000a, 0x0000, 0x0000, 0x0010, 0x0001, 0x0025, 0x0031, 0x000d, 0x000a,
 //    0x0000, 0x0000
 //END
 
@@ -35,17 +35,17 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE 
+1 TEXTINCLUDE
 BEGIN
     "..\CommonLib\resources.h\0"
 END
 
-2 TEXTINCLUDE 
+2 TEXTINCLUDE
 BEGIN
     "\0"
 END
 
-3 TEXTINCLUDE 
+3 TEXTINCLUDE
 BEGIN
     "\r\n"
     "\0"
@@ -79,10 +79,10 @@ BEGIN
             VALUE "CompanyName", "Microsoft"
             VALUE "FileDescription", FileDescription
             VALUE "FileVersion", FileVersionStr
-            VALUE "InternalName", "aspnetcore"
+            VALUE "InternalName", "httpPlatforHandler"
             VALUE "LegalCopyright", "Copyright (C) Microsoft Corporation"
-            VALUE "OriginalFilename", "aspnetcore.dll"
-            VALUE "ProductName", "ASP.NET Core Module"
+            VALUE "OriginalFilename", "httpplatforhandler.dll"
+            VALUE "ProductName", "Microsoft Web Platform Extensions"
             VALUE "ProductVersion", ProductVersionStr
         END
     END

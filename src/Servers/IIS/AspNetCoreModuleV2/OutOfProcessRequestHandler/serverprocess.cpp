@@ -1,4 +1,5 @@
 // Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) LeXtudio Inc. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 #include "serverprocess.h"
@@ -25,8 +26,8 @@ SERVER_PROCESS::Initialize(
     STRU                  *pstruStdoutLogFile,
     STRU                  *pszAppPhysicalPath,
     STRU                  *pszAppPath,
-    STRU                  *pszAppVirtualPath,
-    STRU                  *pszHttpsPort
+    STRU                  *pszAppVirtualPath//,
+    //STRU                  *pszHttpsPort
 )
 {
     m_pProcessManager = pProcessManager;
@@ -48,7 +49,7 @@ SERVER_PROCESS::Initialize(
         FAILED_LOG(hr = m_struAppFullPath.Copy(*pszAppPath))||
         FAILED_LOG(hr = m_struAppVirtualPath.Copy(*pszAppVirtualPath))||
         FAILED_LOG(hr = m_Arguments.Copy(*pszArguments)) ||
-        FAILED_LOG(hr = m_struHttpsPort.Copy(*pszHttpsPort)) ||
+        //FAILED_LOG(hr = m_struHttpsPort.Copy(*pszHttpsPort)) ||
         FAILED_LOG(hr = SetupJobObject()))
     {
         return hr;
@@ -129,41 +130,13 @@ SERVER_PROCESS::GetRandomPort
 }
 
 HRESULT
-SERVER_PROCESS::SetupListenPort(
-    ENVIRONMENT_VAR_HASH    *pEnvironmentVarTable,
+SERVER_PROCESS::GetListenPort(
     BOOL*                    pfCriticalError
 )
 {
     HRESULT hr = S_OK;
     ENVIRONMENT_VAR_ENTRY *pEntry = NULL;
     *pfCriticalError = FALSE;
-
-    pEnvironmentVarTable->FindKey(ASPNETCORE_PORT_ENV_STR, &pEntry);
-    if (pEntry != NULL)
-    {
-        if (pEntry->QueryValue() != NULL && pEntry->QueryValue()[0] != L'\0')
-        {
-            m_dwPort = (DWORD)_wtoi(pEntry->QueryValue());
-            if (m_dwPort >MAX_PORT || m_dwPort < MIN_PORT)
-            {
-                hr = E_INVALIDARG;
-                *pfCriticalError = TRUE;
-                goto Finished;
-                // need add log for this one
-            }
-            hr = m_struPort.Copy(pEntry->QueryValue());
-            goto Finished;
-        }
-        else
-        {
-            //
-            // user set the env variable but did not give value, let's set it up
-            //
-            pEnvironmentVarTable->DeleteKey(ASPNETCORE_PORT_ENV_STR);
-            pEntry->Dereference();
-            pEntry = NULL;
-        }
-    }
 
     WCHAR buffer[15];
     if (FAILED_LOG(hr = GetRandomPort(&m_dwPort)))
@@ -184,9 +157,74 @@ SERVER_PROCESS::SetupListenPort(
         goto Finished;
     }
 
-    if (FAILED_LOG(hr = pEntry->Initialize(ASPNETCORE_PORT_ENV_STR, buffer)) ||
-        FAILED_LOG(hr = pEnvironmentVarTable->InsertRecord(pEntry)) ||
-        FAILED_LOG(hr = m_struPort.Copy(buffer)))
+    if (FAILED_LOG(hr = m_struPort.Copy(buffer)))
+    {
+        goto Finished;
+    }
+
+Finished:
+    if (FAILED_LOG(hr))
+    {
+        EventLog::Error(
+            ASPNETCORE_EVENT_PROCESS_START_SUCCESS,
+            ASPNETCORE_EVENT_PROCESS_START_PORTSETUP_ERROR_MSG,
+            m_struAppFullPath.QueryStr(),
+            m_struPhysicalPath.QueryStr(),
+            m_dwPort,
+            MIN_PORT_RANDOM,
+            MAX_PORT,
+            hr);
+    }
+
+    return hr;
+}
+
+HRESULT
+SERVER_PROCESS::SetupListenPort(
+    ENVIRONMENT_VAR_HASH* pEnvironmentVarTable,
+    BOOL* pfCriticalError
+)
+{
+    HRESULT hr = S_OK;
+    ENVIRONMENT_VAR_ENTRY* pEntry = NULL;
+    *pfCriticalError = FALSE;
+
+    pEnvironmentVarTable->FindKey(ASPNETCORE_PORT_ENV_STR, &pEntry);
+    if (pEntry != NULL)
+    {
+        if (pEntry->QueryValue() != NULL && pEntry->QueryValue()[0] != L'\0')
+        {
+            m_dwPort = (DWORD)_wtoi(pEntry->QueryValue());
+            if (m_dwPort > MAX_PORT || m_dwPort < MIN_PORT)
+            {
+                hr = E_INVALIDARG;
+                *pfCriticalError = TRUE;
+                goto Finished;
+                // need add log for this one
+            }
+            hr = m_struPort.Copy(pEntry->QueryValue());
+            goto Finished;
+        }
+        else
+        {
+            //
+            // user set the env variable but did not give value, let's set it up
+            //
+            pEnvironmentVarTable->DeleteKey(ASPNETCORE_PORT_ENV_STR);
+            pEntry->Dereference();
+            pEntry = NULL;
+        }
+    }
+
+    pEntry = new ENVIRONMENT_VAR_ENTRY();
+    if (pEntry == NULL)
+    {
+        hr = E_OUTOFMEMORY;
+        goto Finished;
+    }
+
+    if (FAILED_LOG(hr = pEntry->Initialize(ASPNETCORE_PORT_ENV_STR, m_struPort.QueryStr())) ||
+        FAILED_LOG(hr = pEnvironmentVarTable->InsertRecord(pEntry)))
     {
         goto Finished;
     }
@@ -205,7 +243,7 @@ Finished:
             ASPNETCORE_EVENT_PROCESS_START_PORTSETUP_ERROR_MSG,
             m_struAppFullPath.QueryStr(),
             m_struPhysicalPath.QueryStr(),
-            m_dwPort,
+            m_struPort.QueryStr(),
             MIN_PORT_RANDOM,
             MAX_PORT,
             hr);
@@ -710,6 +748,54 @@ Finished:
     return hr;
 }
 
+// Finds first occurrence of 'find' in 'str' starting from 'startPos'
+const wchar_t* wcsfind(const wchar_t* str, const wchar_t* find, size_t startPos = 0) {
+    const wchar_t* p = str + startPos;
+    const wchar_t* found = wcsstr(p, find);
+    return found;
+}
+
+// Replaces all occurrences of 'from' with 'to' in 'str'. Returns a new dynamically allocated string.
+wchar_t* wcsreplace(const wchar_t* str, const wchar_t* from, const wchar_t* to) {
+    size_t strLen = wcslen(str);
+    size_t fromLen = wcslen(from);
+    size_t toLen = wcslen(to);
+
+    // Estimate the size of the result string
+    size_t newSize = strLen + 1; // +1 for null terminator
+    const wchar_t* found = str;
+    while ((found = wcsfind(str, from, found - str + fromLen)) != NULL) {
+        newSize += toLen - fromLen; // Adjust newSize for each replacement
+    }
+
+    // Allocate memory for the result string
+    wchar_t* result = (wchar_t*)malloc(newSize * sizeof(wchar_t));
+    if (!result) return NULL;
+
+    wchar_t* currentPos = result;
+    const wchar_t* nextFound = str;
+    while ((nextFound = wcsfind(str, from, nextFound - str)) != NULL) {
+        // Copy part of the original string before the 'from' substring
+        size_t segmentLen = nextFound - str;
+        wmemcpy(currentPos, str, segmentLen);
+        currentPos += segmentLen;
+
+        // Copy 'to' in place of 'from'
+        wmemcpy(currentPos, to, toLen);
+        currentPos += toLen;
+
+        str = nextFound + fromLen; // Move past the 'from' substring in the original string
+        nextFound = str;
+    }
+
+    // Copy the remaining part of the original string
+    wmemcpy(currentPos, str, wcslen(str));
+    currentPos += wcslen(str);
+    *currentPos = L'\0'; // Null-terminate the result string
+
+    return result;
+}
+
 HRESULT
 SERVER_PROCESS::StartProcess(
     VOID
@@ -747,6 +833,15 @@ SERVER_PROCESS::StartProcess(
             goto Failure;
         }
 
+        //
+        // get the port that the backend process will listen on
+        //
+        if (FAILED_LOG(hr = GetListenPort(&fCriticalError)))
+        {
+            pStrStage = L"GetListenPort";
+            goto Failure;
+        }
+
         try
         {
             variables = ENVIRONMENT_VAR_HELPERS::InitEnvironmentVariablesTable(
@@ -754,9 +849,10 @@ SERVER_PROCESS::StartProcess(
                 m_fWindowsAuthEnabled,
                 m_fBasicAuthEnabled,
                 m_fAnonymousAuthEnabled,
-                true, // fAddHostingStartup
-                m_struAppFullPath.QueryStr(),
-                m_struHttpsPort.QueryStr());
+                //true, // fAddHostingStartup
+                m_struAppFullPath.QueryStr()//,
+                //m_struHttpsPort.QueryStr()
+            );
 
             variables = ENVIRONMENT_VAR_HELPERS::AddWebsocketEnabledToEnvironmentVariables(variables, m_fWebSocketSupported);
         }
@@ -768,6 +864,14 @@ SERVER_PROCESS::StartProcess(
         // Copy environment variables to old style hash table
         for (auto & variable : variables)
         {
+            size_t pos = 0;
+            wchar_t* replaceStr = m_struPort.QueryStr();
+            while ((pos = variable.second.find(ASPNETCORE_PORT_IN_USE_STR, pos)) != std::string::npos)
+            {
+                variable.second.replace(pos, wcslen(ASPNETCORE_PORT_IN_USE_STR), replaceStr);
+                pos += wcslen(replaceStr);
+            }
+
             auto pNewEntry = std::unique_ptr<ENVIRONMENT_VAR_ENTRY, ENVIRONMENT_VAR_ENTRY_DELETER>(new ENVIRONMENT_VAR_ENTRY());
             RETURN_IF_FAILED(pNewEntry->Initialize((variable.first + L"=").c_str(), variable.second.c_str()));
             RETURN_IF_FAILED(pHashTable->InsertRecord(pNewEntry.get()));
@@ -809,6 +913,8 @@ SERVER_PROCESS::StartProcess(
             goto Failure;
         }
 
+        wchar_t* finalCommandline = wcsreplace(m_struCommandLine.QueryStr(), ASPNETCORE_PORT_IN_USE_STR, m_struPort.QueryStr());
+
         dwCreationFlags = CREATE_NO_WINDOW |
             CREATE_UNICODE_ENVIRONMENT |
             CREATE_SUSPENDED |
@@ -816,7 +922,7 @@ SERVER_PROCESS::StartProcess(
 
         if (!CreateProcessW(
             NULL,                   // applicationName
-            m_struCommandLine.QueryStr(),
+            finalCommandline,
             NULL,                   // processAttr
             NULL,                   // threadAttr
             TRUE,                   // inheritHandles

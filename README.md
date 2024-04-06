@@ -1,44 +1,25 @@
-ASP.NET Core
-============
+HttpPlatformHandler v2
+======================
 
-[![.NET Foundation](https://img.shields.io/badge/.NET%20Foundation-blueviolet.svg)](https://www.dotnetfoundation.org/)
-[![MIT License](https://img.shields.io/github/license/dotnet/aspnetcore?color=%230b0&style=flat-square)](https://github.com/dotnet/aspnetcore/blob/main/LICENSE.txt) [![Help Wanted](https://img.shields.io/github/issues/dotnet/aspnetcore/help%20wanted?color=%232EA043&label=help%20wanted&style=flat-square)](https://github.com/dotnet/aspnetcore/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) [![Good First Issues](https://img.shields.io/github/issues/dotnet/aspnetcore/good%20first%20issue?color=%23512BD4&label=good%20first%20issue&style=flat-square)](https://github.com/dotnet/aspnetcore/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
-[![Discord](https://img.shields.io/discord/732297728826277939?style=flat-square&label=Discord&logo=discord&logoColor=white&color=7289DA)](https://aka.ms/dotnet-discord)
+[![MIT License](https://img.shields.io/github/license/lextudio/httpplatformhandlerv2?color=%230b0&style=flat-square)](https://github.com/lextudio/httpplatformhandlerv2/blob/main/LICENSE.txt) [![Help Wanted](https://img.shields.io/github/issues/lextudio/httpplatformhandlerv2/help%20wanted?color=%232EA043&label=help%20wanted&style=flat-square)](https://github.com/lextudio/httpplatformhandlerv2/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) [![Good First Issues](https://img.shields.io/github/issues/lextudio/httpplatformhandlerv2/good%20first%20issue?color=%23512BD4&label=good%20first%20issue&style=flat-square)](https://github.com/lextudio/httpplatformhandlerv2/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
-ASP.NET Core is an open-source and cross-platform framework for building modern cloud-based internet-connected applications, such as web apps, IoT apps, and mobile backends. ASP.NET Core apps run on [.NET](https://dot.net), a free, cross-platform, and open-source application runtime. It was architected to provide an optimized development framework for apps that are deployed to the cloud or run on-premises. It consists of modular components with minimal overhead, so you retain flexibility while constructing your solutions. You can develop and run your ASP.NET Core apps cross-platform on Windows, Mac, and Linux. [Learn more about ASP.NET Core](https://learn.microsoft.com/aspnet/core/).
+HttpPlatformHandler was created by Microsoft Azure team and made publicly available in 2015. More history about this Microsoft product can be found [in this blog post](https://docs.lextudio.com/blog/the-rough-history-of-iis-httpplatformhandler/).
+
+As Microsoft didn't publish any new release after v1.2 and more issues related to this old release were reported by users, there is a need to give the user community something new. Our team at LeXtudio Inc. are experienced .NET developers with extensive IIS knowledge so we decided to give this a try.
+
+We chose to fork and build up ASP.NET Core module, which was initially a fork of HttpPlatformHandler itself, now is both open-source and well maintained by Microsoft ASP.NET Core team. By renaming many things through the code base, we are able to derive a slim module that just works for any programming languages/application servers. And most importantly we keep this new module backward compatible with HttpPlatformHandler v1.2. That's why we simply call it HttpPlatformHandler v2.
+
+The changes we make are released under MIT.
 
 ## Get started
 
-Follow the [Getting Started](https://learn.microsoft.com/aspnet/core/getting-started) instructions.
+Find a release from [the Releases section](https://github.com/lextudio/httpplatformhandlerv2/releases) and you can see the installers (x86, x64, and ARM64).
 
-Also check out the [.NET Homepage](https://www.microsoft.com/net) for released versions of .NET, getting started guides, and learning resources.
-
-See the [Triage Process](https://github.com/dotnet/aspnetcore/blob/main/docs/TriageProcess.md) document for more information on how we handle incoming issues.
-
-## How to engage, contribute, and give feedback
-
-Some of the best ways to contribute are to try things out, file issues, join in design conversations,
-and make pull-requests.
-
-* [Download our latest daily builds](./docs/DailyBuilds.md)
-* Follow along with the development of ASP.NET Core:
-    * [Community Standup](https://live.asp.net): The community standup is held every week and streamed live on YouTube. You can view past standups in the linked playlist.
-    * [Roadmap](https://aka.ms/aspnet/roadmap): The schedule and milestone themes for ASP.NET Core.
-* [Build ASP.NET Core source code](./docs/BuildFromSource.md)
-* Check out the [contributing](CONTRIBUTING.md) page to see the best places to log issues and start discussions.
+Install them according to the IIS/IIS Express builds, and then you can apply your previous knowledge/configuration of HttpPlatformHandler.
 
 ## Reporting security issues and bugs
 
-Security issues and bugs should be reported privately, via email, to the Microsoft Security Response Center (MSRC)  secure@microsoft.com. You should receive a response within 24 hours. If for some reason you do not, please follow up via email to ensure we received your original message. Further information, including the MSRC PGP key, can be found in the [Security TechCenter](https://technet.microsoft.com/en-us/security/ff852094.aspx).
-
-## Related projects
-
-These are some other repos for related projects:
-
-* [Documentation](https://github.com/aspnet/Docs) - documentation sources for https://learn.microsoft.com/aspnet/core/
-* [Entity Framework Core](https://github.com/dotnet/efcore) - data access technology
-* [Runtime](https://github.com/dotnet/runtime) - cross-platform runtime for cloud, mobile, desktop, and IoT apps
-* [Razor](https://github.com/dotnet/razor) - the Razor compiler and tooling for working with Razor syntax (.cshtml, .razor)
+Security issues and bugs should be reported privately, via email, to LeXtudio Inc. support@lextudio.com. You should receive a response within 24 hours. If for some reason you do not, please follow up via email to ensure we received your original message.
 
 ## Code of conduct
 
