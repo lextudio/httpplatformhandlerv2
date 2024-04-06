@@ -1,6 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0" DefaultTargets="Build">
   <PropertyGroup Label="Globals">
-    <CharacterSet>Unicode</CharacterSet>
+    <RootNamespace>httpplatformhandlerv2</RootNamespace>
     <IsTestProject>false</IsTestProject>
   </PropertyGroup>
   <Import Project="..\build\settings.props" />
