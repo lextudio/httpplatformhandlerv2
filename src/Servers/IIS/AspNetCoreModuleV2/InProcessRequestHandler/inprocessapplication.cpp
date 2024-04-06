@@ -556,9 +556,9 @@ IN_PROCESS_APPLICATION::SetEnvironmentVariablesOnWorkerProcess()
         m_pConfig->QueryWindowsAuthEnabled(),
         m_pConfig->QueryBasicAuthEnabled(),
         m_pConfig->QueryAnonymousAuthEnabled(),
-        false, // fAddHostingStartup
-        QueryApplicationPhysicalPath().c_str(),
-        nullptr);
+        //false, // fAddHostingStartup
+        QueryApplicationPhysicalPath().c_str()/*,
+        nullptr*/);
 
     for (const auto& variable : variables)
     {

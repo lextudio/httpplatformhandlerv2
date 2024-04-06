@@ -1,4 +1,5 @@
 // Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) LeXtudio Inc. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 #include "stdafx.h"
@@ -294,30 +295,30 @@ REQUESTHANDLER_CONFIG::Populate(
         }
     }
 
-    hr = GetElementStringProperty(pAspNetCoreElement,
-        CS_ASPNETCORE_HOSTING_MODEL,
-        &strHostingModel);
-    if (FAILED(hr))
-    {
-        // Swallow this error for backward compatability
-        // Use default behavior for empty string
-        hr = S_OK;
-    }
+    // hr = GetElementStringProperty(pAspNetCoreElement,
+    //     CS_ASPNETCORE_HOSTING_MODEL,
+    //     &strHostingModel);
+    // if (FAILED(hr))
+    // {
+    //     // Swallow this error for backward compatability
+    //     // Use default behavior for empty string
+    //     hr = S_OK;
+    // }
 
-    if (strHostingModel.IsEmpty() || strHostingModel.Equals(L"outofprocess", TRUE))
-    {
+    // if (strHostingModel.IsEmpty() || strHostingModel.Equals(L"outofprocess", TRUE))
+    // {
         m_hostingModel = HOSTING_OUT_PROCESS;
-    }
-    else if (strHostingModel.Equals(L"inprocess", TRUE))
-    {
-        m_hostingModel = HOSTING_IN_PROCESS;
-    }
-    else
-    {
-        // block unknown hosting value
-        hr = HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
-        goto Finished;
-    }
+    // }
+    // else if (strHostingModel.Equals(L"inprocess", TRUE))
+    // {
+    //     m_hostingModel = HOSTING_IN_PROCESS;
+    // }
+    // else
+    // {
+    //     // block unknown hosting value
+    //     hr = HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
+    //     goto Finished;
+    // }
 
     hr = GetElementDWORDProperty(pAspNetCoreElement,
         CS_ASPNETCORE_RAPID_FAILS_PER_MINUTE,
@@ -355,7 +356,7 @@ REQUESTHANDLER_CONFIG::Populate(
 
     m_dwStartupTimeLimitInMS *= MILLISECONDS_IN_ONE_SECOND;
 
-    hr = GetElementDWORDProperty(
+    /*hr = GetElementDWORDProperty(
         pAspNetCoreElement,
         CS_ASPNETCORE_PROCESS_SHUTDOWN_TIME_LIMIT,
         &m_dwShutdownTimeLimitInMS
@@ -363,7 +364,8 @@ REQUESTHANDLER_CONFIG::Populate(
     if (FAILED(hr))
     {
         goto Finished;
-    }
+    }*/
+    m_dwShutdownTimeLimitInMS = 10;
     m_dwShutdownTimeLimitInMS *= MILLISECONDS_IN_ONE_SECOND;
 
     hr = GetElementBoolProperty(pAspNetCoreElement,
@@ -374,13 +376,14 @@ REQUESTHANDLER_CONFIG::Populate(
         goto Finished;
     }
 
-    hr = GetElementBoolProperty(pAspNetCoreElement,
-        CS_ASPNETCORE_DISABLE_START_UP_ERROR_PAGE,
-        &m_fDisableStartUpErrorPage);
-    if (FAILED(hr))
-    {
-        goto Finished;
-    }
+    //hr = GetElementBoolProperty(pAspNetCoreElement,
+    //    CS_ASPNETCORE_DISABLE_START_UP_ERROR_PAGE,
+    //    &m_fDisableStartUpErrorPage);
+    //if (FAILED(hr))
+    //{
+    //    goto Finished;
+    //}
+    m_fDisableStartUpErrorPage = FALSE;
 
     hr = GetElementRawTimeSpanProperty(
         pAspNetCoreElement,

@@ -1,4 +1,5 @@
 // Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) LeXtudio Inc. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 #pragma once
@@ -19,10 +20,11 @@
 #define MAX_ACTIVE_CHILD_PROCESSES                  16
 #define PIPE_OUTPUT_THREAD_TIMEOUT                  2000
 #define LOCALHOST                                   "127.0.0.1"
-#define ASPNETCORE_PORT_STR                         L"ASPNETCORE_PORT"
-#define ASPNETCORE_PORT_ENV_STR                     L"ASPNETCORE_PORT="
-#define ASPNETCORE_APP_PATH_ENV_STR                 L"ASPNETCORE_APPL_PATH="
-#define ASPNETCORE_APP_TOKEN_ENV_STR                L"ASPNETCORE_TOKEN="
+#define ASPNETCORE_PORT_STR                         L"HTTP_PLATFORM_PORT"
+#define ASPNETCORE_PORT_ENV_STR                     L"HTTP_PLATFORM_PORT="
+#define ASPNETCORE_APP_PATH_ENV_STR                 L"HTTP_PLATFORM_APPL_PATH="
+#define ASPNETCORE_APP_TOKEN_ENV_STR                L"HTTP_PLATFORM_TOKEN="
+#define ASPNETCORE_PORT_IN_USE_STR                  L"%HTTP_PLATFORM_PORT%"
 
 class PROCESS_MANAGER;
 
@@ -48,8 +50,8 @@ public:
         _In_ STRU                 *pstruStdoutLogFile,
         _In_ STRU                 *pszAppPhysicalPath,
         _In_ STRU                 *pszAppPath,
-        _In_ STRU                 *pszAppVirtualPath,
-        _In_ STRU                 *pszHttpsPort
+        _In_ STRU                 *pszAppVirtualPath//,
+        //_In_ STRU                 *pszHttpsPort
         );
 
     HRESULT
@@ -195,6 +197,11 @@ private:
     );
 
     HRESULT
+    GetListenPort(
+        BOOL* pfCriticalError
+    );
+
+    HRESULT
     SetupListenPort(
         ENVIRONMENT_VAR_HASH    *pEnvironmentVarTable,
         BOOL                    *pfCriticalError
@@ -272,7 +279,7 @@ private:
     STRU                    m_struAppVirtualPath;  // e.g., '/' for site
     STRU                    m_struAppFullPath;     // e.g.,  /LM/W3SVC/4/ROOT/Inproc
     STRU                    m_struPhysicalPath;    // e.g., c:/test/mysite
-    STRU                    m_struHttpsPort;     // e.g.,  /LM/W3SVC/4/ROOT/Inproc
+    //STRU                    m_struHttpsPort;     // e.g.,  /LM/W3SVC/4/ROOT/Inproc
     STRU                    m_struPort;
     STRU                    m_struCommandLine;
 

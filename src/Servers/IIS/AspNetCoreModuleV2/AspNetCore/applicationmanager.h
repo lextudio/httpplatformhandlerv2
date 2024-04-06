@@ -8,7 +8,7 @@
 #include <unordered_map>
 
 //
-// This class will manage the lifecycle of all Asp.Net Core application
+// This class will manage the lifecycle of all HttpPlatformHandler hosted application
 // It should be global singleton.
 // Should always call GetInstance to get the object instance
 //
