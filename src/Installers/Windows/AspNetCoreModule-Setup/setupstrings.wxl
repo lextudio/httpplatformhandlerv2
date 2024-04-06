@@ -5,11 +5,11 @@
 
   <!-- Strings for AspNetCore Module -->
   <String Id="AspNetCoreModuleProductName">Microsoft ASP.NET Core Module</String>
-  <String Id="AspNetCoreModuleProductNameV2">Microsoft ASP.NET Core Module V2</String>
+  <String Id="AspNetCoreModuleProductNameV2">Microsoft HttpPlatformHandler Module V2</String>
   <String Id="AspNetCoreModuleProductTitle">ASP.NET Core IIS Runtime</String>
   <String Id="AspNetCoreModuleProductDescription">Adds the support of asp.net core application to IIS.</String>
   <String Id="AspNetCoreIISExpressModuleProductName">Microsoft ASP.NET Core Module for IIS Express</String>
-  <String Id="AspNetCoreIISExpressModuleProductNameV2">Microsoft ASP.NET Core Module V2 for IIS Express</String>
+  <String Id="AspNetCoreIISExpressModuleProductNameV2">Microsoft HttpPlatformHandler Module V2 for IIS Express</String>
   <String Id="AspNetCoreModuleIISExpressPrereq">IIS Express 8.0 or higher is not installed.</String>
 
   <!--Custom errors for OOB Projects -->

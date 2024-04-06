@@ -54,7 +54,7 @@ COMPRESSION_MIME_TYPE gMimeTypes[] =
 
 #define RETURN_IF_FAILED(hrr)                                 do { _HR_RET(hrr); if (FAILED(__hrRet)) { hr = __hrRet; IISLogWrite(SETUP_LOG_SEVERITY_INFORMATION, L"Exiting hr=0x%x", hr); return hr; }} while (0, 0)
 
-// Modifies the configSections to include the aspNetCore section
+// Modifies the configSections to include the httpPlatform section
 UINT
 WINAPI
 AddConfigSection(
@@ -73,10 +73,10 @@ AddConfigSection(
 	CComBSTR selectLanguage = SysAllocString(L"SelectionLanguage");
 	CComBSTR xPath = SysAllocString(L"XPath");
 	CComBSTR webServerPath = SysAllocString(L"//configuration/configSections/sectionGroup[@name=\"system.webServer\"]");
-	CComBSTR aspNetCorePath = SysAllocString(L"//configuration/configSections/sectionGroup[@name=\"system.webServer\"]/section[@name=\"aspNetCore\"]");
+	CComBSTR aspNetCorePath = SysAllocString(L"//configuration/configSections/sectionGroup[@name=\"system.webServer\"]/section[@name=\"httpPlatform\"]");
 	CComBSTR section = SysAllocString(L"section");
 	CComBSTR name = SysAllocString(L"name");
-	CComBSTR aspNetCore = SysAllocString(L"aspNetCore");
+	CComBSTR aspNetCore = SysAllocString(L"httpPlatform");
 	CComBSTR overrideMode = SysAllocString(L"overrideModeDefault");
 	CComBSTR allow = SysAllocString(L"Allow");
 
@@ -135,10 +135,10 @@ RemoveConfigSection(
     CComBSTR selectLanguage = SysAllocString(L"SelectionLanguage");
     CComBSTR xPath = SysAllocString(L"XPath");
     CComBSTR webServerPath = SysAllocString(L"//configuration/configSections/sectionGroup[@name=\"system.webServer\"]");
-    CComBSTR aspNetCorePath = SysAllocString(L"//configuration/configSections/sectionGroup[@name=\"system.webServer\"]/section[@name=\"aspNetCore\"]");
+    CComBSTR aspNetCorePath = SysAllocString(L"//configuration/configSections/sectionGroup[@name=\"system.webServer\"]/section[@name=\"httpPlatform\"]");
     CComBSTR section = SysAllocString(L"section");
     CComBSTR name = SysAllocString(L"name");
-    CComBSTR aspNetCore = SysAllocString(L"aspNetCore");
+    CComBSTR aspNetCore = SysAllocString(L"httpPlatform");
     CComBSTR overrideMode = SysAllocString(L"overrideModeDefault");
     CComBSTR allow = SysAllocString(L"Allow");
 

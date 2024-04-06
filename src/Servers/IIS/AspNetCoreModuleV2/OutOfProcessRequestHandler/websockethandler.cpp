@@ -17,13 +17,13 @@ Abstract:
 -----------------
 Read Loop Design
 -----------------
-When a read IO completes successfully on any endpoints, Asp.Net Core Module doesn't
+When a read IO completes successfully on any endpoints, HttpPlatformHandler Module doesn't
 immediately issue the next read. The next read is initiated only after
 the read data is sent to the other endpoint. As soon as this send completes,
 we initiate the next IO. It should be noted that the send complete merely
 indicates the API completion from HTTP, and not necessarily over the network.
 
-This prevents the need for data buffering at the Asp.Net Core Module level.
+This prevents the need for data buffering at the HttpPlatformHandler Module level.
 
 --*/
 

@@ -206,7 +206,7 @@ DebugInitialize(HMODULE hModule)
     InitializeSRWLock(&g_logFileLock);
 
     if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-            L"SOFTWARE\\Microsoft\\IIS Extensions\\IIS AspNetCore Module V2\\Parameters",
+            L"SOFTWARE\\Microsoft\\IIS Extensions\\IIS HttpPlatformHandler Module V2\\Parameters",
             0,
             KEY_READ,
             &hKey) == NO_ERROR)
@@ -232,7 +232,7 @@ DebugInitialize(HMODULE hModule)
 
     try
     {
-        SetDebugFlags(Environment::GetEnvironmentVariableValue(L"ASPNETCORE_MODULE_DEBUG").value_or(L""));
+        SetDebugFlags(Environment::GetEnvironmentVariableValue(L"HTTP_PLATFORM_MODULE_DEBUG").value_or(L""));
     }
     catch (...)
     {
@@ -265,7 +265,7 @@ DebugInitializeFromConfig(IHttpServer& pHttpServer, IHttpApplication& pHttpAppli
 
     CComPtr<IAppHostElement>        pAspNetCoreElement;
 
-    const CComBSTR bstrAspNetCoreSection = L"system.webServer/aspNetCore";
+    const CComBSTR bstrAspNetCoreSection = L"system.webServer/httpPlatform";
     CComBSTR bstrConfigPath = pHttpApplication.GetAppConfigPath();
 
     RETURN_IF_FAILED(pHttpServer.GetAdminManager()->GetAdminSection(bstrAspNetCoreSection,

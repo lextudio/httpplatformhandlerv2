@@ -3,7 +3,7 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), Directory.Build.props))\Directory.Build.props" />
 
   <PropertyGroup>
-    <Name>AspNetCoreModuleV2</Name>
+    <Name>HttpPlatformModuleV2</Name>
     <IsShipping>true</IsShipping>
     <ProjectGuid>f9bacb48-3bd7-4ec2-ae31-664e8703ec12</ProjectGuid>
     <OutputType>Package</OutputType>
@@ -57,11 +57,11 @@
   <Import Project="..\build\settings.props" />
 
   <PropertyGroup>
-    <PackageFileName>aspnetcoremodule_$(Platform)_en_v2_$(PackageVersion)$(TargetExt)</PackageFileName>
-    <ProductNameShort>ASP.NET Core Module V2</ProductNameShort>
+    <PackageFileName>httpplatformhandlermodule_$(Platform)_en_v2_$(PackageVersion)$(TargetExt)</PackageFileName>
+    <ProductNameShort>HttpPlatformHandler Module V2</ProductNameShort>
   </PropertyGroup>
 
-  <Target Name="CreateANCMNugetPackage" DependsOnTargets="CopyToArtifactsDirectory" BeforeTargets="Build">
+  <!-- <Target Name="CreateANCMNugetPackage" DependsOnTargets="CopyToArtifactsDirectory" BeforeTargets="Build">
     <PropertyGroup>
       <MsiFullPath>$(InstallersOutputPath)$(PackageFileName)</MsiFullPath>
     </PropertyGroup>
@@ -80,5 +80,5 @@
                       '$(PackageIcon)' ^
                       '$(PackageIconFullPath)' ^
                       '$(PackageLicenseExpression)' " />
-  </Target>
+  </Target> -->
 </Project>

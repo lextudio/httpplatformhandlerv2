@@ -53,11 +53,11 @@ public:
         return m_struStdoutLogFile;
     }
 
-    bool
-    QueryDisableStartupPage() const noexcept
-    {
-        return m_fDisableStartupPage;
-    }
+    //bool
+    //QueryDisableStartupPage() const noexcept
+    //{
+    //    return m_fDisableStartupPage;
+    //}
 
     bool
     QueryShowDetailedErrors() const noexcept
@@ -65,23 +65,23 @@ public:
         return m_fShowDetailedErrors;
     }
 
-    bool
-    QueryShadowCopyEnabled() const noexcept
-    {
-        return m_fEnableShadowCopying;
-    }
+    //bool
+    //QueryShadowCopyEnabled() const noexcept
+    //{
+    //    return m_fEnableShadowCopying;
+    //}
 
-    bool
-    QueryCleanShadowCopyDirectory() const noexcept
-    {
-        return m_fCleanShadowCopyDirectory;
-    }
+    //bool
+    //QueryCleanShadowCopyDirectory() const noexcept
+    //{
+    //    return m_fCleanShadowCopyDirectory;
+    //}
 
-    const std::wstring&
-    QueryShadowCopyDirectory() const noexcept
-    {
-        return m_strShadowCopyingDirectory;
-    }
+    //const std::wstring&
+    //QueryShadowCopyDirectory() const noexcept
+    //{
+    //    return m_strShadowCopyingDirectory;
+    //}
 
     bool
     QueryDisallowRotationOnConfigChange() const noexcept
@@ -98,10 +98,10 @@ private:
     std::wstring                   m_strHandlerVersion;
     std::wstring                   m_struStdoutLogFile;
     bool                           m_fStdoutLogEnabled;
-    bool                           m_fDisableStartupPage;
+    //bool                           m_fDisableStartupPage;
     bool                           m_fShowDetailedErrors;
-    bool                           m_fEnableShadowCopying;
-    bool                           m_fCleanShadowCopyDirectory;
+    //bool                           m_fEnableShadowCopying;
+    //bool                           m_fCleanShadowCopyDirectory;
     bool                           m_fDisallowRotationOnConfigChange;
-    std::wstring                   m_strShadowCopyingDirectory;
+    //std::wstring                   m_strShadowCopyingDirectory;
 };

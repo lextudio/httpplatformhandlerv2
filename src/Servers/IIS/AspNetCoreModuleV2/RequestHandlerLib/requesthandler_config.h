@@ -4,7 +4,7 @@
 #pragma once
 #define CS_ROOTWEB_CONFIG                                L"MACHINE/WEBROOT/APPHOST/"
 #define CS_ROOTWEB_CONFIG_LEN                            _countof(CS_ROOTWEB_CONFIG)-1
-#define CS_ASPNETCORE_SECTION                            L"system.webServer/aspNetCore"
+#define CS_ASPNETCORE_SECTION                            L"system.webServer/httpPlatform"
 #define CS_WINDOWS_AUTHENTICATION_SECTION                L"system.webServer/security/authentication/windowsAuthentication"
 #define CS_BASIC_AUTHENTICATION_SECTION                  L"system.webServer/security/authentication/basicAuthentication"
 #define CS_ANONYMOUS_AUTHENTICATION_SECTION              L"system.webServer/security/authentication/anonymousAuthentication"

@@ -309,7 +309,7 @@ Failure:
             ANCM_ERROR_PAGE,
             502,
             5,
-            "ANCM Out-Of-Process Startup Failure",
+            "HttpPlatformHandler Startup Failure",
             "<ul><li> The application process failed to start </li><li> The application process started but then stopped </li><li> The application process started but failed to listen on the configured port </li></ul>");
 
         ServerErrorHandler handler(*m_pW3Context,

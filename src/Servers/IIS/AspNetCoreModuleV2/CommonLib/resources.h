@@ -8,15 +8,15 @@
 #define IDS_INVALID_PROPERTY        1000
 #define IDS_SERVER_ERROR            1001
 
-#define ASPNETCORE_EVENT_PROVIDER L"IIS AspNetCore Module V2"
-#define ASPNETCORE_IISEXPRESS_EVENT_PROVIDER L"IIS Express AspNetCore Module V2"
+#define ASPNETCORE_EVENT_PROVIDER L"IIS HttpPlatformHandler Module V2"
+#define ASPNETCORE_IISEXPRESS_EVENT_PROVIDER L"IIS Express HttpPlatformHandler Module V2"
 
 #define ASPNETCORE_EVENT_PROCESS_START_SUCCESS_MSG           L"Application '%s' started process '%d' successfully and process '%d' is listening on port '%d'."
 #define ASPNETCORE_EVENT_RAPID_FAIL_COUNT_EXCEEDED_MSG       L"Maximum rapid fail count per minute of '%d' exceeded."
 #define ASPNETCORE_EVENT_PROCESS_START_ERROR_MSG             L"Application '%s' with physical root '%s' failed to start process with commandline '%s' at stage '%s', ErrorCode = '0x%x', assigned port %d, retryCounter '%d'."
 #define ASPNETCORE_EVENT_PROCESS_START_FAILURE_MSG           L"Application '%s' with physical root '%s' failed to start process with commandline '%s' with multiple retries. Failed to bind to port '%d'. First 30KB characters of captured stdout and stderr logs from multiple retries:\r\n%s"
 #define ASPNETCORE_EVENT_PROCESS_START_STATUS_ERROR_MSG      L"Application '%s' with physical root '%s' failed to start process with commandline '%s', ErrorCode = '0x%x', processId '%d', processStatus '%d'."
-#define ASPNETCORE_EVENT_PROCESS_START_PORTSETUP_ERROR_MSG   L"Application '%s' with physical root '%s' failed to choose listen port '%d' given port range '%d - %d', ErrorCode = '0x%x'. If environment variable 'ASPNETCORE_PORT' was set, try removing it such that a random port is selected instead."
+#define ASPNETCORE_EVENT_PROCESS_START_PORTSETUP_ERROR_MSG   L"Application '%s' with physical root '%s' failed to choose listen port '%d' given port range '%d - %d', ErrorCode = '0x%x'. If environment variable 'HTTP_PLATFORM_PORT' was set, try removing it such that a random port is selected instead."
 #define ASPNETCORE_EVENT_PROCESS_START_WRONGPORT_ERROR_MSG   L"Application '%s' with physical root '%s' created process with commandline '%s' but failed to listen on the given port '%d'"
 #define ASPNETCORE_EVENT_PROCESS_START_NOTREADY_ERROR_MSG    L"Application '%s' with physical root '%s' created process with commandline '%s' but either crashed, did not respond, or did not listen on the given port '%d', ErrorCode = '0x%x'"
 #define ASPNETCORE_EVENT_PROCESS_SHUTDOWN_MSG                L"Application '%s' with physical root '%s' shut down process with Id '%d' listening on port '%d'"

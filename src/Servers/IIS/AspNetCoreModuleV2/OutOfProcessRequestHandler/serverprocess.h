@@ -19,10 +19,11 @@
 #define MAX_ACTIVE_CHILD_PROCESSES                  16
 #define PIPE_OUTPUT_THREAD_TIMEOUT                  2000
 #define LOCALHOST                                   "127.0.0.1"
-#define ASPNETCORE_PORT_STR                         L"ASPNETCORE_PORT"
-#define ASPNETCORE_PORT_ENV_STR                     L"ASPNETCORE_PORT="
-#define ASPNETCORE_APP_PATH_ENV_STR                 L"ASPNETCORE_APPL_PATH="
-#define ASPNETCORE_APP_TOKEN_ENV_STR                L"ASPNETCORE_TOKEN="
+#define ASPNETCORE_PORT_STR                         L"HTTP_PLATFORM_PORT"
+#define ASPNETCORE_PORT_IN_USE_STR                  L"%HTTP_PLATFORM_PORT%"
+#define ASPNETCORE_PORT_ENV_STR                     L"HTTP_PLATFORM_PORT="
+#define ASPNETCORE_APP_PATH_ENV_STR                 L"HTTP_PLATFORM_PORT_APPL_PATH="
+#define ASPNETCORE_APP_TOKEN_ENV_STR                L"HTTP_PLATFORM_PORT_TOKEN="
 
 class PROCESS_MANAGER;
 
@@ -192,6 +193,11 @@ private:
     HRESULT
     GetChildProcessHandles(
         VOID
+    );
+
+    HRESULT
+    GetListenPort(
+        BOOL* pfCriticalError
     );
 
     HRESULT

@@ -9,37 +9,37 @@
 
 <?define ProductCode = "*" ?>
 <?if $(var.IsWin64)=no ?>
-  <?define ANCMUpgradeCode = "de400ae0-3cd7-4a35-a234-b5a41b90893c" ?>
-  <?define ANCMDepProviderKey = "IISExpress_AspNetCore_Module_V2,x86" ?>
+  <?define ANCMUpgradeCode = "77a51b95-fb6c-4d6b-95a1-33cd72f54890" ?>
+  <?define ANCMDepProviderKey = "IISExpress_HttpPlatformHandler_Module_V2,x86" ?>
 <?else?>
-  <?define ANCMUpgradeCode = "da062c0f-12c2-4703-8ed7-0cad342a53a1" ?>
-  <?define ANCMDepProviderKey = "IISExpress_AspNetCore_Module_V2,x64" ?>
+  <?define ANCMUpgradeCode = "cf2e8dec-5beb-4167-9391-ce972c71a4b8" ?>
+  <?define ANCMDepProviderKey = "IISExpress_HttpPlaformHandler_Module_V2,x64" ?>
 <?endif?>
 
-<?define ProductShortName="IIS Express AspNetCore Module V2" ?>
-<?define ProductNameShort="IISExpress_ANCM_V2" ?>
+<?define ProductShortName="IIS Express HttpPlatformHandler Module V2" ?>
+<?define ProductNameShort="IISExpress_HTTP_PLAT" ?>
 <?define ProductVersionString = "V2"?>
-<?define ProductName="Asp.Net Core Module"?>
+<?define ProductName="HttpPlatformHandler Module"?>
 
 <?if $(var.PlatformValue)="Intel" ?>
   <?undef PlatformValue ?>
   <?define PlatformValue = "x86" ?>
 <?endif?>
 
-<?define AspNetCoreSectionName = "aspNetCore" ?>
-<?define AspNetCoreTraceProviderName = "ANCM" ?>
+<?define AspNetCoreSectionName = "httpPlatform" ?>
+<?define AspNetCoreTraceProviderName = "HTTP_PLATFORM" ?>
 <?define AspNetCoreTraceProviderValue = "65536" ?>
-<?define AspNetCoreModuleName = "AspNetCoreModuleV2" ?>
+<?define AspNetCoreModuleName = "httpPlatformHandler" ?>
 
 <?if $(var.Platform) = "x86" ?>
     <?define SchemaGuid = "e629b31a-3d56-4b5c-959c-586fc1c55599" ?>
-    <?define AspNetCoreV2ProgramFilesTargetPath = "$(var.ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(var.Configuration)\aspnetcorev2.dll" ?>
-    <?define AspNetCoreV2HandlerProgramFilesTargetPath = "$(var.ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(var.Configuration)\aspnetcorev2_outofprocess.dll" ?>
+    <?define AspNetCoreV2ProgramFilesTargetPath = "$(var.ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(var.Configuration)\httpplatformhandlerv2.dll" ?>
+    <?define AspNetCoreV2HandlerProgramFilesTargetPath = "$(var.ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(var.Configuration)\httpplatformhandlerv2_outofprocess.dll" ?>
 <?else?>
     <?define SchemaGuid = "ab582af2-d6c0-43f7-8412-76a19c65d7f2" ?>
     <?define SchemaGuid32 = "e629b31a-3d56-4b5c-959c-586fc1c55599" ?>
-    <?define AspNetCoreV2ProgramFilesTargetPath = "$(var.ArtifactsDir)\bin\AspNetCoreModuleShim\$(var.Platform)\$(var.Configuration)\aspnetcorev2.dll" ?>
-    <?define AspNetCoreV2HandlerProgramFilesTargetPath = "$(var.ArtifactsDir)\bin\OutOfProcessRequestHandler\$(var.Platform)\$(var.Configuration)\aspnetcorev2_outofprocess.dll" ?>
+    <?define AspNetCoreV2ProgramFilesTargetPath = "$(var.ArtifactsDir)\bin\AspNetCoreModuleShim\$(var.Platform)\$(var.Configuration)\httpplatformhandlerv2.dll" ?>
+    <?define AspNetCoreV2HandlerProgramFilesTargetPath = "$(var.ArtifactsDir)\bin\OutOfProcessRequestHandler\$(var.Platform)\$(var.Configuration)\httpplatformhandlerv2_outofprocess.dll" ?>
 <?endif ?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:dep="http://schemas.microsoft.com/wix/DependencyExtension">
@@ -166,7 +166,7 @@
           <Directory Id="VersionDir" Name="$(var.ProductVersionString)">
             <Component Id="AspNetCoreModule" Guid="84ed6ce6-c8a3-4fa8-a872-c98a1d15dd4f" Win64="$(var.IsWin64)">
                 <File Id="AspNetCoreModuleDll"
-                    Name="aspnetcorev2.dll"
+                    Name="httpplatformhandlerv2.dll"
                     Source="$(var.AspNetCoreV2ProgramFilesTargetPath)"
                     DiskId="1"
                     Vital="yes">
@@ -179,7 +179,7 @@
               <Directory Id="HandlerVersionDir" Name="$(var.ANCMFolderVersion)" >
               <Component Id="AspNetCoreModuleHandler" Guid="559EF726-B25C-480F-AFA4-32D0BA8B2376" Win64="$(var.IsWin64)">
                     <File Id="AspNetCoreModuleHandlerDll"
-                        Name="aspnetcorev2_outofprocess.dll"
+                        Name="httpplatformhandlerv2_outofprocess.dll"
                         Source="$(var.AspNetCoreV2HandlerProgramFilesTargetPath)"
                         DiskId="1"
                         Vital="yes">
@@ -192,7 +192,7 @@
           <Directory Id="IISSchemaDir" Name="schema">
             <Component Id="AspNetCoreSchema" Guid="$(var.SchemaGuid)" Win64="$(var.IsWin64)" >
               <File Id="AspNetCoreSchemaFile"
-                    Name="aspnetcore_schema_v2.xml"
+                    Name="httpplatform_schema.xml"
                     Source="$(var.AspNetCoreSchemaPath)"
                     DiskId="1"
                     Vital="yes"/>
@@ -209,8 +209,8 @@
                 <!-- Originally created with same component GUID as IIS installer. Must remain the same so upgrade doesn't remove this file -->
                 <Component Id="AspNetCoreModule.wow" Guid="45ba5011-a619-4d06-8a8d-155b1f9732b3" Win64="no">
                   <File Id="AspNetCoreModuleDll.wow"
-                        Name="aspnetcorev2.dll"
-                        Source="$(var.ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(var.Configuration)\aspnetcorev2.dll"
+                        Name="httpplatformhandlerv2.dll"
+                        Source="$(var.ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(var.Configuration)\httpplatformhandlerv2.dll"
                         DiskId="1"
                         Vital="yes">
                   </File>
@@ -222,8 +222,8 @@
                 <Directory Id="HandlerVersionDir32" Name="$(var.ANCMFolderVersion)" >
                   <Component Id="AspNetCoreModuleHandler.wow" Guid="0A8EDB50-7D85-4825-8010-D27EFAF061B6" Win64="no">
                     <File Id="AspNetCoreModuleHandlerDll.wow"
-                          Name="aspnetcorev2_outofprocess.dll"
-                          Source="$(var.ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(var.Configuration)\aspnetcorev2_outofprocess.dll"
+                          Name="httpplatformhandlerv2_outofprocess.dll"
+                          Source="$(var.ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(var.Configuration)\httpplatformhandlerv2_outofprocess.dll"
                           DiskId="1"
                           Vital="yes">
                     </File>
@@ -235,7 +235,7 @@
               <Directory Id="IISSchemaDir.wow" Name="schema">
                 <Component Id="AspNetCoreSchema.wow" Guid="$(var.SchemaGuid32)" Win64="no" >
                   <File Id="AspNetCoreSchemaFile.wow"
-                        Name="aspnetcore_schema_v2.xml"
+                        Name="httpplatform_schema.xml"
                         Source="$(var.AspNetCoreSchemaPath)"
                         DiskId="1"
                         Vital="yes"/>
@@ -295,7 +295,7 @@
 
         <CustomAction Id="CA_ADD_MODULE_PROPERTY"
                           Property="CA_ADD_MODULE"
-                          Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; install module /name:$(var.AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(var.ProductName)\$(var.ProductVersionString)\aspnetcorev2.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG]&quot;"/>
+                          Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; install module /name:$(var.AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(var.ProductName)\$(var.ProductVersionString)\httpplatformhandlerv2.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG]&quot;"/>
         <CustomAction Id="CA_ADD_MODULE" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no"/>
 
         <CustomAction Id="CA_ROLLBACK_MODULE_PROPERTY"
@@ -331,7 +331,7 @@
 
         <CustomAction Id="CA_ADD_MODULE_TMP_PROPERTY"
                           Property="CA_ADD_MODULE_TMP"
-                          Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; install module /name:$(var.AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(var.ProductName)\$(var.ProductVersionString)\aspnetcorev2.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG_TMP]&quot;"/>
+                          Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; install module /name:$(var.AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(var.ProductName)\$(var.ProductVersionString)\httpplatformhandlerv2.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG_TMP]&quot;"/>
         <CustomAction Id="CA_ADD_MODULE_TMP" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no"/>
 
         <CustomAction Id="CA_ROLLBACK_MODULE_TMP_PROPERTY"
@@ -408,7 +408,7 @@
 
             <CustomAction Id="CA_ADD_MODULE32_PROPERTY"
                               Property="CA_ADD_MODULE32"
-                              Value="&quot;[IISEXPRESS_INSTALL_PATH32]appcmd.exe&quot; install module /name:$(var.AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(var.ProductName)\$(var.ProductVersionString)\aspnetcorev2.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG32]&quot;"/>
+                              Value="&quot;[IISEXPRESS_INSTALL_PATH32]appcmd.exe&quot; install module /name:$(var.AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(var.ProductName)\$(var.ProductVersionString)\httpplatformhandlerv2.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG32]&quot;"/>
             <CustomAction Id="CA_ADD_MODULE32" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no"/>
 
             <CustomAction Id="CA_ROLLBACK_MODULE32_PROPERTY"
@@ -444,7 +444,7 @@
 
             <CustomAction Id="CA_ADD_MODULE_TMP32_PROPERTY"
                               Property="CA_ADD_MODULE_TMP32"
-                              Value="&quot;[IISEXPRESS_INSTALL_PATH32]appcmd.exe&quot; install module /name:$(var.AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(var.ProductName)\$(var.ProductVersionString)\aspnetcorev2.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG_TMP32]&quot;"/>
+                              Value="&quot;[IISEXPRESS_INSTALL_PATH32]appcmd.exe&quot; install module /name:$(var.AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(var.ProductName)\$(var.ProductVersionString)\httpplatformhandlerv2.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG_TMP32]&quot;"/>
             <CustomAction Id="CA_ADD_MODULE_TMP32" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no"/>
 
             <CustomAction Id="CA_ROLLBACK_MODULE_TMP32_PROPERTY"

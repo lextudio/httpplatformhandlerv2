@@ -12,7 +12,7 @@
 #include "EventLog.h"
 #include "RegistryKey.h"
 
-DECLARE_DEBUG_PRINT_OBJECT("aspnetcorev2.dll");
+DECLARE_DEBUG_PRINT_OBJECT("httpplatformhandlerv2.dll");
 
 HANDLE              g_hEventLog = nullptr;
 BOOL                g_fRecycleProcessCalled = FALSE;
@@ -102,15 +102,15 @@ HRESULT
         g_hEventLog = RegisterEventSource(nullptr, ASPNETCORE_EVENT_PROVIDER);
     }
 
-    auto fDisableModule = RegistryKey::TryGetDWORD(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\IIS Extensions\\IIS AspNetCore Module V2\\Parameters", L"DisableANCM");
+    //auto fDisableModule = RegistryKey::TryGetDWORD(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\IIS Extensions\\IIS AspNetCore Module V2\\Parameters", L"DisableANCM");
 
-    if (fDisableModule.has_value() && fDisableModule.value() != 0)
-    {
-        EventLog::Warn(ASPNETCORE_EVENT_MODULE_DISABLED, ASPNETCORE_EVENT_MODULE_DISABLED_MSG);
-        // this will return 500 error to client
-        // as we did not register the module
-        return S_OK;
-    }
+    //if (fDisableModule.has_value() && fDisableModule.value() != 0)
+    //{
+    //    EventLog::Warn(ASPNETCORE_EVENT_MODULE_DISABLED, ASPNETCORE_EVENT_MODULE_DISABLED_MSG);
+    //    // this will return 500 error to client
+    //    // as we did not register the module
+    //    return S_OK;
+    //}
 
     //
     // Create the factory before any static initialization.
