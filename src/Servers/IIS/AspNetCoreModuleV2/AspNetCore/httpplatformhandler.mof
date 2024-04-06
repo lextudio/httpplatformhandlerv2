@@ -3,7 +3,7 @@
 #pragma autorecover
 
 /*
- * AspNetCore module trace events layout
+ * HttpPlatformHandler module trace events layout
  * Uncomment the following class to run mof2trace to generate header file
  * comment it back before checking it in
 [Dynamic,
@@ -14,11 +14,11 @@ class IIS_Trace:EventTrace
 {
     [Description ("Enable Flags") : amended,
         ValueDescriptions{
-            "AspNetCore module events" } : amended,
+            "HttpPlaformHandler module events" } : amended,
         DefineValues{
-            "ETW_IIS_ANCM" },
+            "ETW_IIS_HTTP_PLATFORM" },
         Values{
-            "ANCM" },
+            "HTTP_PLATFORM" },
         ValueMap{
             "0x10000" }
     ]
@@ -56,14 +56,14 @@ class IIS_Trace:EventTrace
 */
 
 [Dynamic,
- Description("ANCM runtime events") : amended,
- Guid("{82ADEAD7-12B2-4781-BDCA-5A4B6C757191}"),
+ Description("HTTP_PLATFORM runtime events") : amended,
+ Guid("{831d632f-b8af-416e-ac29-5bee2ecfea09}"),
  EventVersion(1),
- DisplayName("ANCM"),
- EventANCMRuntime,
+ DisplayName("HTTP_PLATFORM"),
+ EventHttpPlatformRuntime,
  locale("MS\\0x409")
 ]
-class ANCM_Events:IIS_Trace
+class Http_Platform_Events:IIS_Trace
 {
 };
 
@@ -71,9 +71,9 @@ class ANCM_Events:IIS_Trace
  Description("Start application success") : amended,
  EventType(1),
  EventLevel(4),
- EventTypeName("ANCM_START_APPLICATION_SUCCESS") : amended
+ EventTypeName("HTTP_PLATFORM_START_APPLICATION_SUCCESS") : amended
 ]
-class ANCMAppStart:ANCM_Events
+class Http_Platform_AppStart:Http_Platform_Events
 {
     [WmiDataId(1),
      Description("Context ID") : amended,
@@ -93,9 +93,9 @@ class ANCMAppStart:ANCM_Events
  Description("Start application failed") : amended,
  EventType(2),
  EventLevel(2),
- EventTypeName("ANCM_START_APPLICATION_FAIL") : amended
+ EventTypeName("HTTP_PLATFORM_START_APPLICATION_FAIL") : amended
 ]
-class ANCMAppStartFail:ANCM_Events
+class Http_Platform_AppStartFail:Http_Platform_Events
 {
     [WmiDataId(1),
      Description("Context ID") : amended,
@@ -115,9 +115,9 @@ class ANCMAppStartFail:ANCM_Events
  Description("Start forwarding request") : amended,
  EventType(3),
  EventLevel(4),
- EventTypeName("ANCM_REQUEST_FORWARD_START") : amended
+ EventTypeName("HTTP_PLATFORM_REQUEST_FORWARD_START") : amended
 ]
-class ANCMForwardStart:ANCM_Events
+class Http_Platform_ForwardStart:Http_Platform_Events
 {
     [WmiDataId(1),
      Description("Context ID") : amended,
@@ -131,9 +131,9 @@ class ANCMForwardStart:ANCM_Events
  Description("Finish forwarding request") : amended,
  EventType(4),
  EventLevel(4),
- EventTypeName("ANCM_REQUEST_FORWARD_END") : amended
+ EventTypeName("HTTP_PLATFORM_REQUEST_FORWARD_END") : amended
 ]
-class ANCMForwardEnd:ANCM_Events
+class Http_Platform_ForwardEnd:Http_Platform_Events
 {
     [WmiDataId(1),
      Description("Context ID") : amended,
@@ -147,9 +147,9 @@ class ANCMForwardEnd:ANCM_Events
  Description("Forwarding request failure") : amended,
  EventType(5),
  EventLevel(2),
- EventTypeName("ANCM_REQUEST_FORWARD_FAIL") : amended
+ EventTypeName("HTTP_PLATFORM_REQUEST_FORWARD_FAIL") : amended
 ]
-class ANCMForwardFail:ANCM_Events
+class Http_Platform_ForwardFail:Http_Platform_Events
 {
     [WmiDataId(1),
      Description("Context ID") : amended,
@@ -168,9 +168,9 @@ class ANCMForwardFail:ANCM_Events
  Description("Receiving callback from WinHttp") : amended,
  EventType(6),
  EventLevel(4),
- EventTypeName("ANCM_WINHTTP_CALLBACK") : amended
+ EventTypeName("HTTP_PLATFORM_WINHTTP_CALLBACK") : amended
 ]
-class ANCMWinHttpCallBack:ANCM_Events
+class Http_Platform_WinHttpCallBack:Http_Platform_Events
 {
     [WmiDataId(1),
      Description("Context ID") : amended,
@@ -186,134 +186,12 @@ class ANCMWinHttpCallBack:ANCM_Events
 };
 
 [Dynamic,
- Description("Starting inprocess execute request") : amended,
- EventType(7),
- EventLevel(4),
- EventTypeName("ANCM_INPROC_EXECUTE_REQUEST_START") : amended
-]
-class ANCMExecuteStart:ANCM_Events
-{
-    [WmiDataId(1),
-     Description("Context ID") : amended,
-     extension("Guid"),
-     ActivityID,
-     read]
-     object  ContextId;
-};
-
-[Dynamic,
- Description("Ending inprocess execute request") : amended,
- EventType(8),
- EventLevel(5),
- EventTypeName("ANCM_INPROC_EXECUTE_REQUEST_COMPLETION") : amended
-]
-class ANCMExecuteEnd:ANCM_Events
-{
-    [WmiDataId(1),
-     Description("Context ID") : amended,
-     extension("Guid"),
-     ActivityID,
-     read]
-     object  ContextId;
-    [WmiDataId(2),
-     Description("Notification status") : amended,
-     format("d"),
-     read]
-     uint32  requestStatus;
-};
-
-[Dynamic,
- Description("Starting inprocess async completion") : amended,
- EventType(9),
- EventLevel(5),
- EventTypeName("ANCM_INPROC_ASYNC_COMPLETION_START") : amended
-]
-class ANCMAsyncStart:ANCM_Events
-{
-    [WmiDataId(1),
-     Description("Context ID") : amended,
-     extension("Guid"),
-     ActivityID,
-     read]
-     object  ContextId;
-};
-
-[Dynamic,
- Description("Ending inprocess async completion") : amended,
- EventType(10),
- EventLevel(5),
- EventTypeName("ANCM_INPROC_ASYNC_COMPLETION_COMPLETION") : amended
-]
-class ANCMAsyncEnd:ANCM_Events
-{
-    [WmiDataId(1),
-     Description("Context ID") : amended,
-     extension("Guid"),
-     ActivityID,
-     read]
-     object  ContextId;
-    [WmiDataId(2),
-     Description("Notification status") : amended,
-     format("d"),
-     read]
-     uint32  requestStatus;
-};
-
-[Dynamic,
- Description("Inprocess app shutdown") : amended,
- EventType(11),
- EventLevel(4),
- EventTypeName("ANCM_INPROC_REQUEST_SHUTDOWN") : amended
-]
-class ANCMRequestShutdown:ANCM_Events
-{
-    [WmiDataId(1),
-     Description("Context ID") : amended,
-     extension("Guid"),
-     ActivityID,
-     read]
-     object  ContextId;
-};
-
-[Dynamic,
- Description("Inprocess request disconnect") : amended,
- EventType(12),
- EventLevel(4),
- EventTypeName("ANCM_INPROC_REQUEST_DISCONNECT") : amended
-]
-class ANCMRequestDisconnect:ANCM_Events
-{
-    [WmiDataId(1),
-     Description("Context ID") : amended,
-     extension("Guid"),
-     ActivityID,
-     read]
-     object  ContextId;
-};
-
-[Dynamic,
- Description("Indicate managed request complete") : amended,
- EventType(13),
- EventLevel(4),
- EventTypeName("ANCM_INPROC_MANAGED_REQUEST_COMPLETION") : amended
-]
-class ANCMManagedRequestCompletion:ANCM_Events
-{
-    [WmiDataId(1),
-     Description("Context ID") : amended,
-     extension("Guid"),
-     ActivityID,
-     read]
-     object  ContextId;
-};
-
-[Dynamic,
  Description("Failed HRESULT") : amended,
  EventType(14),
  EventLevel(3),
- EventTypeName("ANCM_HRESULT_FAILED") : amended
+ EventTypeName("HTTP_PLATFORM_HRESULT_FAILED") : amended
 ]
-class ANCMHRESULTFailed:ANCM_Events
+class Http_Platform_HRESULTFailed:Http_Platform_Events
 {
     [WmiDataId(1),
      Description("Context ID") : amended,
@@ -342,9 +220,9 @@ class ANCMHRESULTFailed:ANCM_Events
  Description("Caught exception") : amended,
  EventType(15),
  EventLevel(3),
- EventTypeName("ANCM_EXCEPTION_CAUGHT") : amended
+ EventTypeName("HTTP_PLATFORM_EXCEPTION_CAUGHT") : amended
 ]
-class ANCMExceptionCaughFailed:ANCM_Events
+class Http_Platform_ExceptionCaughFailed:Http_Platform_Events
 {
     [WmiDataId(1),
      Description("Context ID") : amended,
