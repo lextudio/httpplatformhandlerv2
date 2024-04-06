@@ -1,4 +1,5 @@
 // Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) LeXtudio Inc. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 #include "forwardinghandler.h"
@@ -309,7 +310,7 @@ Failure:
             ANCM_ERROR_PAGE,
             502,
             5,
-            "ANCM Out-Of-Process Startup Failure",
+            "HttpPlatformHandler Startup Failure",
             "<ul><li> The application process failed to start </li><li> The application process started but then stopped </li><li> The application process started but failed to listen on the configured port </li></ul>");
 
         ServerErrorHandler handler(*m_pW3Context,
@@ -831,7 +832,7 @@ FORWARDING_HANDLER::GetHeaders(
                 RETURN_HR(HRESULT_FROM_WIN32(ERROR_INVALID_DATA));
             }
 
-            RETURN_IF_FAILED(m_pW3Context->GetRequest()->SetHeader("MS-ASPNETCORE-WINAUTHTOKEN",
+            RETURN_IF_FAILED(m_pW3Context->GetRequest()->SetHeader("X-IIS-WINDOWSAUTHTOKEN",
                 pszHandleStr,
                 (USHORT)strlen(pszHandleStr),
                 TRUE));

@@ -1,4 +1,5 @@
 // Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) LeXtudio Inc. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 #include "HandlerResolver.h"
@@ -17,7 +18,7 @@
 #include "RedirectionOutput.h"
 
 const PCWSTR HandlerResolver::s_pwzAspnetcoreInProcessRequestHandlerName = L"aspnetcorev2_inprocess.dll";
-const PCWSTR HandlerResolver::s_pwzAspnetcoreOutOfProcessRequestHandlerName = L"aspnetcorev2_outofprocess.dll";
+const PCWSTR HandlerResolver::s_pwzAspnetcoreOutOfProcessRequestHandlerName = L"httpplatformhandlerv2_outofprocess.dll";
 
 HandlerResolver::HandlerResolver(HMODULE hModule, const IHttpServer &pServer)
     : m_hModule(hModule),
@@ -88,7 +89,7 @@ HandlerResolver::LoadRequestHandlerAssembly(const IHttpApplication &pApplication
         }
         else
         {
-            errorContext.generalErrorType = "ASP.NET Core IIS hosting failure (out-of-process)";
+            errorContext.generalErrorType = "HttpPlatformHandler IIS hosting failure";
 
             if (FAILED_LOG(hr = FindNativeAssemblyFromGlobalLocation(pConfiguration, pstrHandlerDllName, handlerDllPath)))
             {
@@ -101,7 +102,7 @@ HandlerResolver::LoadRequestHandlerAssembly(const IHttpApplication &pApplication
                 errorContext.detailedErrorContent = to_multi_byte_string(format(ASPNETCORE_EVENT_OUT_OF_PROCESS_RH_MISSING_MSG, handlerName), CP_UTF8);
                 errorContext.statusCode = 500i16;
                 errorContext.subStatusCode = 36i16;
-                errorContext.errorReason = "The out of process request handler, aspnetcorev2_outofprocess.dll, could not be found next to the aspnetcorev2.dll.";
+                errorContext.errorReason = "The out of process request handler, httpplatformhandlerv2_outofprocess.dll, could not be found next to the httpplatformhandlerv2.dll.";
 
                 return hr;
             }
