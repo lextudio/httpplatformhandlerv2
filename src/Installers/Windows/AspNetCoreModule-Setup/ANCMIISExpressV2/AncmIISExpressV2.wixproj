@@ -3,7 +3,7 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), Directory.Build.props))\Directory.Build.props" />
 
   <PropertyGroup>
-    <Name>AspNetCoreModuleV2IISExpress</Name>
+    <Name>HttpPlatformHandlerModuleV2IISExpress</Name>
     <IsShipping>true</IsShipping>
     <ProjectGuid>17c76489-4c09-4e14-b81c-7a86cd937144</ProjectGuid>
     <OutputType>Package</OutputType>
@@ -70,11 +70,11 @@
   <Import Project="..\build\settings.props" />
 
   <PropertyGroup>
-    <PackageFileName>ancm_iis_express_$(Platform)_en_v2_$(PackageVersion)$(TargetExt)</PackageFileName>
-    <ProductNameShort>ASP.NET Core Module IIS Express V2</ProductNameShort>
+    <PackageFileName>httpplatformhandler_iis_express_$(Platform)_en_v2_$(PackageVersion)$(TargetExt)</PackageFileName>
+    <ProductNameShort>HttpPlatformHandler Module IIS Express V2</ProductNameShort>
   </PropertyGroup>
 
-  <Target Name="CreateANCMIISExpressNugetPackage" DependsOnTargets="CopyToArtifactsDirectory" BeforeTargets="Build">
+  <!-- <Target Name="CreateANCMIISExpressNugetPackage" DependsOnTargets="CopyToArtifactsDirectory" BeforeTargets="Build">
     <PropertyGroup>
       <MsiFullPath>$(InstallersOutputPath)$(PackageFileName)</MsiFullPath>
     </PropertyGroup>
@@ -94,6 +94,7 @@
                       '$(PackageIconFullPath)' ^
                       '$(PackageLicenseExpression)' " />
   </Target>
+  -->
 
   <Target Name="BeforeBuild" Condition="'$(Platform)' == 'arm64'">
     <MSBuild Projects="..\Forwarders\build.proj" />

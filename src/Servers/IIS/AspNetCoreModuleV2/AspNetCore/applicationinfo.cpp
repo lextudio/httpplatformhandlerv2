@@ -1,4 +1,5 @@
 // Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) LeXtudio Inc. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 #include "applicationinfo.h"
@@ -94,7 +95,7 @@ APPLICATION_INFO::CreateApplication(IHttpContext& pHttpContext)
             m_pApplication = make_application<ServerErrorApplication>(
                 pHttpApplication,
                 E_FAIL,
-                options.QueryDisableStartupPage() /* disableStartupPage */,
+                FALSE,//options.QueryDisableStartupPage() /* disableStartupPage */,
                 "" /* responseContent */,
                 503i16 /* statusCode */,
                 0i16 /* subStatusCode */,
@@ -130,7 +131,7 @@ APPLICATION_INFO::CreateApplication(IHttpContext& pHttpContext)
             m_pApplication = make_application<ServerErrorApplication>(
                 pHttpApplication,
                 hr,
-                options.QueryDisableStartupPage(),
+                FALSE, // options.QueryDisableStartupPage(),
                 responseContent,
                 errorContext.statusCode,
                 errorContext.subStatusCode,
@@ -169,7 +170,7 @@ APPLICATION_INFO::CreateApplication(IHttpContext& pHttpContext)
 HRESULT
 APPLICATION_INFO::TryCreateApplication(IHttpContext& pHttpContext, const ShimOptions& options, ErrorContext& error)
 {
-    const auto startupEvent = Environment::GetEnvironmentVariableValue(L"ASPNETCORE_STARTUP_SUSPEND_EVENT");
+    /*const auto startupEvent = Environment::GetEnvironmentVariableValue(L"ASPNETCORE_STARTUP_SUSPEND_EVENT");
     if (startupEvent.has_value())
     {
         LOG_INFOF(L"Startup suspend event %ls", startupEvent.value().c_str());
@@ -191,9 +192,9 @@ APPLICATION_INFO::TryCreateApplication(IHttpContext& pHttpContext, const ShimOpt
             }
             LOG_LAST_ERROR_IF(WaitForSingleObject(eventHandle, INFINITE) != WAIT_OBJECT_0);
         }
-    }
+    }*/
 
-    auto shadowCopyPath = HandleShadowCopy(options, pHttpContext);
+    auto shadowCopyPath = HandleShadowCopy();//options, pHttpContext);
 
     RETURN_IF_FAILED(m_handlerResolver.GetApplicationFactory(*pHttpContext.GetApplication(), shadowCopyPath, m_pApplicationFactory, options, error));
     LOG_INFO(L"Creating handler application");
@@ -275,74 +276,74 @@ APPLICATION_INFO::ShutDownApplication(const bool fServerInitiated)
  * we will start a thread that deletes all other folders in that directory.
  */
 std::filesystem::path
-APPLICATION_INFO::HandleShadowCopy(const ShimOptions& options, IHttpContext& pHttpContext)
+APPLICATION_INFO::HandleShadowCopy()//const ShimOptions& options, IHttpContext& pHttpContext)
 {
     std::filesystem::path shadowCopyPath;
 
     // Only support shadow copying for IIS.
-    if (options.QueryShadowCopyEnabled() && !m_pServer.IsCommandLineLaunch())
-    {
-        shadowCopyPath = options.QueryShadowCopyDirectory();
-        std::wstring physicalPath = pHttpContext.GetApplication()->GetApplicationPhysicalPath();
+    //if (options.QueryShadowCopyEnabled() && !m_pServer.IsCommandLineLaunch())
+    //{
+    //    shadowCopyPath = options.QueryShadowCopyDirectory();
+    //    std::wstring physicalPath = pHttpContext.GetApplication()->GetApplicationPhysicalPath();
 
-        // Make shadow copy path absolute.
-        if (!shadowCopyPath.is_absolute())
-        {
-            shadowCopyPath = std::filesystem::absolute(std::filesystem::path(physicalPath) / shadowCopyPath);
-        }
+    //    // Make shadow copy path absolute.
+    //    if (!shadowCopyPath.is_absolute())
+    //    {
+    //        shadowCopyPath = std::filesystem::absolute(std::filesystem::path(physicalPath) / shadowCopyPath);
+    //    }
 
-        // The shadow copy directory itself isn't copied to directly.
-        // Instead subdirectories with numerically increasing names are created.
-        // This is because on shutdown, the app itself will still have all dlls loaded,
-        // meaning we can't copy to the same subdirectory. Therefore, on shutdown,
-        // we create a directory that is one larger than the previous largest directory number.
-        auto directoryName = 0;
-        std::string directoryNameStr = "0";
-        auto shadowCopyBaseDirectory = std::filesystem::directory_entry(shadowCopyPath);
-        if (!shadowCopyBaseDirectory.exists())
-        {
-            CreateDirectory(shadowCopyBaseDirectory.path().wstring().c_str(), nullptr);
-        }
+    //    // The shadow copy directory itself isn't copied to directly.
+    //    // Instead subdirectories with numerically increasing names are created.
+    //    // This is because on shutdown, the app itself will still have all dlls loaded,
+    //    // meaning we can't copy to the same subdirectory. Therefore, on shutdown,
+    //    // we create a directory that is one larger than the previous largest directory number.
+    //    auto directoryName = 0;
+    //    std::string directoryNameStr = "0";
+    //    auto shadowCopyBaseDirectory = std::filesystem::directory_entry(shadowCopyPath);
+    //    if (!shadowCopyBaseDirectory.exists())
+    //    {
+    //        CreateDirectory(shadowCopyBaseDirectory.path().wstring().c_str(), NULL);
+    //    }
 
-        for (auto& entry : std::filesystem::directory_iterator(shadowCopyPath))
-        {
-            if (entry.is_directory())
-            {
-                try
-                {
-                    auto tempDirName = entry.path().filename().string();
-                    int intFileName = std::stoi(tempDirName);
-                    if (intFileName > directoryName)
-                    {
-                        directoryName = intFileName;
-                        directoryNameStr = tempDirName;
-                    }
-                }
-                catch (...)
-                {
-                    OBSERVE_CAUGHT_EXCEPTION();
-                    // Ignore any folders that can't be converted to an int.
-                }
-            }
-        }
+    //    for (auto& entry : std::filesystem::directory_iterator(shadowCopyPath))
+    //    {
+    //        if (entry.is_directory())
+    //        {
+    //            try
+    //            {
+    //                auto tempDirName = entry.path().filename().string();
+    //                int intFileName = std::stoi(tempDirName);
+    //                if (intFileName > directoryName)
+    //                {
+    //                    directoryName = intFileName;
+    //                    directoryNameStr = tempDirName;
+    //                }
+    //            }
+    //            catch (...)
+    //            {
+    //                OBSERVE_CAUGHT_EXCEPTION();
+    //                // Ignore any folders that can't be converted to an int.
+    //            }
+    //        }
+    //    }
 
-        int copiedFileCount = 0;
+    //    int copiedFileCount = 0;
 
-        shadowCopyPath = shadowCopyPath / directoryNameStr;
-        LOG_INFOF(L"Copying to shadow copy directory %ls.", shadowCopyPath.c_str());
+    //    shadowCopyPath = shadowCopyPath / directoryNameStr;
+    //    LOG_INFOF(L"Copying to shadow copy directory %ls.", shadowCopyPath.c_str());
 
-        // Avoid using canonical for shadowCopyBaseDirectory
-        // It could expand to a network drive, or an expanded link folder path
-        // We already made it an absolute path relative to the physicalPath above
-        HRESULT hr = Environment::CopyToDirectory(physicalPath, shadowCopyPath, options.QueryCleanShadowCopyDirectory(), shadowCopyBaseDirectory.path(), copiedFileCount);
+    //    // Avoid using canonical for shadowCopyBaseDirectory
+    //    // It could expand to a network drive, or an expanded link folder path
+    //    // We already made it an absolute path relative to the physicalPath above
+    //    HRESULT hr = Environment::CopyToDirectory(physicalPath, shadowCopyPath, options.QueryCleanShadowCopyDirectory(), shadowCopyBaseDirectory.path(), copiedFileCount);
 
-        LOG_INFOF(L"Finished copying %d files to shadow copy directory %ls.", copiedFileCount, shadowCopyBaseDirectory.path().c_str());
+    //    LOG_INFOF(L"Finished copying %d files to shadow copy directory %ls.", copiedFileCount, shadowCopyBaseDirectory.path().c_str());
 
-        if (hr != S_OK)
-        {
-            return std::wstring();
-        }
-    }
+    //    if (hr != S_OK)
+    //    {
+    //        return std::wstring();
+    //    }
+    //}
 
     return shadowCopyPath;
 }
