@@ -16,7 +16,7 @@ The changes we make are released under the MIT license.
 
 Find a release from [the Releases section](https://github.com/lextudio/httpplatformhandlerv2/releases) and you can see the installers (x86, x64, and ARM64).
 
-Install them according to the IIS/IIS Express builds you are using, and then you can apply your previous knowledge/configuration of HttpPlatformHandler.
+Install them accordingly to the IIS/IIS Express builds you are using, and then you can apply your previous knowledge/configuration of HttpPlatformHandler.
 
 ## Reporting bugs or asking questions
 
