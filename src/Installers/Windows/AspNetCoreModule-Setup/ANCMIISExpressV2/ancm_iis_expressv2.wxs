@@ -169,14 +169,12 @@
                 <File Id="AspNetCoreModuleDll"
                     Name="httpplatformhandlerv2.dll"
                     Source="$(var.ArtifactsDir)\bin\AspNetCoreModuleForwarders\httpplatformhandlerv2.dll"
-                    DiskId="1"
-                    Vital="yes"/>
+                    KeyPath="yes"/>
                 <?else ?>
                 <File Id="AspNetCoreModuleDll"
                     Name="httpplatformhandlerv2.dll"
                     Source="$(var.AspNetCoreV2ProgramFilesTargetPath)"
-                    DiskId="1"
-                    Vital="yes"/>
+                    KeyPath="yes"/>
                 <?endif ?>
               <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(var.ProductShortName)">
                 <RegistryValue Name="EventMessageFile" Type="expandable" Value="[#AspNetCoreModuleDll]"/>
@@ -189,14 +187,12 @@
                     <File Id="AspNetCoreModuleHandlerDll"
                         Name="httpplatformhandlerv2_outofprocess.dll"
                         Source="$(var.ArtifactsDir)\bin\AspNetCoreModuleForwarders\httpplatformhandlerv2_outofprocess.dll"
-                        DiskId="1"
-                        Vital="yes"/>
+                        KeyPath="yes"/>
                     <?else ?>
                     <File Id="AspNetCoreModuleHandlerDll"
                         Name="httpplatformhandlerv2_outofprocess.dll"
                         Source="$(var.AspNetCoreV2HandlerProgramFilesTargetPath)"
-                        DiskId="1"
-                        Vital="yes">
+                        KeyPath="yes">
                     </File>
                     <?endif ?>
               </Component>
@@ -207,16 +203,14 @@
                     <File Id="AspNetCoreModuleHandlerDll.x64"
                         Name="httpplatformhandlerv2_outofprocess_x64.dll"
                         Source="$(var.ArtifactsDir)\bin\OutOfProcessRequestHandler\x64\$(var.Configuration)\httpplatformhandlerv2_outofprocess.dll"
-                        DiskId="1"
-                        Vital="yes"/>
+                        KeyPath="yes"/>
                 </Component>
                 <Component Id="AspNetCoreModuleHandler.arm64"
                     Guid="D8DA4A6F-C226-4088-BDE6-EF4AD40F0AA1" Win64="$(var.IsWin64)">
                     <File Id="AspNetCoreModuleHandlerDll.arm64"
                         Name="httpplatformhandlerv2_outofprocess_arm64.dll"
                         Source="$(var.AspNetCoreV2HandlerProgramFilesTargetPath)"
-                        DiskId="1"
-                        Vital="yes"/>
+                        KeyPath="yes"/>
                 </Component>
               <?endif ?>
             </Directory>
@@ -227,8 +221,7 @@
                 <File Id="AspNetCoreModuleV2Dll.x64"
                     Name="httpplatformhandlerv2_x64.dll"
                     Source="$(var.ArtifactsDir)\bin\AspNetCoreModuleShim\x64\$(var.Configuration)\httpplatformhandlerv2.dll"
-                    DiskId="1"
-                    Vital="yes"/>
+                    KeyPath="yes"/>
                 <RegistryKey Root="HKLM"
                     Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(var.ProductShortName)">
                     <RegistryValue Name="EventMessageFile" Type="expandable"
@@ -242,8 +235,7 @@
                 <File Id="AspNetCoreModuleV2Dll.arm64"
                     Name="httpplatformhandlerv2_arm64.dll"
                     Source="$(var.AspNetCoreV2ProgramFilesTargetPath)"
-                    DiskId="1"
-                    Vital="yes"/>
+                    KeyPath="yes"/>
                 <RegistryKey Root="HKLM"
                     Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(var.ProductShortName)">
                     <RegistryValue Name="EventMessageFile" Type="expandable"
@@ -260,8 +252,7 @@
               <File Id="AspNetCoreSchemaFile"
                     Name="httpplatform_schema.xml"
                     Source="$(var.AspNetCoreSchemaPath)"
-                    DiskId="1"
-                    Vital="yes"/>
+                    KeyPath="yes"/>
             </Component>
           </Directory>
         </Directory>
@@ -277,8 +268,7 @@
                   <File Id="AspNetCoreModuleDll.wow"
                         Name="httpplatformhandlerv2.dll"
                         Source="$(var.ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(var.Configuration)\httpplatformhandlerv2.dll"
-                        DiskId="1"
-                        Vital="yes">
+                        KeyPath="yes">
                   </File>
                   <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(var.ProductShortName)">
                     <RegistryValue Name="EventMessageFile" Type="expandable" Value="[#AspNetCoreModuleDll.wow]"/>
@@ -290,8 +280,7 @@
                     <File Id="AspNetCoreModuleHandlerDll.wow"
                           Name="httpplatformhandlerv2_outofprocess.dll"
                           Source="$(var.ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(var.Configuration)\httpplatformhandlerv2_outofprocess.dll"
-                          DiskId="1"
-                          Vital="yes">
+                          KeyPath="yes">
                     </File>
                   </Component>
                 </Directory>
@@ -303,8 +292,7 @@
                   <File Id="AspNetCoreSchemaFile.wow"
                         Name="httpplatform_schema.xml"
                         Source="$(var.AspNetCoreSchemaPath)"
-                        DiskId="1"
-                        Vital="yes"/>
+                        KeyPath="yes"/>
                 </Component>
               </Directory>
             </Directory>
@@ -679,7 +667,7 @@
 
         <DirectoryRef Id="TARGETDIR">
             <Component Id="C_DepProvider_$(var.ProductNameShort)" Win64="no">
-                <dep:Provides Key="$(var.ANCMDepProviderKey)" />
+                <dep:Provides Key="$(var.ANCMDepProviderKey)" KeyPath="yes" />
             </Component>
         </DirectoryRef>
     </Fragment>

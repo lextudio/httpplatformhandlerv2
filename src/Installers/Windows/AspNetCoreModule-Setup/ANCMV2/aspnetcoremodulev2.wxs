@@ -130,8 +130,7 @@
                                 <File Id="HttpPlatformSchemaFile"
                                       Name="httpplatform_schema.xml"
                                       Source="$(var.AspNetCoreSchemaPath)"
-                                      DiskId="1"
-                                      Vital="yes"/>
+                                      KeyPath="yes"/>
                                 <RemoveFile Id="HttpPlatformSchemaFile_Remove" Name="httpplatform_schema.xml" On="install" />
                            </Component>
                        </Directory>
@@ -149,14 +148,12 @@
                              <File Id="AspNetCoreModuleV2Dll"
                                     Name="httpplatformhandlerv2.dll"
                                     Source="$(var.ArtifactsDir)\bin\AspNetCoreModuleForwarders\httpplatformhandlerv2.dll"
-                                    DiskId="1"
-                                    Vital="yes"/>
+                                    KeyPath="yes"/>
                              <?else ?>
                              <File Id="AspNetCoreModuleV2Dll"
                                Name="httpplatformhandlerv2.dll"
                                Source="$(var.AspNetCoreV2ProgramFilesTargetPath)"
-                               DiskId="1"
-                               Vital="yes"/>
+                               KeyPath="yes"/>
                              <?endif ?>
                              <RemoveFile Id="AspNetCoreModuleV2Dll_Remove" Name="httpplatformhandlerv2.dll" On="install" />
                              <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(var.ProductShortName)">
@@ -170,14 +167,12 @@
                                <File Id="AspNetCoreModuleHandlerDll"
                                         Name="httpplatformhandlerv2_outofprocess.dll"
                                         Source="$(var.ArtifactsDir)\bin\AspNetCoreModuleForwarders\httpplatformhandlerv2_outofprocess.dll"
-                                        DiskId="1"
-                                        Vital="yes"/>
+                                        KeyPath="yes"/>
                                <?else ?>
                                <File Id="AspNetCoreModuleHandlerDll"
                                  Name="httpplatformhandlerv2_outofprocess.dll"
                                  Source="$(var.AspNetCoreV2HandlerProgramFilesTargetPath)"
-                                 DiskId="1"
-                                 Vital="yes"/>
+                                 KeyPath="yes"/>
                                <?endif ?>
                              </Component>
                              <?if $(var.Platform) = "arm64" ?>
@@ -185,16 +180,14 @@
                                     <File Id="AspNetCoreModuleHandlerDll.x64"
                                         Name="httpplatformhandlerv2_outofprocess_x64.dll"
                                         Source="$(var.ArtifactsDir)\bin\OutOfProcessRequestHandler\x64\$(var.Configuration)\httpplatformhandlerv2_outofprocess.dll"
-                                        DiskId="1"
-                                        Vital="yes">
+                                        KeyPath="yes">
                                     </File>
                              </Component>
                              <Component Id="AspNetCoreModuleHandler.arm64" Guid="DEFB6893-8FD6-4602-8EFA-15BCA20C5326" Win64="$(var.IsWin64)">
                                     <File Id="AspNetCoreModuleHandlerDll.arm64"
                                         Name="httpplatformhandlerv2_outofprocess_arm64.dll"
                                         Source="$(var.AspNetCoreV2HandlerProgramFilesTargetPath)"
-                                        DiskId="1"
-                                        Vital="yes">
+                                        KeyPath="yes">
                                     </File>
                              </Component>
                              <?endif ?>
@@ -204,8 +197,7 @@
                                 <File Id="AspNetCoreModuleV2Dll.x64"
                                     Name="httpplatformhandlerv2_x64.dll"
                                     Source="$(var.ArtifactsDir)\bin\AspNetCoreModuleShim\x64\$(var.Configuration)\httpplatformhandlerv2.dll"
-                                    DiskId="1"
-                                    Vital="yes">
+                                    KeyPath="yes">
                                 </File>
                                <RemoveFile Id="AspNetCoreModuleV2Dll_Remove.x64" Name="httpplatformhandlerv2_x64.dll" On="install" />
                                <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(var.ProductShortName)">
@@ -217,8 +209,7 @@
                                 <File Id="AspNetCoreModuleV2Dll.arm64"
                                     Name="httpplatformhandlerv2_arm64.dll"
                                     Source="$(var.AspNetCoreV2ProgramFilesTargetPath)"
-                                    DiskId="1"
-                                    Vital="yes">
+                                    KeyPath="yes">
                                 </File>
                                <RemoveFile Id="AspNetCoreModuleV2Dll_Remove.arm64" Name="httpplatformhandlerv2_arm64.dll" On="install" />
                                <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(var.ProductShortName)">
@@ -237,7 +228,7 @@
            <Component Id="C_DiscoverabilityKeyWow" Guid="DD5DA1AF-EF33-49DC-A454-B01420B8F49A" Win64="no">
                <RegistryKey Root="HKLM" Key="$(var.DiscoverabilityKeyRoot)">
                     <RegistryKey Key="$(var.ProductShortName)">
-                        <RegistryValue Type="integer" Name="Install" Value="1" />
+                        <RegistryValue Type="integer" Name="Install" Value="1" KeyPath="yes" />
                         <RegistryValue Type="string" Name="Version" Value="$(var.ANCMMsiVersion)" />
                     </RegistryKey>
                 </RegistryKey>
@@ -251,8 +242,7 @@
                                 <File Id="AspNetCoreModuleV2Dll.wow"
                                     Name="httpplatformhandlerv2.dll"
                                     Source="$(var.ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(var.Configuration)\httpplatformhandlerv2.dll"
-                                    DiskId="1"
-                                    Vital="yes">
+                                    KeyPath="yes">
                                 </File>
                                 <RemoveFile Id="AspNetCoreModuleV2Dll.wow_Remove" Name="httpplatformhandlerv2.dll" On="install" />
                                 <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(var.ProductShortName)">
@@ -265,8 +255,7 @@
                                     <File Id="AspNetCoreModuleHandlerDll.wow"
                                           Name="httpplatformhandlerv2_outofprocess.dll"
                                           Source="$(var.ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(var.Configuration)\httpplatformhandlerv2_outofprocess.dll"
-                                          DiskId="1"
-                                          Vital="yes">
+                                          KeyPath="yes">
                                     </File>
                                 </Component>
                             </Directory>
@@ -368,7 +357,7 @@
 
         <DirectoryRef Id="TARGETDIR">
             <Component Id="C_DepProvider_$(var.ProductNameShort)" Win64="no">
-                <dep:Provides Key="$(var.ANCMDepProviderKey)" />
+                <dep:Provides Key="$(var.ANCMDepProviderKey)"/>
             </Component>
         </DirectoryRef>
     </Fragment>
