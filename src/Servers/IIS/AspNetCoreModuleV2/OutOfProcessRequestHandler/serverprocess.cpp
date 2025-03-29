@@ -748,50 +748,15 @@ Finished:
     return hr;
 }
 
-// Finds first occurrence of 'find' in 'str' starting from 'startPos'
-const wchar_t* wcsfind(const wchar_t* str, const wchar_t* find, size_t startPos = 0) {
-    const wchar_t* p = str + startPos;
-    const wchar_t* found = wcsstr(p, find);
-    return found;
-}
+// Modern C++ implementation to replace all occurrences of a substring
+std::wstring ReplaceSubstring(const std::wstring& str, const std::wstring& from, const std::wstring& to) {
+    std::wstring result = str;
+    size_t pos = 0;
 
-// Replaces all occurrences of 'from' with 'to' in 'str'. Returns a new dynamically allocated string.
-wchar_t* wcsreplace(const wchar_t* str, const wchar_t* from, const wchar_t* to) {
-    size_t strLen = wcslen(str);
-    size_t fromLen = wcslen(from);
-    size_t toLen = wcslen(to);
-
-    // Estimate the size of the result string
-    size_t newSize = strLen + 1; // +1 for null terminator
-    const wchar_t* found = str;
-    while ((found = wcsfind(str, from, found - str + fromLen)) != NULL) {
-        newSize += toLen - fromLen; // Adjust newSize for each replacement
+    while ((pos = result.find(from, pos)) != std::wstring::npos) {
+        result.replace(pos, from.length(), to);
+        pos += to.length(); // Move past the replaced string
     }
-
-    // Allocate memory for the result string
-    wchar_t* result = (wchar_t*)malloc(newSize * sizeof(wchar_t));
-    if (!result) return NULL;
-
-    wchar_t* currentPos = result;
-    const wchar_t* nextFound = str;
-    while ((nextFound = wcsfind(str, from, nextFound - str)) != NULL) {
-        // Copy part of the original string before the 'from' substring
-        size_t segmentLen = nextFound - str;
-        wmemcpy(currentPos, str, segmentLen);
-        currentPos += segmentLen;
-
-        // Copy 'to' in place of 'from'
-        wmemcpy(currentPos, to, toLen);
-        currentPos += toLen;
-
-        str = nextFound + fromLen; // Move past the 'from' substring in the original string
-        nextFound = str;
-    }
-
-    // Copy the remaining part of the original string
-    wmemcpy(currentPos, str, wcslen(str));
-    currentPos += wcslen(str);
-    *currentPos = L'\0'; // Null-terminate the result string
 
     return result;
 }
@@ -913,7 +878,11 @@ SERVER_PROCESS::StartProcess(
             goto Failure;
         }
 
-        wchar_t* finalCommandline = wcsreplace(m_struCommandLine.QueryStr(), ASPNETCORE_PORT_IN_USE_STR, m_struPort.QueryStr());
+        std::wstring commandLine = m_struCommandLine.QueryStr();
+        std::wstring portStr = m_struPort.QueryStr();
+
+        // Replace port placeholder with actual port
+        std::wstring finalCommandLine = ReplaceSubstring(commandLine, ASPNETCORE_PORT_IN_USE_STR, portStr);
 
         dwCreationFlags = CREATE_NO_WINDOW |
             CREATE_UNICODE_ENVIRONMENT |
@@ -922,7 +891,7 @@ SERVER_PROCESS::StartProcess(
 
         if (!CreateProcessW(
             NULL,                   // applicationName
-            finalCommandline,
+            const_cast<LPWSTR>(finalCommandLine.c_str()),
             NULL,                   // processAttr
             NULL,                   // threadAttr
             TRUE,                   // inheritHandles
