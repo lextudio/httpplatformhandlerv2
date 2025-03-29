@@ -135,7 +135,6 @@ SERVER_PROCESS::GetListenPort(
 )
 {
     HRESULT hr = S_OK;
-    ENVIRONMENT_VAR_ENTRY *pEntry = NULL;
     *pfCriticalError = FALSE;
 
     WCHAR buffer[15];
@@ -147,13 +146,6 @@ SERVER_PROCESS::GetListenPort(
     if (swprintf_s(buffer, 15, L"%d", m_dwPort) <= 0)
     {
         hr = E_INVALIDARG;
-        goto Finished;
-    }
-
-    pEntry = new ENVIRONMENT_VAR_ENTRY();
-    if (pEntry == NULL)
-    {
-        hr = E_OUTOFMEMORY;
         goto Finished;
     }
 
@@ -829,11 +821,12 @@ SERVER_PROCESS::StartProcess(
         // Copy environment variables to old style hash table
         for (auto & variable : variables)
         {
+            std::wstring& value = variable.second;
             size_t pos = 0;
             wchar_t* replaceStr = m_struPort.QueryStr();
-            while ((pos = variable.second.find(ASPNETCORE_PORT_IN_USE_STR, pos)) != std::string::npos)
+            while ((pos = value.find(ASPNETCORE_PORT_IN_USE_STR, pos)) != std::string::npos)
             {
-                variable.second.replace(pos, wcslen(ASPNETCORE_PORT_IN_USE_STR), replaceStr);
+                value.replace(pos, wcslen(ASPNETCORE_PORT_IN_USE_STR), replaceStr);
                 pos += wcslen(replaceStr);
             }
 
