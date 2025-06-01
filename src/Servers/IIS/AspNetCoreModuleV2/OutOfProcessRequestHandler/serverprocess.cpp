@@ -137,7 +137,7 @@ SERVER_PROCESS::GetListenPort(
     HRESULT hr = S_OK;
     *pfCriticalError = FALSE;
 
-    WCHAR buffer[15];
+    WCHAR buffer[15] = {0};
     if (FAILED_LOG(hr = GetRandomPort(&m_dwPort)))
     {
         goto Finished;
@@ -178,13 +178,13 @@ SERVER_PROCESS::SetupListenPort(
 )
 {
     HRESULT hr = S_OK;
-    ENVIRONMENT_VAR_ENTRY* pEntry = NULL;
+    ENVIRONMENT_VAR_ENTRY* pEntry = nullptr;
     *pfCriticalError = FALSE;
 
     pEnvironmentVarTable->FindKey(ASPNETCORE_PORT_ENV_STR, &pEntry);
-    if (pEntry != NULL)
+    if (pEntry != nullptr)
     {
-        if (pEntry->QueryValue() != NULL && pEntry->QueryValue()[0] != L'\0')
+        if (pEntry->QueryValue() != nullptr && pEntry->QueryValue()[0] != L'\0')
         {
             m_dwPort = (DWORD)_wtoi(pEntry->QueryValue());
             if (m_dwPort > MAX_PORT || m_dwPort < MIN_PORT)
@@ -204,12 +204,12 @@ SERVER_PROCESS::SetupListenPort(
             //
             pEnvironmentVarTable->DeleteKey(ASPNETCORE_PORT_ENV_STR);
             pEntry->Dereference();
-            pEntry = NULL;
+            pEntry = nullptr;
         }
     }
 
     pEntry = new ENVIRONMENT_VAR_ENTRY();
-    if (pEntry == NULL)
+    if (pEntry == nullptr)
     {
         hr = E_OUTOFMEMORY;
         goto Finished;
@@ -768,6 +768,10 @@ SERVER_PROCESS::StartProcess(
     PWSTR                   pStrStage = NULL;
     BOOL                    fCriticalError = FALSE;
     std::map<std::wstring, std::wstring, ignore_case_comparer> variables;
+    // Move these declarations before any goto statements to avoid MSVC C2362 error
+    std::wstring commandLine;
+    std::wstring portStr;
+    std::wstring finalCommandLine;
 
     GetStartupInfoW(&startupInfo);
 
@@ -871,11 +875,12 @@ SERVER_PROCESS::StartProcess(
             goto Failure;
         }
 
-        std::wstring commandLine = m_struCommandLine.QueryStr();
-        std::wstring portStr = m_struPort.QueryStr();
+
+        commandLine = m_struCommandLine.QueryStr();
+        portStr = m_struPort.QueryStr();
 
         // Replace port placeholder with actual port
-        std::wstring finalCommandLine = ReplaceSubstring(commandLine, ASPNETCORE_PORT_IN_USE_STR, portStr);
+        finalCommandLine = ReplaceSubstring(commandLine, ASPNETCORE_PORT_IN_USE_STR, portStr);
 
         dwCreationFlags = CREATE_NO_WINDOW |
             CREATE_UNICODE_ENVIRONMENT |
