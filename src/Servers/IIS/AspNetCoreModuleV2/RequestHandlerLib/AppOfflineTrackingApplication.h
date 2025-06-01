@@ -37,6 +37,23 @@ public:
     virtual
     VOID
     OnAppOffline();
+    
+    // New method for file changes other than app_offline.htm
+    virtual
+    VOID
+    OnConfigurationFileChange()
+    {
+        // Default implementation - derived classes can override
+        // Base implementation treats config file changes like app_offline
+        OnAppOffline();
+    }
+    
+    // Returns the name of the file being monitored by the filewatcher
+    std::wstring
+    GetFileBeingMonitored() const
+    {
+        return L"app_offline.htm";
+    }
 
     // TODO protected
     bool                                         m_detectedAppOffline;

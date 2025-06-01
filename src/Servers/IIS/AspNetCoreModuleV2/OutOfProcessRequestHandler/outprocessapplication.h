@@ -4,6 +4,7 @@
 #pragma once
 
 #include "AppOfflineTrackingApplication.h"
+#include <vector>
 
 class OUT_OF_PROCESS_APPLICATION : public AppOfflineTrackingApplication
 {
@@ -51,6 +52,21 @@ public:
         return m_pConfig.get();
     }
 
+    VOID
+    OnFileChanged();
+    
+    // Override OnConfigurationFileChange from base class
+    __override
+    VOID
+    OnConfigurationFileChange() override
+    {
+        // When a configuration file changes, call OnFileChanged
+        OnFileChanged();
+    }
+
+    HRESULT
+    StartMonitoringConfiguredFiles();
+
 private:
 
     VOID SetWebsocketStatus(IHttpContext *pHttpContext);
@@ -60,4 +76,5 @@ private:
 
     WEBSOCKET_STATUS              m_fWebSocketSupported;
     std::unique_ptr<REQUESTHANDLER_CONFIG> m_pConfig;
+    std::vector<std::unique_ptr<FILE_WATCHER>> m_fileWatchers;
 };

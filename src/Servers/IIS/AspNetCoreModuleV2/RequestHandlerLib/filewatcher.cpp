@@ -165,7 +165,7 @@ Win32 error
 --*/
 {
     FILE_WATCHER* pFileMonitor = (FILE_WATCHER*)pvArg;
-    
+
     LOG_INFO(L"Starting file watcher thread");
     DBG_ASSERT(pFileMonitor != nullptr);
 
@@ -242,8 +242,9 @@ HRESULT
 
 --*/
 {
-    BOOL                        fAppOfflineChanged = FALSE;
+    BOOL                        fFileChanged = FALSE;
     BOOL                        fDllChanged = FALSE;
+    BOOL                        fIsAppOfflineFile = IsAppOfflineMonitoring();
 
     // When directory handle is closed then HandleChangeCompletion
     // happens with cbCompletion = 0 and dwCompletionStatus = 0
@@ -265,7 +266,7 @@ HRESULT
     //
     if (cbCompletion == 0)
     {
-        fAppOfflineChanged = TRUE;
+        fFileChanged = TRUE;
     }
     else
     {
@@ -281,9 +282,14 @@ HRESULT
                 _strFileName.QueryStr(),
                 pNotificationInfo->FileNameLength / sizeof(WCHAR)) == 0)
             {
-                fAppOfflineChanged = TRUE;
-                auto app = _pApplication.get();
-                app->m_detectedAppOffline = true;
+                fFileChanged = TRUE;
+
+                // Mark as app_offline detected if this is app_offline.htm
+                if (fIsAppOfflineFile)
+                {
+                    auto app = _pApplication.get();
+                    app->m_detectedAppOffline = true;
+                }
                 break;
             }
 
@@ -317,11 +323,22 @@ HRESULT
         }
     }
 
-    if (fAppOfflineChanged && !_lStopMonitorCalled)
+    if (fFileChanged && !_lStopMonitorCalled)
     {
         // Reference application before
         _pApplication->ReferenceApplication();
-        RETURN_LAST_ERROR_IF(!QueueUserWorkItem(RunNotificationCallback, _pApplication.get(), WT_EXECUTEDEFAULT));
+
+        LOG_INFOF(L"Detected change in file '%s'", _strFileName.QueryStr());
+
+        // Use appropriate callback based on whether this is app_offline.htm or another file
+        if (fIsAppOfflineFile)
+        {
+            RETURN_LAST_ERROR_IF(!QueueUserWorkItem(RunNotificationCallback, _pApplication.get(), WT_EXECUTEDEFAULT));
+        }
+        else
+        {
+            RETURN_LAST_ERROR_IF(!QueueUserWorkItem(RunFileChangedCallback, _pApplication.get(), WT_EXECUTEDEFAULT));
+        }
     }
 
     if (fDllChanged && m_fShadowCopyEnabled && !_lStopMonitorCalled)
@@ -468,4 +485,25 @@ FILE_WATCHER::StopMonitor()
 
     // Release application reference
     _pApplication.reset(nullptr);
+}
+
+bool
+FILE_WATCHER::IsAppOfflineMonitoring() const
+{
+    return _wcsicmp(_strFileName.QueryStr(), L"app_offline.htm") == 0;
+}
+
+DWORD
+WINAPI
+FILE_WATCHER::RunFileChangedCallback(
+    LPVOID  pvArg
+)
+{
+    // Recapture application instance into unique_ptr
+    auto pApplication = std::unique_ptr<AppOfflineTrackingApplication, IAPPLICATION_DELETER>(static_cast<AppOfflineTrackingApplication*>(pvArg));
+    
+    // Call the appropriate handler for configuration file changes
+    pApplication->OnConfigurationFileChange();
+
+    return 0;
 }
