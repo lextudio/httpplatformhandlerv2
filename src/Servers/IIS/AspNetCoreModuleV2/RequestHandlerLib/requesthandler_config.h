@@ -54,6 +54,8 @@ enum APP_HOSTING_MODEL
 class REQUESTHANDLER_CONFIG
 {
 public:
+    // Returns the list of files to watch for recycle
+    const std::vector<std::wstring>& QueryRecycleOnFileChangeFiles() const { return m_pRecycleOnFileChangeFiles; }
 
 
     ~REQUESTHANDLER_CONFIG();
@@ -270,6 +272,7 @@ protected:
     STRU                   m_fEnableOutOfProcessConsoleRedirection;
     APP_HOSTING_MODEL      m_hostingModel;
     std::map<std::wstring, std::wstring, ignore_case_comparer> m_pEnvironmentVariables;
+    std::vector<std::wstring> m_pRecycleOnFileChangeFiles;
     STRU                   m_struHostFxrLocation;
     PWSTR*                 m_ppStrArguments;
     DWORD                  m_dwArgc;
