@@ -105,6 +105,11 @@ REQUESTHANDLER_CONFIG::Populate(
     BSTR                            bstrAspNetCoreSection = NULL;
     std::optional<std::wstring> launcherPathEnv;
     std::optional<std::wstring> launcherArgsEnv;
+    IAppHostElement                *pRecycleOnFileChangeFileList = nullptr;
+    IAppHostElementCollection      *pRecycleOnFileChangeFileCollection = nullptr;
+    IAppHostElement                *pRecycleOnFileChangeFile = nullptr;
+    ENUM_INDEX                      index{};
+    STRU                            strFilePath;
 
     pAdminManager = pHttpServer->GetAdminManager();
     try
@@ -424,6 +429,51 @@ REQUESTHANDLER_CONFIG::Populate(
         goto Finished;
     }
 
+    //
+    // let's disable this feature for now
+    //
+    // get all files listed in recycleOnFileChange
+    //*
+    hr = GetElementChildByName(pAspNetCoreElement,
+        CS_ASPNETCORE_RECYCLE_ON_FILE_CHANGE,
+        &pRecycleOnFileChangeFileList);
+    if (FAILED(hr))
+    {
+        goto Finished;
+    }
+
+    hr = pRecycleOnFileChangeFileList->get_Collection(&pRecycleOnFileChangeFileCollection);
+    if (FAILED(hr))
+    {
+        goto Finished;
+    }
+
+    for (hr = FindFirstElement(pRecycleOnFileChangeFileCollection, &index, &pRecycleOnFileChangeFile);
+        SUCCEEDED(hr);
+        hr = FindNextElement(pRecycleOnFileChangeFileCollection, &index, &pRecycleOnFileChangeFile))
+    {
+        if (hr == S_FALSE)
+        {
+            hr = S_OK;
+            break;
+        }
+
+        hr = GetElementStringProperty(pRecycleOnFileChangeFile,
+            CS_ASPNETCORE_RECYCLE_ON_FILE_CHANGE_FILE_PATH,
+            &strFilePath);
+        if (FAILED(hr))
+        {
+            goto Finished;
+        }
+
+        m_pRecycleOnFileChangeFiles.push_back(strFilePath.QueryStr());
+
+        strFilePath.Reset();
+        pRecycleOnFileChangeFile->Release();
+        pRecycleOnFileChangeFile = nullptr;
+    }
+    //*/
+
 Finished:
 
     if (pAspNetCoreElement != NULL)
@@ -448,6 +498,18 @@ Finished:
     {
         pBasicAuthenticationElement->Release();
         pBasicAuthenticationElement = NULL;
+    }
+
+    if (pRecycleOnFileChangeFile != NULL)
+    {
+        pRecycleOnFileChangeFile->Release();
+        pRecycleOnFileChangeFile = NULL;
+    }
+
+    if (pRecycleOnFileChangeFileCollection != NULL)
+    {
+        pRecycleOnFileChangeFileCollection->Release();
+        pRecycleOnFileChangeFileCollection = NULL;
     }
 
     return hr;
