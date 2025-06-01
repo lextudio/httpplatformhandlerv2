@@ -667,7 +667,7 @@
 
         <DirectoryRef Id="TARGETDIR">
             <Component Id="C_DepProvider_$(var.ProductNameShort)" Win64="no">
-                <dep:Provides Key="$(var.ANCMDepProviderKey)" KeyPath="yes" />
+                <dep:Provides Key="$(var.ANCMDepProviderKey)" />
             </Component>
         </DirectoryRef>
     </Fragment>
