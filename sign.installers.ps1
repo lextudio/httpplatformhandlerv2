@@ -102,7 +102,7 @@ foreach ($signtoolCandidate in $signtoolCandidates) {
 
     foreach ($file in $files) {
         Write-Host "Signing $($file.FullName) with $signtool"
-        & $signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /d "Jexus Manager" /a $file.FullName 2>&1 | Write-Debug
+        & $signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /d "HTTP Bridge Module for IIS" /a $file.FullName 2>&1 | Write-Debug
 
         if ($LASTEXITCODE -ne 0) {
             Write-Host "Failed to sign $($file.FullName) with $signtool (exit code $LASTEXITCODE)"

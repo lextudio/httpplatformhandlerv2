@@ -1,2 +1,0 @@
-EXPORTS
-    RegisterModule = httpplatformhandlerv2_arm64.RegisterModule

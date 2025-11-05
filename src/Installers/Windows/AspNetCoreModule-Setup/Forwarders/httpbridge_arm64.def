@@ -1,0 +1,2 @@
+EXPORTS
+    RegisterModule = httpbridge_arm64.RegisterModule

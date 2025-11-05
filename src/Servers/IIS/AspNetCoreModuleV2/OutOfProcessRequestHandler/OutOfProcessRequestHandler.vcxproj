@@ -10,7 +10,7 @@
   </PropertyGroup>
   <Import Project="..\..\build\Build.Dll.Settings" />
   <PropertyGroup>
-    <TargetName>httpplatformhandlerv2_outofprocess</TargetName>
+    <TargetName>httpbridge_outofprocess</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>

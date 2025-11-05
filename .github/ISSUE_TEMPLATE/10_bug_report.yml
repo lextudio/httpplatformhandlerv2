@@ -15,7 +15,7 @@ body:
 - type: checkboxes
   attributes:
     label: Is there an existing issue for this?
-    description: Please search to see if an issue already exists for the bug you encountered ([httpplatformhandlerv2/issues](https://github.com/lextudio/httpplatformhandlerv2/issues?q=is%3Aissue)). More information on our issue management policies can be queried from support@lextudio.com.
+    description: Please search to see if an issue already exists for the bug you encountered ([httpbridge/issues](https://github.com/lextudio/httpbridge/issues?q=is%3Aissue)). More information on our issue management policies can be queried from support@lextudio.com.
     options:
     - label: I have searched the existing issues
       required: true
@@ -53,9 +53,9 @@ body:
     required: false
 - type: input
   attributes:
-    label: HttpPlatformHandler Version
+    label: HTTP Bridge Module Version
     description: |
-      From Windows Control Panel, Programs and Features, find the installed version of HttpPlatformHandler.
+      From Windows Control Panel, Programs and Features, find the installed version of HTTP Bridge Module.
   validations:
     required: false
 - type: textarea

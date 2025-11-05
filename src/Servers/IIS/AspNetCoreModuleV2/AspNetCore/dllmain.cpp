@@ -13,7 +13,7 @@
 #include "EventLog.h"
 #include "RegistryKey.h"
 
-DECLARE_DEBUG_PRINT_OBJECT("httpplatformhandlerv2.dll");
+DECLARE_DEBUG_PRINT_OBJECT("httpbridge.dll");
 
 HANDLE              g_hEventLog = nullptr;
 BOOL                g_fRecycleProcessCalled = FALSE;

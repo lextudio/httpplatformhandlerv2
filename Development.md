@@ -11,15 +11,15 @@ The MSI files are `artifacts\installers\Release\*.msi`.
 
 ## Steps to Set Up Local Development Environment
 
-The steps to set up local debugging environment are (assume you are on Windows x64 with VS2022/IIS/HttpPlatformHandler v2 already installed),
+The steps to set up local debugging environment are (assume you are on Windows x64 with VS2022/IIS/HTTP Bridge Module for IIS already installed),
 
 1. Clone this repo.
-1. Switch to a release tag (like `httpplatformhandler_v9.0.2-rc.1`).
+1. Switch to a release tag (like `httpbridge_v9.0.2-rc.1`).
 1. Ensure VS2022 latest version is installed and execute restore.cmd.
 1. Modify `build.debug.bat` to use the VS2022 edition you are using (Community or another), and execute it to build the debug bits.
 1. Stop IIS via `iisreset /stop`.
-1. Copy the files from `artifacts\bin\AspNetCoreModuleShim\x64\Debug` to `%ProgramFiles%\IIS\HttpPlatformHandler Module\V2` and overwrite the release bits.
-1. Copy the files from `artifacts\bin\OutOfProcessRequestHandler\x64\Debug` to `%ProgramFiles%\IIS\HttpPlatformHandler Module\V2\xx.0.xxxxx` to replace the release bits.
+1. Copy the files from `artifacts\bin\AspNetCoreModuleShim\x64\Debug` to `%ProgramFiles%\IIS\HTTP Bridge Module\V2` and overwrite the release bits.
+1. Copy the files from `artifacts\bin\OutOfProcessRequestHandler\x64\Debug` to `%ProgramFiles%\IIS\HTTP Bridge Module\V2\xx.0.xxxxx` to replace the release bits.
 1. Start IIS via `iisreset /start`.
 1. Launch VS2022 and open `src\Servers\IIS\IISIntegration.slnf`.
 1. Launch your web app in IIS and attach VS2022 debugger to the proper `w3wp.exe` process.

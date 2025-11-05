@@ -3,7 +3,7 @@
 #pragma autorecover
 
 /*
- * HttpPlatformHandler module trace events layout
+ * HTTP Bridge Module trace events layout
  * Uncomment the following class to run mof2trace to generate header file
  * comment it back before checking it in
 [Dynamic,
@@ -14,7 +14,7 @@ class IIS_Trace:EventTrace
 {
     [Description ("Enable Flags") : amended,
         ValueDescriptions{
-            "HttpPlaformHandler module events" } : amended,
+            "HTTP Bridge Module events" } : amended,
         DefineValues{
             "ETW_IIS_HTTP_PLATFORM" },
         Values{

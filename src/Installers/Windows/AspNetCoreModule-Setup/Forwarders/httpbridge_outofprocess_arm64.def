@@ -1,0 +1,2 @@
+EXPORTS
+    CreateApplication = httpbridge_outofprocess_arm64.CreateApplication

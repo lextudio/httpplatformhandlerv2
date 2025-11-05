@@ -1,2 +1,0 @@
-EXPORTS
-    CreateApplication = httpplatformhandlerv2_outofprocess_arm64.CreateApplication

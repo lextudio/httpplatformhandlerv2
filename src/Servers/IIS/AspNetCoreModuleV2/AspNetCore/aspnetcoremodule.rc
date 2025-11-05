@@ -10,7 +10,7 @@
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
-#define FileDescription "IIS HttpPlatformHandler Module V2. Commit: " CommitHash
+#define FileDescription "IIS HTTP Bridge Module. Commit: " CommitHash
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -76,13 +76,13 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "CompanyName", "Microsoft"
+            VALUE "CompanyName", "LeXtudio"
             VALUE "FileDescription", FileDescription
             VALUE "FileVersion", FileVersionStr
-            VALUE "InternalName", "httpPlatformHandler"
-            VALUE "LegalCopyright", "Copyright (C) Microsoft Corporation"
-            VALUE "OriginalFilename", "httpplatformhandler.dll"
-            VALUE "ProductName", "Microsoft Web Platform Extensions"
+            VALUE "InternalName", "IIS HTTP Bridge Module"
+            VALUE "LegalCopyright", "Copyright (C) LeXtudio Inc."
+            VALUE "OriginalFilename", "httpbridge.dll"
+            VALUE "ProductName", "IIS HTTP Bridge Module Extensions"
             VALUE "ProductVersion", ProductVersionStr
         END
     END

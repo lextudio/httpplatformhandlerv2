@@ -20,8 +20,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <ANCMDepProviderKey Condition="'$(Platform)' == 'x86'">IISExpress_HttpPlatformHandler_V2,x86</ANCMDepProviderKey>
-    <ANCMDepProviderKey Condition="'$(Platform)' != 'x86'">IISExpress_HttpPlatformHandler_V2,x64</ANCMDepProviderKey>
+    <ANCMDepProviderKey Condition="'$(Platform)' == 'x86'">IISExpress_HttpBridge,x86</ANCMDepProviderKey>
+    <ANCMDepProviderKey Condition="'$(Platform)' != 'x86'">IISExpress_HttpBridge,x64</ANCMDepProviderKey>
     <DefineConstants>$(DefineConstants);ANCMDepProviderKey=$(ANCMDepProviderKey)</DefineConstants>
   </PropertyGroup>
 
@@ -64,7 +64,7 @@
 
   <PropertyGroup>
     <PackageFileName>$(OutputName)$(TargetExt)</PackageFileName>
-    <ProductNameShort>HttpPlatformHandler Module IIS Express V2</ProductNameShort>
+    <ProductNameShort>HTTP Bridge Module IIS Express</ProductNameShort>
   </PropertyGroup>
 
   <!-- <Target Name="CreateANCMIISExpressNugetPackage" DependsOnTargets="CopyToArtifactsDirectory" BeforeTargets="Build">

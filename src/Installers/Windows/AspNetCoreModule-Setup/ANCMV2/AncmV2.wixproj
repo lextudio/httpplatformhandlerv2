@@ -15,8 +15,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <ANCMDepProviderKey Condition="'$(Platform)' == 'x86'">IIS_HttpPlatformHandler_V2,x86</ANCMDepProviderKey>
-    <ANCMDepProviderKey Condition="'$(Platform)' != 'x86'">IIS_HttpPlatformHandler_V2,x64</ANCMDepProviderKey>
+    <ANCMDepProviderKey Condition="'$(Platform)' == 'x86'">IIS_HttpBridge,x86</ANCMDepProviderKey>
+    <ANCMDepProviderKey Condition="'$(Platform)' != 'x86'">IIS_HttpBRidge,x64</ANCMDepProviderKey>
     <DefineConstants>$(DefineConstants);ANCMDepProviderKey=$(ANCMDepProviderKey)</DefineConstants>
   </PropertyGroup>
 
@@ -49,7 +49,7 @@
 
   <PropertyGroup>
     <PackageFileName>$(OutputName)$(TargetExt)</PackageFileName>
-    <ProductNameShort>HttpPlatformHandler Module V2</ProductNameShort>
+    <ProductNameShort>HTTP Bridge Module</ProductNameShort>
   </PropertyGroup>
 
   <!-- <Target Name="CreateANCMNugetPackage" DependsOnTargets="CopyToArtifactsDirectory" BeforeTargets="Build">

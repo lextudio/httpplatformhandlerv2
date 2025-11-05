@@ -4,7 +4,7 @@
     <ProjectGuid>{EC82302F-D2F0-4727-99D1-EABC0DD9DC3B}</ProjectGuid>
     <RootNamespace>AspNetCoreModule</RootNamespace>
     <ProjectName>AspNetCore</ProjectName>
-    <TargetName>httpplatformhandlerv2</TargetName>
+    <TargetName>httpbridge</TargetName>
     <LinkIncremental>false</LinkIncremental>
     <OutDirName>AspNetCoreModuleShim</OutDirName>
   </PropertyGroup>
@@ -70,7 +70,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="httpplatformhandler.mof" />
+    <None Include="httpbridge.mof" />
     <None Include="Source.def" />
   </ItemGroup>
   <ItemGroup>
@@ -80,7 +80,7 @@
     <Content Include="httpplatform_schema.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="httpplatformhandler.mof">
+    <Content Include="httpbridge.mof">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -12,10 +12,10 @@
   <?define ANCMUpgradeCode = "77a51b95-fb6c-4d6b-95a1-33cd72f54890" ?>
 <?endif?>
 
-<?define ProductShortName="IIS Express HttpPlatformHandler Module V2" ?>
-<?define ProductNameShort="IISExpress_HTTP_PLAT" ?>
+<?define ProductShortName="IIS Express HTTP Bridge Module" ?>
+<?define ProductNameShort="IISExpress_HTTP_BRID" ?>
 <?define ProductVersionString = "V2"?>
-<?define ProductName="HttpPlatformHandler Module"?>
+<?define ProductName="HTTP Bridge Module"?>
 
 <?if $(PlatformValue)="Intel" ?>
   <?undef PlatformValue ?>
@@ -29,13 +29,13 @@
 
 <?if $(InstallerPlatform) = "x86" ?>
     <?define SchemaGuid = "ACBF369C-B646-4A9E-90E3-446DD0034374" ?>
-    <?define AspNetCoreV2ProgramFilesTargetPath = "$(ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(Configuration)\httpplatformhandlerv2.dll" ?>
-    <?define AspNetCoreV2HandlerProgramFilesTargetPath = "$(ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(Configuration)\httpplatformhandlerv2_outofprocess.dll" ?>
+    <?define AspNetCoreV2ProgramFilesTargetPath = "$(ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(Configuration)\httpbridge.dll" ?>
+    <?define AspNetCoreV2HandlerProgramFilesTargetPath = "$(ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(Configuration)\httpbridge_outofprocess.dll" ?>
 <?else?>
     <?define SchemaGuid = "51FBFCD7-C462-4226-A734-E6E4B2C2C664" ?>
     <?define SchemaGuid32 = "ACBF369C-B646-4A9E-90E3-446DD0034374" ?>
-    <?define AspNetCoreV2ProgramFilesTargetPath = "$(ArtifactsDir)\bin\AspNetCoreModuleShim\$(InstallerPlatform)\$(Configuration)\httpplatformhandlerv2.dll" ?>
-    <?define AspNetCoreV2HandlerProgramFilesTargetPath = "$(ArtifactsDir)\bin\OutOfProcessRequestHandler\$(InstallerPlatform)\$(Configuration)\httpplatformhandlerv2_outofprocess.dll" ?>
+    <?define AspNetCoreV2ProgramFilesTargetPath = "$(ArtifactsDir)\bin\AspNetCoreModuleShim\$(InstallerPlatform)\$(Configuration)\httpbridge.dll" ?>
+    <?define AspNetCoreV2HandlerProgramFilesTargetPath = "$(ArtifactsDir)\bin\OutOfProcessRequestHandler\$(InstallerPlatform)\$(Configuration)\httpbridge_outofprocess.dll" ?>
 <?endif?>
 
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:dep="http://wixtoolset.org/schemas/v4/wxs/dependency" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
@@ -137,9 +137,9 @@
             <Directory Id="VersionDir" Name="$(ProductVersionString)">
               <Component Id="AspNetCoreModule" Guid="08968573-05c1-4bf1-8879-7b818ac9525b" Bitness="$(Bitness)">
                   <?if $(InstallerPlatform) = "arm64" ?>
-                  <File Id="AspNetCoreModuleDll" Name="httpplatformhandlerv2.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleForwarders\httpplatformhandlerv2.dll" DiskId="1" Vital="yes" KeyPath="yes"/>
+                  <File Id="AspNetCoreModuleDll" Name="httpbridge.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleForwarders\httpbridge.dll" DiskId="1" Vital="yes" KeyPath="yes"/>
                   <?else?>
-                  <File Id="AspNetCoreModuleDll" Name="httpplatformhandlerv2.dll" Source="$(AspNetCoreV2ProgramFilesTargetPath)" DiskId="1" Vital="yes" KeyPath="yes"/>
+                  <File Id="AspNetCoreModuleDll" Name="httpbridge.dll" Source="$(AspNetCoreV2ProgramFilesTargetPath)" DiskId="1" Vital="yes" KeyPath="yes"/>
                   <?endif?>
                 <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(ProductShortName)">
                   <RegistryValue Name="EventMessageFile" Type="expandable" Value="[#AspNetCoreModuleDll]" />
@@ -149,31 +149,31 @@
               <Directory Id="HandlerVersionDir" Name="$(ANCMFolderVersion)">
                 <Component Id="AspNetCoreModuleHandler" Guid="CCCCD6DE-C70C-4B6F-87D5-B512A04F89D0" Bitness="$(Bitness)">
                       <?if $(InstallerPlatform) = "arm64" ?>
-                      <File Id="AspNetCoreModuleHandlerDll" Name="httpplatformhandlerv2_outofprocess.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleForwarders\httpplatformhandlerv2_outofprocess.dll" DiskId="1" Vital="yes" />
+                      <File Id="AspNetCoreModuleHandlerDll" Name="httpbridge_outofprocess.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleForwarders\httpbridge_outofprocess.dll" DiskId="1" Vital="yes" />
                       <?else?>
-                      <File Id="AspNetCoreModuleHandlerDll" Name="httpplatformhandlerv2_outofprocess.dll" Source="$(AspNetCoreV2HandlerProgramFilesTargetPath)" DiskId="1" Vital="yes">
+                      <File Id="AspNetCoreModuleHandlerDll" Name="httpbridge_outofprocess.dll" Source="$(AspNetCoreV2HandlerProgramFilesTargetPath)" DiskId="1" Vital="yes">
                       </File>
                       <?endif?>
                 </Component>
                 <?if $(InstallerPlatform) = "arm64" ?>
                   <Component Id="AspNetCoreModuleHandler.x64" Guid="34C8E145-BAC8-4116-BE50-C97B92132FFC" Bitness="$(Bitness)">
-                      <File Id="AspNetCoreModuleHandlerDll.x64" Name="httpplatformhandlerv2_outofprocess_x64.dll" Source="$(ArtifactsDir)\bin\OutOfProcessRequestHandler\x64\$(Configuration)\httpplatformhandlerv2_outofprocess.dll" DiskId="1" Vital="yes" />
+                      <File Id="AspNetCoreModuleHandlerDll.x64" Name="httpbridge_outofprocess_x64.dll" Source="$(ArtifactsDir)\bin\OutOfProcessRequestHandler\x64\$(Configuration)\httpbridge_outofprocess.dll" DiskId="1" Vital="yes" />
                   </Component>
                   <Component Id="AspNetCoreModuleHandler.arm64" Guid="D8DA4A6F-C226-4088-BDE6-EF4AD40F0AA1" Bitness="$(Bitness)">
-                    <File Id="AspNetCoreModuleHandlerDll.arm64" Name="httpplatformhandlerv2_outofprocess_arm64.dll" Source="$(AspNetCoreV2HandlerProgramFilesTargetPath)" DiskId="1" Vital="yes" />
+                    <File Id="AspNetCoreModuleHandlerDll.arm64" Name="httpbridge_outofprocess_arm64.dll" Source="$(AspNetCoreV2HandlerProgramFilesTargetPath)" DiskId="1" Vital="yes" />
                   </Component>
                 <?endif?>
               </Directory>
               <?if $(InstallerPlatform) = "arm64" ?>
               <Component Id="AspNetCoreModuleV2.x64" Guid="B081BBBD-60BF-4BED-82D4-92C90D653A5E" Bitness="$(Bitness)">
-                  <File Id="AspNetCoreModuleV2Dll.x64" Name="httpplatformhandlerv2_x64.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleShim\x64\$(Configuration)\httpplatformhandlerv2.dll" DiskId="1" Vital="yes" KeyPath="yes"/>
+                  <File Id="AspNetCoreModuleV2Dll.x64" Name="httpbridge_x64.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleShim\x64\$(Configuration)\httpbridge.dll" DiskId="1" Vital="yes" KeyPath="yes"/>
                   <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(ProductShortName)">
                       <RegistryValue Name="EventMessageFile" Type="expandable" Value="[#AspNetCoreModuleV2Dll.x64]" />
                       <RegistryValue Name="TypesSupported" Type="integer" Value="7" />
                   </RegistryKey>
               </Component>
               <Component Id="AspNetCoreModuleV2.arm64" Guid="EEE0482B-DDEF-402D-BEF4-7B821997AA4B" Bitness="$(Bitness)">
-                  <File Id="AspNetCoreModuleV2Dll.arm64" Name="httpplatformhandlerv2_arm64.dll" Source="$(AspNetCoreV2ProgramFilesTargetPath)" DiskId="1" Vital="yes" KeyPath="yes" />
+                  <File Id="AspNetCoreModuleV2Dll.arm64" Name="httpbridge_arm64.dll" Source="$(AspNetCoreV2ProgramFilesTargetPath)" DiskId="1" Vital="yes" KeyPath="yes" />
                   <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(ProductShortName)">
                       <RegistryValue Name="EventMessageFile" Type="expandable" Value="[#AspNetCoreModuleV2Dll.arm64]" />
                       <RegistryValue Name="TypesSupported" Type="integer" Value="7" />
@@ -198,7 +198,7 @@
                 <Directory Id="VersionDir32" Name="$(ProductVersionString)">
                   <!-- Originally created with same component GUID as IIS installer. Must remain the same so upgrade doesn't remove this file -->
                   <Component Id="AspNetCoreModule.wow" Guid="45ba5011-a619-4d06-8a8d-155b1f9732b3" Bitness="always32">
-                    <File Id="AspNetCoreModuleDll.wow" Name="httpplatformhandlerv2.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(Configuration)\httpplatformhandlerv2.dll" DiskId="1" Vital="yes">
+                    <File Id="AspNetCoreModuleDll.wow" Name="httpbridge.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(Configuration)\httpbridge.dll" DiskId="1" Vital="yes">
                     </File>
                     <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(ProductShortName)">
                       <RegistryValue Name="EventMessageFile" Type="expandable" Value="[#AspNetCoreModuleDll.wow]" />
@@ -207,7 +207,7 @@
                   </Component>
                   <Directory Id="HandlerVersionDir32" Name="$(ANCMFolderVersion)">
                     <Component Id="AspNetCoreModuleHandler.wow" Guid="0A8EDB50-7D85-4825-8010-D27EFAF061B6" Bitness="always32">
-                      <File Id="AspNetCoreModuleHandlerDll.wow" Name="httpplatformhandlerv2_outofprocess.dll" Source="$(ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(Configuration)\httpplatformhandlerv2_outofprocess.dll" DiskId="1" Vital="yes">
+                      <File Id="AspNetCoreModuleHandlerDll.wow" Name="httpbridge_outofprocess.dll" Source="$(ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(Configuration)\httpbridge_outofprocess.dll" DiskId="1" Vital="yes">
                       </File>
                     </Component>
                   </Directory>
@@ -271,7 +271,7 @@
         <CustomAction Id="CA_UNINSTALL_MODULE_PROPERTY" Property="CA_UNINSTALL_MODULE" Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; uninstall module $(AspNetCoreModuleName) /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG]&quot;" />
         <CustomAction Id="CA_UNINSTALL_MODULE" DllEntry="WixQuietExec" Execute="deferred" Return="ignore" Impersonate="no" BinaryRef="Wix4UtilCA_X86" />
 
-        <CustomAction Id="CA_ADD_MODULE_PROPERTY" Property="CA_ADD_MODULE" Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; install module /name:$(AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(ProductName)\$(ProductVersionString)\httpplatformhandlerv2.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG]&quot;" />
+        <CustomAction Id="CA_ADD_MODULE_PROPERTY" Property="CA_ADD_MODULE" Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; install module /name:$(AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(ProductName)\$(ProductVersionString)\httpbridge.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG]&quot;" />
         <CustomAction Id="CA_ADD_MODULE" DllEntry="WixQuietExec" Execute="deferred" Return="ignore" Impersonate="no" BinaryRef="Wix4UtilCA_X86" />
 
         <CustomAction Id="CA_ROLLBACK_MODULE_PROPERTY" Property="CA_ROLLBACK_MODULE" Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; uninstall module $(AspNetCoreModuleName) /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG]&quot;" />
@@ -293,7 +293,7 @@
         <CustomAction Id="CA_UNINSTALL_MODULE_TMP_PROPERTY" Property="CA_UNINSTALL_MODULE_TMP" Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; uninstall module $(AspNetCoreModuleName) /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG_TMP]&quot;" />
         <CustomAction Id="CA_UNINSTALL_MODULE_TMP" DllEntry="WixQuietExec" Execute="deferred" Return="ignore" Impersonate="no" BinaryRef="Wix4UtilCA_X86" />
 
-        <CustomAction Id="CA_ADD_MODULE_TMP_PROPERTY" Property="CA_ADD_MODULE_TMP" Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; install module /name:$(AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(ProductName)\$(ProductVersionString)\httpplatformhandlerv2.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG_TMP]&quot;" />
+        <CustomAction Id="CA_ADD_MODULE_TMP_PROPERTY" Property="CA_ADD_MODULE_TMP" Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; install module /name:$(AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(ProductName)\$(ProductVersionString)\httpbridge.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG_TMP]&quot;" />
         <CustomAction Id="CA_ADD_MODULE_TMP" DllEntry="WixQuietExec" Execute="deferred" Return="ignore" Impersonate="no" BinaryRef="Wix4UtilCA_X86" />
 
         <CustomAction Id="CA_ROLLBACK_MODULE_TMP_PROPERTY" Property="CA_ROLLBACK_MODULE_TMP" Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; uninstall module $(AspNetCoreModuleName) /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG_TMP]&quot;" />
@@ -340,7 +340,7 @@
             <CustomAction Id="CA_UNINSTALL_MODULE32_PROPERTY" Property="CA_UNINSTALL_MODULE32" Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; uninstall module $(AspNetCoreModuleName) /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG32]&quot;" />
             <CustomAction Id="CA_UNINSTALL_MODULE32" DllEntry="WixQuietExec" Execute="deferred" Return="ignore" Impersonate="no" BinaryRef="Wix4UtilCA_X86" />
 
-            <CustomAction Id="CA_ADD_MODULE32_PROPERTY" Property="CA_ADD_MODULE32" Value="&quot;[IISEXPRESS_INSTALL_PATH32]appcmd.exe&quot; install module /name:$(AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(ProductName)\$(ProductVersionString)\httpplatformhandlerv2.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG32]&quot;" />
+            <CustomAction Id="CA_ADD_MODULE32_PROPERTY" Property="CA_ADD_MODULE32" Value="&quot;[IISEXPRESS_INSTALL_PATH32]appcmd.exe&quot; install module /name:$(AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(ProductName)\$(ProductVersionString)\httpbridge.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG32]&quot;" />
             <CustomAction Id="CA_ADD_MODULE32" DllEntry="WixQuietExec" Execute="deferred" Return="ignore" Impersonate="no" BinaryRef="Wix4UtilCA_X86" />
 
             <CustomAction Id="CA_ROLLBACK_MODULE32_PROPERTY" Property="CA_ROLLBACK_MODULE32" Value="&quot;[IISEXPRESS_INSTALL_PATH32]appcmd.exe&quot; uninstall module $(AspNetCoreModuleName) /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG32]&quot;" />
@@ -362,7 +362,7 @@
             <CustomAction Id="CA_UNINSTALL_MODULE_TMP32_PROPERTY" Property="CA_UNINSTALL_MODULE_TMP32" Value="&quot;[IISEXPRESS_INSTALL_PATH]appcmd.exe&quot; uninstall module $(AspNetCoreModuleName) /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG_TMP32]&quot;" />
             <CustomAction Id="CA_UNINSTALL_MODULE_TMP32" DllEntry="WixQuietExec" Execute="deferred" Return="ignore" Impersonate="no" BinaryRef="Wix4UtilCA_X86" />
 
-            <CustomAction Id="CA_ADD_MODULE_TMP32_PROPERTY" Property="CA_ADD_MODULE_TMP32" Value="&quot;[IISEXPRESS_INSTALL_PATH32]appcmd.exe&quot; install module /name:$(AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(ProductName)\$(ProductVersionString)\httpplatformhandlerv2.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG_TMP32]&quot;" />
+            <CustomAction Id="CA_ADD_MODULE_TMP32_PROPERTY" Property="CA_ADD_MODULE_TMP32" Value="&quot;[IISEXPRESS_INSTALL_PATH32]appcmd.exe&quot; install module /name:$(AspNetCoreModuleName) /image:&quot;%IIS_BIN%\$(ProductName)\$(ProductVersionString)\httpbridge.dll&quot; /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG_TMP32]&quot;" />
             <CustomAction Id="CA_ADD_MODULE_TMP32" DllEntry="WixQuietExec" Execute="deferred" Return="ignore" Impersonate="no" BinaryRef="Wix4UtilCA_X86" />
 
             <CustomAction Id="CA_ROLLBACK_MODULE_TMP32_PROPERTY" Property="CA_ROLLBACK_MODULE_TMP32" Value="&quot;[IISEXPRESS_INSTALL_PATH32]appcmd.exe&quot; uninstall module $(AspNetCoreModuleName) /apphostconfig:&quot;[IISEXPRESS_APPHOST_CONFIG_TMP32]&quot;" />

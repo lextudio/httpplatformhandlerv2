@@ -9,8 +9,8 @@
 #define IDS_INVALID_PROPERTY        1000
 #define IDS_SERVER_ERROR            1001
 
-#define ASPNETCORE_EVENT_PROVIDER L"IIS HttpPlatformHandler Module V2"
-#define ASPNETCORE_IISEXPRESS_EVENT_PROVIDER L"IIS Express HttpPlatformHandler Module V2"
+#define ASPNETCORE_EVENT_PROVIDER L"IIS HTTP Bridge Module"
+#define ASPNETCORE_IISEXPRESS_EVENT_PROVIDER L"IIS Express HTTP Bridge Module"
 
 #define ASPNETCORE_EVENT_PROCESS_START_SUCCESS_MSG           L"Application '%s' started process '%d' successfully and process '%d' is listening on port '%d'."
 #define ASPNETCORE_EVENT_RAPID_FAIL_COUNT_EXCEEDED_MSG       L"Maximum rapid fail count per minute of '%d' exceeded."

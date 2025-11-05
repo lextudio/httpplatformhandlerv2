@@ -1,4 +1,4 @@
-LIBRARY httpplatformhandlerv2
+LIBRARY httpbridge
 
 EXPORTS
     RegisterModule

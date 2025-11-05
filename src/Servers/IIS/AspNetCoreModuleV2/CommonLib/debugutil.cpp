@@ -207,7 +207,7 @@ DebugInitialize(HMODULE hModule)
     InitializeSRWLock(&g_logFileLock);
 
     if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-            L"SOFTWARE\\Microsoft\\IIS Extensions\\IIS HttpPlatformHandler Module V2\\Parameters",
+            L"SOFTWARE\\LeXtudio\\IIS Extensions\\IIS HTTP Bridge\\Parameters",
             0,
             KEY_READ,
             &hKey) == NO_ERROR)

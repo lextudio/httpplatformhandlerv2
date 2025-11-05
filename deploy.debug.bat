@@ -1,10 +1,10 @@
 @echo off
-echo Copying ASP.NET Core Module debug build files to IIS HttpPlatformHandler Module directory...
+echo Copying ASP.NET Core Module debug build files to IIS HTTP Bridge Module directory...
 
-set SOURCE_DIR1=C:\Users\Administrator\source\repos\httpplatformhandlerv2\artifacts\bin\OutOfProcessRequestHandler\x64\Debug
-set SOURCE_DIR2=C:\Users\Administrator\source\repos\httpplatformhandlerv2\artifacts\bin\AspNetCoreModuleShim\x64\Debug
-set TARGET_DIR1=C:\Program Files\IIS\HttpPlatformHandler Module\V2\19.0.25152
-set TARGET_DIR2=C:\Program Files\IIS\HttpPlatformHandler Module\V2
+set SOURCE_DIR1=C:\Users\Administrator\source\repos\httpbridge\artifacts\bin\OutOfProcessRequestHandler\x64\Debug
+set SOURCE_DIR2=C:\Users\Administrator\source\repos\httpbridge\artifacts\bin\AspNetCoreModuleShim\x64\Debug
+set TARGET_DIR1=C:\Program Files\IIS\HTTP Bridge Module\V2\19.0.25152
+set TARGET_DIR2=C:\Program Files\IIS\HTTP Bridge Module\V2
 
 REM Check if source directories exist
 if not exist "%SOURCE_DIR1%" (

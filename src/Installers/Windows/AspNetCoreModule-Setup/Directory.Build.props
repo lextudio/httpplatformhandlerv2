@@ -35,7 +35,7 @@
     <DefineConstants>ArtifactsDir=$(ArtifactsDir);ANCMMsiVersion=$(ANCMMsiVersion);ANCMFolderVersion=$(ANCMFolderVersion);ANCMOutOfProcessNugetPackageHandlerVersion=$(ANCMOutOfProcessNugetPackageHandlerVersion);$(DefineConstants)</DefineConstants>
     <DefineConstants>
       AspNetCoreSchemaPath=$(_ServerIISBasePath)AspNetCoreModuleV2\AspNetCore\httpplatform_schema.xml;
-      AspNetCoreMofPath=$(_ServerIISBasePath)AspNetCoreModuleV2\AspNetCore\httpplatformhandler.mof;
+      AspNetCoreMofPath=$(_ServerIISBasePath)AspNetCoreModuleV2\AspNetCore\httpbridge.mof;
       $(DefineConstants)
     </DefineConstants>
   </PropertyGroup>

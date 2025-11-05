@@ -11,8 +11,8 @@
 <?else?>
   <?define ANCMUpgradeCode = "6E038984-D117-4944-ACEA-3A7FAA317B4F" ?>
 <?endif?>
-<?define ProductShortName="IIS HttpPlatformHandler Module V2" ?>
-<?define ProductNameShort="IIS_HTTP_PLATFORM_V2" ?>
+<?define ProductShortName="IIS HTTP Bridge Module" ?>
+<?define ProductNameShort="IIS_HTTP_Bridge" ?>
 <?define ProductVersionString = "V2"?>
 
 <?if $(PlatformValue)="Intel" ?>
@@ -21,11 +21,11 @@
 <?endif?>
 
 <?if $(InstallerPlatform) = "x86" ?>
-    <?define AspNetCoreV2ProgramFilesTargetPath = "$(ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(Configuration)\httpplatformhandlerv2.dll" ?>
-    <?define AspNetCoreV2HandlerProgramFilesTargetPath = "$(ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(Configuration)\httpplatformhandlerv2_outofprocess.dll" ?>
+    <?define AspNetCoreV2ProgramFilesTargetPath = "$(ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(Configuration)\httpbridge.dll" ?>
+    <?define AspNetCoreV2HandlerProgramFilesTargetPath = "$(ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(Configuration)\httpbridge_outofprocess.dll" ?>
 <?else?>
-    <?define AspNetCoreV2ProgramFilesTargetPath = "$(ArtifactsDir)\bin\AspNetCoreModuleShim\$(InstallerPlatform)\$(Configuration)\httpplatformhandlerv2.dll" ?>
-    <?define AspNetCoreV2HandlerProgramFilesTargetPath = "$(ArtifactsDir)\bin\OutOfProcessRequestHandler\$(InstallerPlatform)\$(Configuration)\httpplatformhandlerv2_outofprocess.dll" ?>
+    <?define AspNetCoreV2ProgramFilesTargetPath = "$(ArtifactsDir)\bin\AspNetCoreModuleShim\$(InstallerPlatform)\$(Configuration)\httpbridge.dll" ?>
+    <?define AspNetCoreV2HandlerProgramFilesTargetPath = "$(ArtifactsDir)\bin\OutOfProcessRequestHandler\$(InstallerPlatform)\$(Configuration)\httpbridge_outofprocess.dll" ?>
 <?endif?>
 
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:dep="http://wixtoolset.org/schemas/v4/wxs/dependency" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
@@ -191,15 +191,15 @@
            <!-- Platform specific core module -->
            <StandardDirectory Id="ProgramFiles6432Folder">
                <Directory Id="IISModuleDirectory" Name="IIS">
-                   <Directory Id="INSTALLLOCATION" ShortName="ANCM" Name="HttpPlatformHandler Module">
+                   <Directory Id="INSTALLLOCATION" ShortName="ANCM" Name="HTTP Bridge Module">
                        <Directory Id="VersionDir" Name="$(ProductVersionString)">
                            <Component Id="AspNetCoreModuleV2" Guid="FEAA07A2-B928-48B8-A82F-D145ACB27F50" Bitness="$(Bitness)">
                              <?if $(InstallerPlatform) = "arm64" ?>
-                             <File Id="AspNetCoreModuleV2Dll" Name="httpplatformhandlerv2.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleForwarders\httpplatformhandlerv2.dll" DiskId="1" Vital="yes" KeyPath="yes"/>
+                             <File Id="AspNetCoreModuleV2Dll" Name="httpbridge.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleForwarders\httpbridge.dll" DiskId="1" Vital="yes" KeyPath="yes"/>
                              <?else?>
-                             <File Id="AspNetCoreModuleV2Dll" Name="httpplatformhandlerv2.dll" Source="$(AspNetCoreV2ProgramFilesTargetPath)" DiskId="1" Vital="yes" KeyPath="yes"/>
+                             <File Id="AspNetCoreModuleV2Dll" Name="httpbridge.dll" Source="$(AspNetCoreV2ProgramFilesTargetPath)" DiskId="1" Vital="yes" KeyPath="yes"/>
                              <?endif?>
-                             <RemoveFile Id="AspNetCoreModuleV2Dll_Remove" Name="httpplatformhandlerv2.dll" On="install" />
+                             <RemoveFile Id="AspNetCoreModuleV2Dll_Remove" Name="httpbridge.dll" On="install" />
                              <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(ProductShortName)">
                                <RegistryValue Name="EventMessageFile" Type="expandable" Value="[#AspNetCoreModuleV2Dll]" />
                                <RegistryValue Name="TypesSupported" Type="integer" Value="7" />
@@ -208,36 +208,36 @@
                            <Directory Id="HandlerVersionDir" Name="$(ANCMFolderVersion)">
                              <Component Id="AspNetCoreModuleHandler" Guid="6004F81E-7C05-41C2-853B-5A568281D55A" Bitness="$(Bitness)">
                                <?if $(InstallerPlatform) = "arm64" ?>
-                               <File Id="AspNetCoreModuleHandlerDll" Name="httpplatformhandlerv2_outofprocess.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleForwarders\httpplatformhandlerv2_outofprocess.dll" DiskId="1" Vital="yes" />
+                               <File Id="AspNetCoreModuleHandlerDll" Name="httpbridge_outofprocess.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleForwarders\httpbridge_outofprocess.dll" DiskId="1" Vital="yes" />
                                <?else?>
-                               <File Id="AspNetCoreModuleHandlerDll" Name="httpplatformhandlerv2_outofprocess.dll" Source="$(AspNetCoreV2HandlerProgramFilesTargetPath)" DiskId="1" Vital="yes" />
+                               <File Id="AspNetCoreModuleHandlerDll" Name="httpbridge_outofprocess.dll" Source="$(AspNetCoreV2HandlerProgramFilesTargetPath)" DiskId="1" Vital="yes" />
                                <?endif?>
                              </Component>
                              <?if $(InstallerPlatform) = "arm64" ?>
                              <Component Id="AspNetCoreModuleHandler.x64" Guid="CFD75D0F-9C17-4602-A0A3-5F8DE913E323" Bitness="$(Bitness)">
-                                    <File Id="AspNetCoreModuleHandlerDll.x64" Name="httpplatformhandlerv2_outofprocess_x64.dll" Source="$(ArtifactsDir)\bin\OutOfProcessRequestHandler\x64\$(Configuration)\httpplatformhandlerv2_outofprocess.dll" DiskId="1" Vital="yes">
+                                    <File Id="AspNetCoreModuleHandlerDll.x64" Name="httpbridge_outofprocess_x64.dll" Source="$(ArtifactsDir)\bin\OutOfProcessRequestHandler\x64\$(Configuration)\httpbridge_outofprocess.dll" DiskId="1" Vital="yes">
                                     </File>
                              </Component>
                              <Component Id="AspNetCoreModuleHandler.arm64" Guid="DEFB6893-8FD6-4602-8EFA-15BCA20C5326" Bitness="$(Bitness)">
-                                    <File Id="AspNetCoreModuleHandlerDll.arm64" Name="httpplatformhandlerv2_outofprocess_arm64.dll" Source="$(AspNetCoreV2HandlerProgramFilesTargetPath)" DiskId="1" Vital="yes">
+                                    <File Id="AspNetCoreModuleHandlerDll.arm64" Name="httpbridge_outofprocess_arm64.dll" Source="$(AspNetCoreV2HandlerProgramFilesTargetPath)" DiskId="1" Vital="yes">
                                     </File>
                              </Component>
                              <?endif?>
                            </Directory>
                            <?if $(InstallerPlatform) = "arm64" ?>
                            <Component Id="AspNetCoreModuleV2.x64" Guid="d9b0b5c9-8bbe-46f2-97d5-ba23d1a1ffed" Bitness="$(Bitness)">
-                                <File Id="AspNetCoreModuleV2Dll.x64" Name="httpplatformhandlerv2_x64.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleShim\x64\$(Configuration)\httpplatformhandlerv2.dll" DiskId="1" Vital="yes" KeyPath="yes">
+                                <File Id="AspNetCoreModuleV2Dll.x64" Name="httpbridge_x64.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleShim\x64\$(Configuration)\httpbridge.dll" DiskId="1" Vital="yes" KeyPath="yes">
                                 </File>
-                               <RemoveFile Id="AspNetCoreModuleV2Dll_Remove.x64" Name="httpplatformhandlerv2_x64.dll" On="install" />
+                               <RemoveFile Id="AspNetCoreModuleV2Dll_Remove.x64" Name="httpbridge_x64.dll" On="install" />
                                <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(ProductShortName)">
                                    <RegistryValue Name="EventMessageFile" Type="expandable" Value="[#AspNetCoreModuleV2Dll.x64]" />
                                    <RegistryValue Name="TypesSupported" Type="integer" Value="7" />
                                </RegistryKey>
                            </Component>
                            <Component Id="AspNetCoreModuleV2.arm64" Guid="ab249ab5-9203-4fd5-87b6-8acc3e1a0702" Bitness="$(Bitness)">
-                                <File Id="AspNetCoreModuleV2Dll.arm64" Name="httpplatformhandlerv2_arm64.dll" Source="$(AspNetCoreV2ProgramFilesTargetPath)" DiskId="1" Vital="yes" KeyPath="yes">
+                                <File Id="AspNetCoreModuleV2Dll.arm64" Name="httpbridge_arm64.dll" Source="$(AspNetCoreV2ProgramFilesTargetPath)" DiskId="1" Vital="yes" KeyPath="yes">
                                 </File>
-                               <RemoveFile Id="AspNetCoreModuleV2Dll_Remove.arm64" Name="httpplatformhandlerv2_arm64.dll" On="install" />
+                               <RemoveFile Id="AspNetCoreModuleV2Dll_Remove.arm64" Name="httpbridge_arm64.dll" On="install" />
                                <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(ProductShortName)">
                                    <RegistryValue Name="EventMessageFile" Type="expandable" Value="[#AspNetCoreModuleV2Dll.arm64]" />
                                    <RegistryValue Name="TypesSupported" Type="integer" Value="7" />
@@ -262,12 +262,12 @@
 
             <StandardDirectory Id="ProgramFilesFolder">
                  <Directory Id="IISModuleDirectory32" Name="IIS">
-                    <Directory Id="INSTALLLOCATION32" ShortName="ANCM" Name="HttpPlatformHandler Module">
+                    <Directory Id="INSTALLLOCATION32" ShortName="ANCM" Name="HTTP Bridge Module">
                         <Directory Id="VersionDir32" Name="$(ProductVersionString)" SourceName="WowOnly">
                             <Component Id="AspNetCoreModuleV2.wow" Guid="416CC3BE-C258-4D82-9DC6-EFCEA07267B4" Bitness="always32">
-                                <File Id="AspNetCoreModuleV2Dll.wow" Name="httpplatformhandlerv2.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(Configuration)\httpplatformhandlerv2.dll" DiskId="1" Vital="yes">
+                                <File Id="AspNetCoreModuleV2Dll.wow" Name="httpbridge.dll" Source="$(ArtifactsDir)\bin\AspNetCoreModuleShim\Win32\$(Configuration)\httpbridge.dll" DiskId="1" Vital="yes">
                                 </File>
-                                <RemoveFile Id="AspNetCoreModuleV2Dll.wow_Remove" Name="httpplatformhandlerv2.dll" On="install" />
+                                <RemoveFile Id="AspNetCoreModuleV2Dll.wow_Remove" Name="httpbridge.dll" On="install" />
                                 <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\$(ProductShortName)">
                                     <RegistryValue Name="EventMessageFile" Type="expandable" Value="[#AspNetCoreModuleV2Dll.wow]" />
                                     <RegistryValue Name="TypesSupported" Type="integer" Value="7" />
@@ -275,7 +275,7 @@
                             </Component>
                             <Directory Id="HandlerVersionDir32" Name="$(ANCMFolderVersion)" SourceName="WowOnly">
                                 <Component Id="AspNetCoreModuleHandler.wow" Guid="42C7C412-6DD9-4FA5-A5C1-E96CC48078C6" Bitness="always32">
-                                    <File Id="AspNetCoreModuleHandlerDll.wow" Name="httpplatformhandlerv2_outofprocess.dll" Source="$(ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(Configuration)\httpplatformhandlerv2_outofprocess.dll" DiskId="1" Vital="yes">
+                                    <File Id="AspNetCoreModuleHandlerDll.wow" Name="httpbridge_outofprocess.dll" Source="$(ArtifactsDir)\bin\OutOfProcessRequestHandler\Win32\$(Configuration)\httpbridge_outofprocess.dll" DiskId="1" Vital="yes">
                                     </File>
                                 </Component>
                             </Directory>
