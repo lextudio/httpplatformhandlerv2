@@ -4,7 +4,7 @@
 #include <VersionHelpers.h>
 #include "exceptions.h"
 
-DECLARE_DEBUG_PRINT_OBJECT("aspnetcorev2_outofprocess.dll");
+DECLARE_DEBUG_PRINT_OBJECT("httpplatformhandlerv2_outofprocess.dll");
 
 BOOL                g_fWebSocketStaticInitialize = FALSE;
 BOOL                g_fEnableReferenceCountTracing = FALSE;
@@ -53,7 +53,7 @@ InitializeGlobalConfiguration(
         }
 
         if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-            L"SOFTWARE\\Microsoft\\IIS Extensions\\IIS AspNetCore Module V2\\Parameters",
+            L"SOFTWARE\\Microsoft\\IIS Extensions\\IIS HttpPlatformHandler Module V2\\Parameters",
             0,
             KEY_READ,
             &hKey) == NO_ERROR)
@@ -136,7 +136,7 @@ EnsureOutOfProcessInitializtion(IHttpApplication *pHttpApplication)
 
         g_hWinHttpModule = GetModuleHandle(TEXT("winhttp.dll"));
 
-        g_hAspNetCoreModule = GetModuleHandle(TEXT("aspnetcorev2.dll"));
+        g_hAspNetCoreModule = GetModuleHandle(TEXT("httpplatformhandlerv2.dll"));
 
         hr = WINHTTP_HELPER::StaticInitialize();
         if (FAILED_LOG(hr))

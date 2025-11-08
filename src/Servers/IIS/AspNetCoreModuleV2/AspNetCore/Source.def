@@ -1,4 +1,4 @@
-LIBRARY aspnetcorev2
+LIBRARY httpplatformhandlerv2
 
 EXPORTS
     RegisterModule

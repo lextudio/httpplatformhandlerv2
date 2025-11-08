@@ -5,7 +5,7 @@
     <IsShipping>true</IsShipping>
     <ProjectGuid>17c76489-4c09-4e14-b81c-7a86cd937144</ProjectGuid>
     <OutputType>Package</OutputType>
-    <OutputName>ancm_iis_express_$(Platform)_en_v2_$(_ProductVersionForInstallers)</OutputName>
+    <OutputName>httpbridge_iis_express_$(Platform)_en_$(_ProductVersionForInstallers)</OutputName>
     <SuppressIces>ICE03</SuppressIces>
     <DisableGuidGeneration>true</DisableGuidGeneration>
     <SchemaVersion>2.0</SchemaVersion>
@@ -64,10 +64,10 @@
 
   <PropertyGroup>
     <PackageFileName>$(OutputName)$(TargetExt)</PackageFileName>
-    <ProductNameShort>ASP.NET Core Module IIS Express V2</ProductNameShort>
+    <ProductNameShort>HttpPlatformHandler Module IIS Express V2</ProductNameShort>
   </PropertyGroup>
 
-  <Target Name="CreateANCMIISExpressNugetPackage" DependsOnTargets="CopyToArtifactsDirectory" BeforeTargets="Build">
+  <!-- <Target Name="CreateANCMIISExpressNugetPackage" DependsOnTargets="CopyToArtifactsDirectory" BeforeTargets="Build">
     <PropertyGroup>
       <MsiFullPath>$(InstallersOutputPath)$(PackageFileName)</MsiFullPath>
     </PropertyGroup>
@@ -85,7 +85,7 @@
                       '$(PackageIcon)' ^
                       '$(PackageIconFullPath)' ^
                       '$(PackageLicenseExpression)' " />
-  </Target>
+  </Target> -->
 
   <Target Name="BeforeBuild" Condition="'$(Platform)' == 'arm64'" >
     <MSBuild Projects="..\Forwarders\build.proj" />

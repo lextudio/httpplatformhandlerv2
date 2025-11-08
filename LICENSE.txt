@@ -1,6 +1,7 @@
 The MIT License (MIT)
 
 Copyright (c) .NET Foundation and Contributors
+Copyright (c) LeXtudio Inc.
 
 All rights reserved.
 

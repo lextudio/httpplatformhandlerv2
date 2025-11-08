@@ -1,0 +1,2 @@
+EXPORTS
+    RegisterModule = httpplatformhandlerv2_x64.RegisterModule

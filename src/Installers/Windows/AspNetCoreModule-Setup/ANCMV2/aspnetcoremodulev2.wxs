@@ -11,8 +11,8 @@
 <?else?>
   <?define ANCMUpgradeCode = "d7168f76-9dd0-407d-bf22-0b450139e6a7" ?>
 <?endif?>
-<?define ProductShortName="IIS AspNetCore Module V2" ?>
-<?define ProductNameShort="IIS_ANCM_V2" ?>
+<?define ProductShortName="IIS HttpPlatformHandler Module V2" ?>
+<?define ProductNameShort="IIS_HTTP_PLATFORM_V2" ?>
 <?define ProductVersionString = "V2"?>
 
 <?if $(PlatformValue)="Intel" ?>

@@ -1,0 +1,2 @@
+EXPORTS
+    CreateApplication = httpplatformhandlerv2_outofprocess_x64.CreateApplication

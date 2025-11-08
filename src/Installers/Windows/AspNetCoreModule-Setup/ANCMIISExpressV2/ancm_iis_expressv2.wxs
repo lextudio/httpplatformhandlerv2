@@ -12,20 +12,20 @@
   <?define ANCMUpgradeCode = "de400ae0-3cd7-4a35-a234-b5a41b90893c" ?>
 <?endif?>
 
-<?define ProductShortName="IIS Express AspNetCore Module V2" ?>
-<?define ProductNameShort="IISExpress_ANCM_V2" ?>
+<?define ProductShortName="IIS Express HttpPlatformHandler Module V2" ?>
+<?define ProductNameShort="IISExpress_HTTP_PLAT" ?>
 <?define ProductVersionString = "V2"?>
-<?define ProductName="Asp.Net Core Module"?>
+<?define ProductName="HttpPlatformHandler Module"?>
 
 <?if $(PlatformValue)="Intel" ?>
   <?undef PlatformValue ?>
   <?define PlatformValue = "x86" ?>
 <?endif?>
 
-<?define AspNetCoreSectionName = "aspNetCore" ?>
-<?define AspNetCoreTraceProviderName = "ANCM" ?>
+<?define AspNetCoreSectionName = "httpPlatform" ?>
+<?define AspNetCoreTraceProviderName = "HTTP_PLATFORM" ?>
 <?define AspNetCoreTraceProviderValue = "65536" ?>
-<?define AspNetCoreModuleName = "AspNetCoreModuleV2" ?>
+<?define AspNetCoreModuleName = "httpPlatformHandler" ?>
 
 <?if $(InstallerPlatform) = "x86" ?>
     <?define SchemaGuid = "e629b31a-3d56-4b5c-959c-586fc1c55599" ?>

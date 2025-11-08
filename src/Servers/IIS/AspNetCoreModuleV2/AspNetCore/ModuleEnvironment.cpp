@@ -38,21 +38,21 @@ static std::wstring ToVirtualPath(const std::wstring& configurationPath) {
 }
 
 void SetApplicationEnvironmentVariables(_In_ IHttpServer &server, _In_ IHttpContext &pHttpContext) {
-    SetEnvironmentVariable(L"ASPNETCORE_IIS_VERSION", GetIISVersion().c_str());
+    SetEnvironmentVariable(L"HTTP_PLATFORM_IIS_VERSION", GetIISVersion().c_str());
 
-    SetEnvironmentVariable(L"ASPNETCORE_IIS_APP_POOL_ID", server.GetAppPoolName());
+    SetEnvironmentVariable(L"HTTP_PLATFORM_IIS_APP_POOL_ID", server.GetAppPoolName());
 
     IHttpServer2* server2;
     if (SUCCEEDED(HttpGetExtendedInterface(&server, &server, &server2))) {
-        SetEnvironmentVariable(L"ASPNETCORE_IIS_APP_POOL_CONFIG_FILE", server2->GetAppPoolConfigFile());
+        SetEnvironmentVariable(L"HTTP_PLATFORM_IIS_APP_POOL_CONFIG_FILE", server2->GetAppPoolConfigFile());
     }
 
     IHttpSite* site = pHttpContext.GetSite();
-    SetEnvironmentVariable(L"ASPNETCORE_IIS_SITE_NAME", site->GetSiteName());
-    SetEnvironmentVariable(L"ASPNETCORE_IIS_SITE_ID", std::to_wstring(site->GetSiteId()).c_str());
+    SetEnvironmentVariable(L"HTTP_PLATFORM_IIS_SITE_NAME", site->GetSiteName());
+    SetEnvironmentVariable(L"HTTP_PLATFORM_IIS_SITE_ID", std::to_wstring(site->GetSiteId()).c_str());
 
     IHttpApplication* app = pHttpContext.GetApplication();
-    SetEnvironmentVariable(L"ASPNETCORE_IIS_APP_CONFIG_PATH", app->GetAppConfigPath());
-    SetEnvironmentVariable(L"ASPNETCORE_IIS_APPLICATION_ID", app->GetApplicationId());
-    SetEnvironmentVariable(L"ASPNETCORE_IIS_APPLICATION_VIRTUAL_PATH", ToVirtualPath(app->GetAppConfigPath()).c_str());
+    SetEnvironmentVariable(L"HTTP_PLATFORM_IIS_APP_CONFIG_PATH", app->GetAppConfigPath());
+    SetEnvironmentVariable(L"HTTP_PLATFORM_IIS_APPLICATION_ID", app->GetApplicationId());
+    SetEnvironmentVariable(L"HTTP_PLATFORM_IIS_APPLICATION_VIRTUAL_PATH", ToVirtualPath(app->GetAppConfigPath()).c_str());
 }

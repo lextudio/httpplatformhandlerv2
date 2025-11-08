@@ -1,4 +1,5 @@
 // Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) LeXtudio Inc. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 #include "applicationinfo.h"
@@ -94,7 +95,7 @@ APPLICATION_INFO::CreateApplication(IHttpContext& pHttpContext)
             m_pApplication = make_application<ServerErrorApplication>(
                 pHttpApplication,
                 E_FAIL,
-                options.QueryDisableStartupPage() /* disableStartupPage */,
+                FALSE,//options.QueryDisableStartupPage() /* disableStartupPage */,
                 "" /* responseContent */,
                 503i16 /* statusCode */,
                 0i16 /* subStatusCode */,
@@ -130,7 +131,7 @@ APPLICATION_INFO::CreateApplication(IHttpContext& pHttpContext)
             m_pApplication = make_application<ServerErrorApplication>(
                 pHttpApplication,
                 hr,
-                options.QueryDisableStartupPage(),
+                FALSE, // options.QueryDisableStartupPage(),
                 responseContent,
                 errorContext.statusCode,
                 errorContext.subStatusCode,
@@ -169,7 +170,7 @@ APPLICATION_INFO::CreateApplication(IHttpContext& pHttpContext)
 HRESULT
 APPLICATION_INFO::TryCreateApplication(IHttpContext& pHttpContext, const ShimOptions& options, ErrorContext& error)
 {
-    const auto startupEvent = Environment::GetEnvironmentVariableValue(L"ASPNETCORE_STARTUP_SUSPEND_EVENT");
+    /*const auto startupEvent = Environment::GetEnvironmentVariableValue(L"ASPNETCORE_STARTUP_SUSPEND_EVENT");
     if (startupEvent.has_value())
     {
         LOG_INFOF(L"Startup suspend event %ls", startupEvent.value().c_str());
@@ -191,9 +192,9 @@ APPLICATION_INFO::TryCreateApplication(IHttpContext& pHttpContext, const ShimOpt
             }
             LOG_LAST_ERROR_IF(WaitForSingleObject(eventHandle, INFINITE) != WAIT_OBJECT_0);
         }
-    }
+    }*/
 
-    auto shadowCopyPath = HandleShadowCopy(options, pHttpContext);
+    auto shadowCopyPath = HandleShadowCopy();//options, pHttpContext);
 
     RETURN_IF_FAILED(m_handlerResolver.GetApplicationFactory(*pHttpContext.GetApplication(), shadowCopyPath, m_pApplicationFactory, options, error));
     LOG_INFO(L"Creating handler application");
@@ -275,10 +276,11 @@ APPLICATION_INFO::ShutDownApplication(const bool fServerInitiated)
  * we will start a thread that deletes all other folders in that directory.
  */
 std::filesystem::path
-APPLICATION_INFO::HandleShadowCopy(const ShimOptions& options, IHttpContext& pHttpContext)
+APPLICATION_INFO::HandleShadowCopy()//const ShimOptions& options, IHttpContext& pHttpContext)
 {
     std::filesystem::path shadowCopyPath;
 
+    /*
     // Only support shadow copying for IIS.
     if (options.QueryShadowCopyEnabled() && !m_pServer.IsCommandLineLaunch())
     {
@@ -343,6 +345,7 @@ APPLICATION_INFO::HandleShadowCopy(const ShimOptions& options, IHttpContext& pHt
             return std::wstring();
         }
     }
+    //*/
 
     return shadowCopyPath;
 }

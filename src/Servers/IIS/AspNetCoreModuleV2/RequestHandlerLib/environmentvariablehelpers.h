@@ -33,19 +33,19 @@ public:
         _In_ BOOL                           fWindowsAuthEnabled,
         _In_ BOOL                           fBasicAuthEnabled,
         _In_ BOOL                           fAnonymousAuthEnabled,
-        _In_ BOOL                           fAddHostingStartup,
-        _In_ PCWSTR                         pApplicationPhysicalPath,
-        _In_ PCWSTR                         pHttpsPort
+        //_In_ BOOL                           fAddHostingStartup,
+        _In_ PCWSTR                         pApplicationPhysicalPath//,
+        //_In_ PCWSTR                         pHttpsPort
     )
     {
         std::map<std::wstring, std::wstring, ignore_case_comparer> environmentVariables = pInEnvironmentVarTable;
 
         environmentVariables.insert_or_assign(ASPNETCORE_IIS_PHYSICAL_PATH_ENV_STR, pApplicationPhysicalPath);
-        if (pHttpsPort)
+/*      if (pHttpsPort)
         {
             environmentVariables.try_emplace(ASPNETCORE_ANCM_HTTPS_PORT_ENV_STR, pHttpsPort);
         }
-
+*/
         std::wstring strIisAuthEnvValue;
         if (fWindowsAuthEnabled)
         {
@@ -65,7 +65,7 @@ public:
         }
 
         environmentVariables.insert_or_assign(ASPNETCORE_IIS_AUTH_ENV_STR, strIisAuthEnvValue);
-
+/*
         if (fAddHostingStartup && environmentVariables.count(HOSTING_STARTUP_ASSEMBLIES_ENV_STR) == 0)
         {
             auto hostingStartupValues = Environment::GetEnvironmentVariableValue(HOSTING_STARTUP_ASSEMBLIES_ENV_STR).value_or(L"");
@@ -77,7 +77,7 @@ public:
 
             environmentVariables.insert_or_assign(HOSTING_STARTUP_ASSEMBLIES_ENV_STR, hostingStartupValues);
         }
-
+*/
         auto preferEnvironmentVariablesSetting = Environment::GetEnvironmentVariableValue(ANCM_PREFER_ENVIRONMENT_VARIABLES_ENV_STR).value_or(L"false");
         auto preferEnvironmentVariables = equals_ignore_case(L"1", preferEnvironmentVariablesSetting) || equals_ignore_case(L"true", preferEnvironmentVariablesSetting);
 
