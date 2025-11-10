@@ -12,7 +12,7 @@
     <TempPlatform Condition="'$(Platform)' == 'x64'">x64</TempPlatform>
     <TempPlatform Condition="'$(Platform)' == 'x86'">Win32</TempPlatform>
     <TempPlatform Condition="'$(Platform)' == 'arm64'">ARM64</TempPlatform>
-    <ToolsetInstallerNuspecFile>$(MSBuildProjectDirectory)\$(MSBuildProjectName).nuspec</ToolsetInstallerNuspecFile>
+    <!-- <ToolsetInstallerNuspecFile>$(MSBuildProjectDirectory)\$(MSBuildProjectName).nuspec</ToolsetInstallerNuspecFile> -->
     <!-- We import D.B.T ourselves in this file -->
     <ImportDirectoryBuildTargets>false</ImportDirectoryBuildTargets>
     <!-- False positive in ancm_iis_expressv2.wxs -->
@@ -20,8 +20,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <ANCMDepProviderKey Condition="'$(Platform)' == 'x86'">IISExpress_AspNetCore_Module_V2,x86</ANCMDepProviderKey>
-    <ANCMDepProviderKey Condition="'$(Platform)' != 'x86'">IISExpress_AspNetCore_Module_V2,x64</ANCMDepProviderKey>
+    <ANCMDepProviderKey Condition="'$(Platform)' == 'x86'">IISExpress_HttpPlatformHandler_V2,x86</ANCMDepProviderKey>
+    <ANCMDepProviderKey Condition="'$(Platform)' != 'x86'">IISExpress_HttpPlatformHandler_V2,x64</ANCMDepProviderKey>
     <DefineConstants>$(DefineConstants);ANCMDepProviderKey=$(ANCMDepProviderKey)</DefineConstants>
   </PropertyGroup>
 

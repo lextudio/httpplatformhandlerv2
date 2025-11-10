@@ -9,14 +9,14 @@
     <GenerateRandomNamespaceGuid>true</GenerateRandomNamespaceGuid>
     <SchemaVersion>2.0</SchemaVersion>
     <DisableGuidGeneration>true</DisableGuidGeneration>
-    <ToolsetInstallerNuspecFile>$(MSBuildProjectDirectory)\$(MSBuildProjectName).nuspec</ToolsetInstallerNuspecFile>
+    <!-- <ToolsetInstallerNuspecFile>$(MSBuildProjectDirectory)\$(MSBuildProjectName).nuspec</ToolsetInstallerNuspecFile> -->
     <!-- We import D.B.T ourselves in this file -->
     <ImportDirectoryBuildTargets>false</ImportDirectoryBuildTargets>
   </PropertyGroup>
 
   <PropertyGroup>
-    <ANCMDepProviderKey Condition="'$(Platform)' == 'x86'">IIS_AspNetCore_Module_V2,x86</ANCMDepProviderKey>
-    <ANCMDepProviderKey Condition="'$(Platform)' != 'x86'">IIS_AspNetCore_Module_V2,x64</ANCMDepProviderKey>
+    <ANCMDepProviderKey Condition="'$(Platform)' == 'x86'">IIS_HttpPlatformHandler_V2,x86</ANCMDepProviderKey>
+    <ANCMDepProviderKey Condition="'$(Platform)' != 'x86'">IIS_HttpPlatformHandler_V2,x64</ANCMDepProviderKey>
     <DefineConstants>$(DefineConstants);ANCMDepProviderKey=$(ANCMDepProviderKey)</DefineConstants>
   </PropertyGroup>
 
