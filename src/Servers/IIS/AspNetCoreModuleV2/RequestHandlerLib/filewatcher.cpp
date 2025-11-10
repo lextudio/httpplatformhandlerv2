@@ -276,9 +276,14 @@ HRESULT
         DWORD fileAttr = GetFileAttributesW(_strFullName.QueryStr());
         if (fileAttr != INVALID_FILE_ATTRIBUTES && !(fileAttr & FILE_ATTRIBUTE_DIRECTORY))
         {
-            fAppOfflineChanged = TRUE;
-            auto app = _pApplication.get();
-            app->m_detectedAppOffline = true;
+            fFileChanged = TRUE;
+
+            // Mark as app_offline detected if this is app_offline.htm
+            if (fIsAppOfflineFile)
+            {
+                auto app = _pApplication.get();
+                app->m_detectedAppOffline = true;
+            }
         }
         else
         {

@@ -500,16 +500,16 @@ Finished:
         pBasicAuthenticationElement = nullptr;
     }
 
-    if (pRecycleOnFileChangeFile != NULL)
+    if (pRecycleOnFileChangeFile != nullptr)
     {
         pRecycleOnFileChangeFile->Release();
-        pRecycleOnFileChangeFile = NULL;
+        pRecycleOnFileChangeFile = nullptr;
     }
 
-    if (pRecycleOnFileChangeFileCollection != NULL)
+    if (pRecycleOnFileChangeFileCollection != nullptr)
     {
         pRecycleOnFileChangeFileCollection->Release();
-        pRecycleOnFileChangeFileCollection = NULL;
+        pRecycleOnFileChangeFileCollection = nullptr;
     }
 
     return hr;
