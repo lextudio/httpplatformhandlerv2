@@ -3,17 +3,17 @@
   <String Id="Language" Value="1033"/>
 
   <!-- Strings for AspNetCore Module -->
-  <String Id="AspNetCoreModuleProductName" Value="Moduł platformy Microsoft ASP.NET Core"/>
-  <String Id="AspNetCoreModuleProductNameV2" Value="Moduł w wersji 2 platformy Microsoft ASP.NET Core"/>
-  <String Id="AspNetCoreModuleProductTitle" Value="Środowisko uruchomieniowe programu IIS na platformie ASP.NET Core"/>
-  <String Id="AspNetCoreModuleProductDescription" Value="Dodaje obsługę aplikacji platformy ASP.NET Core do programu IIS."/>
-  <String Id="AspNetCoreIISExpressModuleProductName" Value="Moduł platformy Microsoft ASP.NET Core dla programu IIS Express"/>
-  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="Moduł w wersji 2 platformy Microsoft ASP.NET Core dla programu IIS Express"/>
+  <String Id="AspNetCoreModuleProductName" Value="Moduł platformy LeXtudio HTTP Bridge"/>
+  <String Id="AspNetCoreModuleProductNameV2" Value="Moduł w wersji 2 platformy LeXtudio HTTP Bridge"/>
+  <String Id="AspNetCoreModuleProductTitle" Value="Środowisko uruchomieniowe programu IIS na platformie LeXtudio HTTP Bridge"/>
+  <String Id="AspNetCoreModuleProductDescription" Value="Dodaje obsługę aplikacji platformy HTTP do programu IIS."/>
+  <String Id="AspNetCoreIISExpressModuleProductName" Value="Moduł platformy LeXtudio HTTP Bridge dla programu IIS Express"/>
+  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="Moduł w wersji 2 platformy LeXtudio HTTP Bridge dla programu IIS Express"/>
   <String Id="AspNetCoreModuleIISExpressPrereq" Value="Program IIS Express w wersji 8.0 lub nowszej nie jest zainstalowany."/>
 
   <!--Custom errors for OOB Projects -->
 
-  <String Id="Manufacturer" Overridable="yes" Value="Microsoft Corporation"/>
+  <String Id="Manufacturer" Overridable="yes" Value="LeXtudio Inc."/>
   <String Id="ConflictingProduct" Overridable="yes" Value="Na tym komputerze znajduje się niezgodny produkt [CONFLICTING_PRODUCT_NAME]. Nie można kontynuować instalacji produktu [ProductName]. Aby zainstalować ten produkt, użyj przycisku Dodaj/Usuń programy w obszarze Panel sterowania, aby usunąć [CONFLICTING_PRODUCT_NAME]."/>
   <String Id="AdminRequired" Overridable="yes" Value="Do zainstalowania produktu [ProductName] jest wymagane uprawnienie administratora."/>
   <String Id="IIS7Only" Overridable="yes" Value="Do korzystania z produktu [ProductName] jest wymagany program IIS w wersji 7.0."/>

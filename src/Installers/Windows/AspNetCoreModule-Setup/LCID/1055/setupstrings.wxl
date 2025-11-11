@@ -3,17 +3,17 @@
   <String Id="Language" Value="1033"/>
 
   <!-- Strings for AspNetCore Module -->
-  <String Id="AspNetCoreModuleProductName" Value="Microsoft ASP.NET Core Modülü"/>
-  <String Id="AspNetCoreModuleProductNameV2" Value="Microsoft ASP.NET Core Modülü V2"/>
-  <String Id="AspNetCoreModuleProductTitle" Value="ASP.NET Core IIS Çalışma Zamanı"/>
-  <String Id="AspNetCoreModuleProductDescription" Value="IIS'ye asp.net core uygulaması desteği ekler."/>
-  <String Id="AspNetCoreIISExpressModuleProductName" Value="IIS Express için Microsoft ASP.NET Core Modülü"/>
-  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="IIS Express için Microsoft ASP.NET Core Modülü V2"/>
+  <String Id="AspNetCoreModuleProductName" Value="LeXtudio HTTP Bridge Modülü"/>
+  <String Id="AspNetCoreModuleProductNameV2" Value="LeXtudio HTTP Bridge Modülü V2"/>
+  <String Id="AspNetCoreModuleProductTitle" Value="LeXtudio HTTP Bridge IIS Çalışma Zamanı"/>
+  <String Id="AspNetCoreModuleProductDescription" Value="IIS'ye HTTP uygulaması desteği ekler."/>
+  <String Id="AspNetCoreIISExpressModuleProductName" Value="IIS Express için LeXtudio HTTP Bridge Modülü"/>
+  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="IIS Express için LeXtudio HTTP Bridge Modülü V2"/>
   <String Id="AspNetCoreModuleIISExpressPrereq" Value="IIS Express 8.0 veya üzeri yüklü değil."/>
 
   <!--Custom errors for OOB Projects -->
 
-  <String Id="Manufacturer" Overridable="yes" Value="Microsoft Corporation"/>
+  <String Id="Manufacturer" Overridable="yes" Value="LeXtudio Inc."/>
   <String Id="ConflictingProduct" Overridable="yes" Value="Bu bilgisayarda uyumsuz bir ürün olan [CONFLICTING_PRODUCT_NAME] bulunuyor. [ProductName] kurulumu devam edemiyor. Bu ürünü yüklemek için, Denetim Masası'ndaki Program Ekle/Kaldır'ı kullanarak [CONFLICTING_PRODUCT_NAME ]'i kaldırın."/>
   <String Id="AdminRequired" Overridable="yes" Value="[ProductName] yüklemek için yönetici ayrıcalığı gereklidir."/>
   <String Id="IIS7Only" Overridable="yes" Value="[ProductName] kullanmak için IIS Sürüm 7.0 gereklidir."/>

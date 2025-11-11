@@ -3,17 +3,17 @@
   <String Id="Language" Value="1033"/>
 
   <!-- Strings for AspNetCore Module -->
-  <String Id="AspNetCoreModuleProductName" Value="Modul Microsoft ASP.NET Core"/>
-  <String Id="AspNetCoreModuleProductNameV2" Value="Modul Microsoft ASP.NET Core V2"/>
-  <String Id="AspNetCoreModuleProductTitle" Value="ASP.NET Core IIS Runtime"/>
-  <String Id="AspNetCoreModuleProductDescription" Value="Přidá do služby IIS podporu aplikace asp.net core."/>
-  <String Id="AspNetCoreIISExpressModuleProductName" Value="Modul Microsoft ASP.NET Core pro IIS Express"/>
-  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="Modul Microsoft ASP.NET Core V2 pro IIS Express"/>
+  <String Id="AspNetCoreModuleProductName" Value="Modul LeXtudio HTTP Bridge"/>
+  <String Id="AspNetCoreModuleProductNameV2" Value="Modul LeXtudio HTTP Bridge V2"/>
+  <String Id="AspNetCoreModuleProductTitle" Value="HTTP Bridge for IIS Runtime"/>
+  <String Id="AspNetCoreModuleProductDescription" Value="Přidá do služby IIS podporu aplikace HTTP Bridge."/>
+  <String Id="AspNetCoreIISExpressModuleProductName" Value="Modul LeXtudio HTTP Bridge pro IIS Express"/>
+  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="Modul LeXtudio HTTP Bridge V2 pro IIS Express"/>
   <String Id="AspNetCoreModuleIISExpressPrereq" Value="Není nainstalovaná služba IIS Express 8.0 nebo novější."/>
 
   <!--Custom errors for OOB Projects -->
 
-  <String Id="Manufacturer" Overridable="yes" Value="Microsoft Corporation"/>
+  <String Id="Manufacturer" Overridable="yes" Value="LeXtudio Inc."/>
   <String Id="ConflictingProduct" Overridable="yes" Value="Na tomto počítači je nekompatibilní produkt [CONFLICTING_PRODUCT_NAME]. Instalace produktu [ProductName] nemůže pokračovat. Chcete-li tento produkt nainstalovat, odeberte [CONFLICTING_PRODUCT_NAME] pomocí možnosti Přidat/Odebrat programy v Ovládacích panelech."/>
   <String Id="AdminRequired" Overridable="yes" Value="Instalace produktu [ProductName] vyžaduje oprávnění správce."/>
   <String Id="IIS7Only" Overridable="yes" Value="K použití produktu [ProductName] je vyžadována služba IIS verze 7.0."/>

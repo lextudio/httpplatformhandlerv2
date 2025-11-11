@@ -3,17 +3,17 @@
   <String Id="Language" Value="1033"/>
 
   <!-- Strings for AspNetCore Module -->
-  <String Id="AspNetCoreModuleProductName" Value="Module Microsoft ASP.NET Core"/>
-  <String Id="AspNetCoreModuleProductNameV2" Value="Module V2 Microsoft ASP.NET Core"/>
-  <String Id="AspNetCoreModuleProductTitle" Value="Runtime IIS ASP.NET Core"/>
-  <String Id="AspNetCoreModuleProductDescription" Value="Ajoute la prise en charge des applications asp.net core dans IIS."/>
-  <String Id="AspNetCoreIISExpressModuleProductName" Value="Module Microsoft ASP.NET Core pour IIS Express"/>
-  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="Module V2 Microsoft ASP.NET Core pour IIS Express"/>
+  <String Id="AspNetCoreModuleProductName" Value="Module LeXtudio HTTP Bridge"/>
+  <String Id="AspNetCoreModuleProductNameV2" Value="Module V2 LeXtudio HTTP Bridge"/>
+  <String Id="AspNetCoreModuleProductTitle" Value="Runtime IIS LeXtudio HTTP Bridge"/>
+  <String Id="AspNetCoreModuleProductDescription" Value="Ajoute la prise en charge des applications HTTP dans IIS."/>
+  <String Id="AspNetCoreIISExpressModuleProductName" Value="Module LeXtudio HTTP Bridge pour IIS Express"/>
+  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="Module V2 LeXtudio HTTP Bridge pour IIS Express"/>
   <String Id="AspNetCoreModuleIISExpressPrereq" Value="IIS Express 8.0 ou version ultérieure n’est pas installé."/>
 
   <!--Custom errors for OOB Projects -->
 
-  <String Id="Manufacturer" Overridable="yes" Value="Microsoft Corporation"/>
+  <String Id="Manufacturer" Overridable="yes" Value="LeXtudio Inc."/>
   <String Id="ConflictingProduct" Overridable="yes" Value="Un produit incompatible, [CONFLICTING_PRODUCT_NAME], est présent sur cet ordinateur. L’installation de [ProductName] ne peut pas continuer. Pour installer ce produit, utilisez l’option Ajouter/Supprimer des programme dans le Panneau de contrôle pour supprimer [CONFLICTING_PRODUCT_NAME]."/>
   <String Id="AdminRequired" Overridable="yes" Value="Un privilège d’administrateur(-trice) est requis pour installer [ProductName]."/>
   <String Id="IIS7Only" Overridable="yes" Value="La version 7.0 d’IIS est requise pour utiliser [ProductName]."/>

@@ -3,17 +3,17 @@
   <String Id="Language" Value="1033"/>
 
   <!-- Strings for AspNetCore Module -->
-  <String Id="AspNetCoreModuleProductName" Value="Módulo de Microsoft ASP.NET Core"/>
-  <String Id="AspNetCoreModuleProductNameV2" Value="Módulo de Microsoft ASP.NET Core V2"/>
-  <String Id="AspNetCoreModuleProductTitle" Value="Runtime de ASP.NET Core de IIS"/>
-  <String Id="AspNetCoreModuleProductDescription" Value="Agrega el soporte de aplicación asp.net core en IIS."/>
-  <String Id="AspNetCoreIISExpressModuleProductName" Value="Módulo Microsoft ASP.NET Core para IIS Express"/>
-  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="Módulo Microsoft ASP.NET Core V2 para IIS Express"/>
+  <String Id="AspNetCoreModuleProductName" Value="Módulo de LeXtudio HTTP Bridge"/>
+  <String Id="AspNetCoreModuleProductNameV2" Value="Módulo de LeXtudio HTTP Bridge V2"/>
+  <String Id="AspNetCoreModuleProductTitle" Value="Runtime de LeXtudio HTTP Bridge de IIS"/>
+  <String Id="AspNetCoreModuleProductDescription" Value="Agrega el soporte de aplicación HTTP en IIS."/>
+  <String Id="AspNetCoreIISExpressModuleProductName" Value="Módulo LeXtudio HTTP Bridge para IIS Express"/>
+  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="Módulo LeXtudio HTTP Bridge V2 para IIS Express"/>
   <String Id="AspNetCoreModuleIISExpressPrereq" Value="No está instalado IIS Express 8.0 o posterior."/>
 
   <!--Custom errors for OOB Projects -->
 
-  <String Id="Manufacturer" Overridable="yes" Value="Microsoft Corporation"/>
+  <String Id="Manufacturer" Overridable="yes" Value="LeXtudio Inc."/>
   <String Id="ConflictingProduct" Overridable="yes" Value="Hay un producto incompatible, [CONFLICTING_PRODUCT_NAME], en este equipo. La instalación de [ProductName] no puede continuar. Para instalar este producto, usa Agregar o quitar programas en el Panel de control para eliminar [CONFLICTING_PRODUCT_NAME]."/>
   <String Id="AdminRequired" Overridable="yes" Value="Se requieren privilegios de administrador para instalar [ProductName]."/>
   <String Id="IIS7Only" Overridable="yes" Value="Se requiere IIS versión 7.0 para usar [ProductName]."/>

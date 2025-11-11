@@ -3,17 +3,17 @@
   <String Id="Language" Value="1033"/>
 
   <!-- Strings for AspNetCore Module -->
-  <String Id="AspNetCoreModuleProductName" Value="Microsoft ASP.NET Core 模块"/>
-  <String Id="AspNetCoreModuleProductNameV2" Value="Microsoft ASP.NET Core 模块 V2"/>
-  <String Id="AspNetCoreModuleProductTitle" Value="ASP.NET Core IIS 运行时"/>
-  <String Id="AspNetCoreModuleProductDescription" Value="将 asp.net core 应用程序的支持添加到 IIS。"/>
-  <String Id="AspNetCoreIISExpressModuleProductName" Value="Microsoft ASP.NET Core 模块(IIS Express)"/>
-  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="Microsoft ASP.NET Core 模块 V2 (IIS Express)"/>
+  <String Id="AspNetCoreModuleProductName" Value="LeXtudio HTTP Bridge 模块"/>
+  <String Id="AspNetCoreModuleProductNameV2" Value="LeXtudio HTTP Bridge 模块 V2"/>
+  <String Id="AspNetCoreModuleProductTitle" Value="LeXtudio HTTP Bridge IIS 运行时"/>
+  <String Id="AspNetCoreModuleProductDescription" Value="将 HTTP 应用程序的支持添加到 IIS。"/>
+  <String Id="AspNetCoreIISExpressModuleProductName" Value="LeXtudio HTTP Bridge 模块(IIS Express)"/>
+  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="LeXtudio HTTP Bridge 模块 V2 (IIS Express)"/>
   <String Id="AspNetCoreModuleIISExpressPrereq" Value="IIS Express 8.0 或更高版本未安装。"/>
 
   <!--Custom errors for OOB Projects -->
 
-  <String Id="Manufacturer" Overridable="yes" Value="Microsoft Corporation"/>
+  <String Id="Manufacturer" Overridable="yes" Value="LeXtudio Inc."/>
   <String Id="ConflictingProduct" Overridable="yes" Value="此计算机上存在不兼容的产品 [CONFLICTING_PRODUCT_NAME]。无法继续安装 [ProductName]。若要安装此产品，请使用控制面板上的“添加/移除程序”移除 [CONFLICTING_PRODUCT_NAME]。"/>
   <String Id="AdminRequired" Overridable="yes" Value="安装 [ProductName] 需要管理员权限。"/>
   <String Id="IIS7Only" Overridable="yes" Value="使用 [ProductName] 需要 IIS 版本 7.0。"/>

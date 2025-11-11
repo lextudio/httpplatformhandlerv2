@@ -3,17 +3,17 @@
   <String Id="Language" Value="1033"/>
 
   <!-- Strings for AspNetCore Module -->
-  <String Id="AspNetCoreModuleProductName" Value="Microsoft ASP.NET Core モジュール"/>
-  <String Id="AspNetCoreModuleProductNameV2" Value="Microsoft ASP.NET Core モジュール V2"/>
-  <String Id="AspNetCoreModuleProductTitle" Value="ASP.NET Core IIS ランタイム"/>
-  <String Id="AspNetCoreModuleProductDescription" Value="ASP.NET Core アプリケーションのサポートを IIS に追加します。"/>
-  <String Id="AspNetCoreIISExpressModuleProductName" Value="IIS Express 用の Microsoft ASP.NET Core モジュール"/>
-  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="IIS Express 用の Microsoft ASP.NET Core モジュール V2"/>
+  <String Id="AspNetCoreModuleProductName" Value="LeXtudio HTTP Bridge モジュール"/>
+  <String Id="AspNetCoreModuleProductNameV2" Value="LeXtudio HTTP Bridge モジュール V2"/>
+  <String Id="AspNetCoreModuleProductTitle" Value="LeXtudio HTTP Bridge IIS ランタイム"/>
+  <String Id="AspNetCoreModuleProductDescription" Value="HTTP アプリケーションのサポートを IIS に追加します。"/>
+  <String Id="AspNetCoreIISExpressModuleProductName" Value="IIS Express 用の LeXtudio HTTP Bridge モジュール"/>
+  <String Id="AspNetCoreIISExpressModuleProductNameV2" Value="IIS Express 用の LeXtudio HTTP Bridge モジュール V2"/>
   <String Id="AspNetCoreModuleIISExpressPrereq" Value="IIS Express 8.0 以降がインストールされていません。"/>
 
   <!--Custom errors for OOB Projects -->
 
-  <String Id="Manufacturer" Overridable="yes" Value="Microsoft Corporation"/>
+  <String Id="Manufacturer" Overridable="yes" Value="LeXtudio Inc."/>
   <String Id="ConflictingProduct" Overridable="yes" Value="互換性のない製品 [CONFLICTING_PRODUCT_NAME] がこのコンピューター上にあります。[ProductName] のインストールを続行できません。この製品をインストールするには、コントロール パネルの \\[プログラムの追加と削除\\] を使用して [CONFLICTING_PRODUCT_NAME] を削除します。"/>
   <String Id="AdminRequired" Overridable="yes" Value="[ProductName] をインストールするには管理者権限が必要です。"/>
   <String Id="IIS7Only" Overridable="yes" Value="[ProductName] を使用するには、IIS バージョン 7.0 が必要です。"/>
