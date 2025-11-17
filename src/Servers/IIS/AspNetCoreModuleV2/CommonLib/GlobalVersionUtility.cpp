@@ -13,17 +13,17 @@ namespace fs = std::filesystem;
 std::wstring
 GlobalVersionUtility::GetGlobalRequestHandlerPath(PCWSTR pwzAspNetCoreFolderPath, PCWSTR pwzHandlerVersion, PCWSTR pwzHandlerName)
 {
-    if (pwzAspNetCoreFolderPath == NULL)
+    if (pwzAspNetCoreFolderPath == nullptr)
     {
         throw new std::invalid_argument("pwzAspNetCoreFolderPath is NULL");
     }
 
-    if (pwzHandlerVersion == NULL)
+    if (pwzHandlerVersion == nullptr)
     {
         throw new std::invalid_argument("pwzHandlerVersion is NULL");
     }
 
-    if (pwzHandlerName == NULL)
+    if (pwzHandlerName == nullptr)
     {
         throw new std::invalid_argument("pwzHandlerName is NULL");
     }
@@ -47,7 +47,7 @@ GlobalVersionUtility::GetGlobalRequestHandlerPath(PCWSTR pwzAspNetCoreFolderPath
 std::vector<fx_ver_t>
 GlobalVersionUtility::GetRequestHandlerVersions(PCWSTR pwzAspNetCoreFolderPath)
 {
-    if (pwzAspNetCoreFolderPath == NULL)
+    if (pwzAspNetCoreFolderPath == nullptr)
     {
         throw new std::invalid_argument("pwzAspNetCoreFolderPath is NULL");
     }
@@ -74,7 +74,7 @@ GlobalVersionUtility::GetRequestHandlerVersions(PCWSTR pwzAspNetCoreFolderPath)
 std::wstring
 GlobalVersionUtility::FindHighestGlobalVersion(PCWSTR pwzAspNetCoreFolderPath)
 {
-    if (pwzAspNetCoreFolderPath == NULL)
+    if (pwzAspNetCoreFolderPath == nullptr)
     {
         throw std::invalid_argument("pwzAspNetCoreFolderPath is NULL");
     }
@@ -82,7 +82,7 @@ GlobalVersionUtility::FindHighestGlobalVersion(PCWSTR pwzAspNetCoreFolderPath)
     std::vector<fx_ver_t> versionsInDirectory = GetRequestHandlerVersions(pwzAspNetCoreFolderPath);
     if (versionsInDirectory.empty())
     {
-        throw std::runtime_error("Cannot find request handler next to aspnetcorev2.dll. Verify a version of the request handler is installed in a version folder.");
+        throw std::runtime_error("Cannot find request handler next to httpbridge.dll. Verify a version of the request handler is installed in a version folder.");
     }
     std::sort(versionsInDirectory.begin(), versionsInDirectory.end());
 

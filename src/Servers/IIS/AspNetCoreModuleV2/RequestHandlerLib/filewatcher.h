@@ -41,6 +41,10 @@ public:
     static
     DWORD
     WINAPI RunNotificationCallback(LPVOID);
+    
+    static
+    DWORD
+    WINAPI RunFileChangedCallback(LPVOID);
 
     static
     VOID
@@ -50,10 +54,12 @@ public:
 
     static DWORD WINAPI CopyAndShutdown(FILE_WATCHER* watcher);
 
-    HRESULT HandleChangeCompletion(DWORD cbCompletion);
+    HRESULT HandleChangeCompletion(_In_ DWORD bytesTransferred);
 
     HRESULT Monitor();
     void StopMonitor();
+    
+    bool IsAppOfflineMonitoring() const;
 
 private:
     HandleWrapper<NullHandleTraits>               m_hCompletionPort;

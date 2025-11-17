@@ -1,4 +1,5 @@
 // Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) LeXtudio Inc. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 #include "HandlerResolver.h"
@@ -17,12 +18,13 @@
 #include "RedirectionOutput.h"
 
 const PCWSTR HandlerResolver::s_pwzAspnetcoreInProcessRequestHandlerName = L"aspnetcorev2_inprocess.dll";
-const PCWSTR HandlerResolver::s_pwzAspnetcoreOutOfProcessRequestHandlerName = L"aspnetcorev2_outofprocess.dll";
+const PCWSTR HandlerResolver::s_pwzAspnetcoreOutOfProcessRequestHandlerName = L"httpbridge_outofprocess.dll";
 
 HandlerResolver::HandlerResolver(HMODULE hModule, const IHttpServer &pServer)
     : m_hModule(hModule),
       m_pServer(pServer),
-      m_loadedApplicationHostingModel(HOSTING_UNKNOWN)
+      m_loadedApplicationHostingModel(HOSTING_UNKNOWN),
+      m_shutdownDelay()
 {
     m_disallowRotationOnConfigChange = false;
     InitializeSRWLock(&m_requestHandlerLoadLock);
@@ -88,7 +90,7 @@ HandlerResolver::LoadRequestHandlerAssembly(const IHttpApplication &pApplication
         }
         else
         {
-            errorContext.generalErrorType = "ASP.NET Core IIS hosting failure (out-of-process)";
+            errorContext.generalErrorType = "HTTP Bridge IIS hosting failure";
 
             if (FAILED_LOG(hr = FindNativeAssemblyFromGlobalLocation(pConfiguration, pstrHandlerDllName, handlerDllPath)))
             {
@@ -101,7 +103,7 @@ HandlerResolver::LoadRequestHandlerAssembly(const IHttpApplication &pApplication
                 errorContext.detailedErrorContent = to_multi_byte_string(format(ASPNETCORE_EVENT_OUT_OF_PROCESS_RH_MISSING_MSG, handlerName), CP_UTF8);
                 errorContext.statusCode = 500i16;
                 errorContext.subStatusCode = 36i16;
-                errorContext.errorReason = "The out of process request handler, aspnetcorev2_outofprocess.dll, could not be found next to the aspnetcorev2.dll.";
+                errorContext.errorReason = "The out of process request handler, httpbridge_outofprocess.dll, could not be found next to the httpbridge.dll.";
 
                 return hr;
             }
@@ -109,7 +111,7 @@ HandlerResolver::LoadRequestHandlerAssembly(const IHttpApplication &pApplication
 
         LOG_INFOF(L"Loading request handler:  '%ls'", handlerDllPath.c_str());
 
-        hRequestHandlerDll = LoadLibrary(handlerDllPath.c_str());
+        hRequestHandlerDll = LoadLibraryEx(handlerDllPath.c_str(), nullptr, LOAD_LIBRARY_SEARCH_DEFAULT_DIRS | LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR);
         RETURN_LAST_ERROR_IF_NULL(hRequestHandlerDll);
 
         if (preventUnload)
@@ -171,6 +173,7 @@ HandlerResolver::GetApplicationFactory(const IHttpApplication& pApplication, con
     m_loadedApplicationHostingModel = options.QueryHostingModel();
     m_loadedApplicationId = pApplication.GetApplicationId();
     m_disallowRotationOnConfigChange = options.QueryDisallowRotationOnConfigChange();
+    m_shutdownDelay = options.QueryShutdownDelay();
 
     RETURN_IF_FAILED(LoadRequestHandlerAssembly(pApplication, shadowCopyPath, options, pApplicationFactory, errorContext));
 
@@ -195,6 +198,11 @@ APP_HOSTING_MODEL HandlerResolver::GetHostingModel()
 bool HandlerResolver::GetDisallowRotationOnConfigChange()
 {
     return m_disallowRotationOnConfigChange;
+}
+
+std::chrono::milliseconds HandlerResolver::GetShutdownDelay() const
+{
+    return m_shutdownDelay;
 }
 
 HRESULT

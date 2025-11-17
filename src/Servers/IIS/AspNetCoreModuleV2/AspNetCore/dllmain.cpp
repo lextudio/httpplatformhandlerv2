@@ -1,4 +1,5 @@
 // Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) LeXtudio Inc. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 #include "applicationinfo.h"
@@ -12,7 +13,7 @@
 #include "EventLog.h"
 #include "RegistryKey.h"
 
-DECLARE_DEBUG_PRINT_OBJECT("aspnetcorev2.dll");
+DECLARE_DEBUG_PRINT_OBJECT("httpbridge.dll");
 
 HANDLE              g_hEventLog = nullptr;
 BOOL                g_fRecycleProcessCalled = FALSE;
@@ -57,6 +58,7 @@ BOOL WINAPI DllMain(HMODULE hModule,
         // this is a bug in IIS. To try to avoid AVs, we will set a global flag
         g_fInShutdown = TRUE;
         StaticCleanup();
+        break;
     default:
         break;
     }
@@ -102,15 +104,15 @@ HRESULT
         g_hEventLog = RegisterEventSource(nullptr, ASPNETCORE_EVENT_PROVIDER);
     }
 
-    auto fDisableModule = RegistryKey::TryGetDWORD(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\IIS Extensions\\IIS AspNetCore Module V2\\Parameters", L"DisableANCM");
+    //auto fDisableModule = RegistryKey::TryGetDWORD(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\IIS Extensions\\IIS AspNetCore Module V2\\Parameters", L"DisableANCM");
 
-    if (fDisableModule.has_value() && fDisableModule.value() != 0)
-    {
-        EventLog::Warn(ASPNETCORE_EVENT_MODULE_DISABLED, ASPNETCORE_EVENT_MODULE_DISABLED_MSG);
-        // this will return 500 error to client
-        // as we did not register the module
-        return S_OK;
-    }
+    //if (fDisableModule.has_value() && fDisableModule.value() != 0)
+    //{
+    //    EventLog::Warn(ASPNETCORE_EVENT_MODULE_DISABLED, ASPNETCORE_EVENT_MODULE_DISABLED_MSG);
+    //    // this will return 500 error to client
+    //    // as we did not register the module
+    //    return S_OK;
+    //}
 
     //
     // Create the factory before any static initialization.
@@ -125,13 +127,14 @@ HRESULT
                                   moduleFactory.release(),
                                   RQ_EXECUTE_REQUEST_HANDLER,
                                   0));
-;
+
     auto pGlobalModule = std::make_unique<ASPNET_CORE_GLOBAL_MODULE>(std::move(applicationManager));
 
     RETURN_IF_FAILED(pModuleInfo->SetGlobalNotifications(
-                                     pGlobalModule.release(),
-                                     GL_CONFIGURATION_CHANGE | // Configuration change triggers IIS application stop
-                                     GL_STOP_LISTENING));   // worker process stop or recycle
+        pGlobalModule.release(),
+        GL_CONFIGURATION_CHANGE | // Configuration change triggers IIS application stop
+        GL_STOP_LISTENING | // worker process will stop listening for http requests
+        GL_APPLICATION_STOP)); // app pool recycle or stop
 
     return S_OK;
 }

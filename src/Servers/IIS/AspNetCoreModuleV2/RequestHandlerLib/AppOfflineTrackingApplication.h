@@ -16,7 +16,8 @@ public:
         m_applicationPath(application.GetApplicationPhysicalPath()),
         m_fileWatcher(nullptr),
         m_fAppOfflineProcessed(false),
-        m_shutdownTimeout(120000) // default to 2 minutes
+        m_shutdownTimeout(120000), // default to 2 minutes
+        m_detectedAppOffline(false)
     {
     }
 
@@ -37,6 +38,23 @@ public:
     virtual
     VOID
     OnAppOffline();
+    
+    // New method for file changes other than app_offline.htm
+    virtual
+    VOID
+    OnConfigurationFileChange()
+    {
+        // Default implementation - derived classes can override
+        // Base implementation treats config file changes like app_offline
+        OnAppOffline();
+    }
+    
+    // Returns the name of the file being monitored by the filewatcher
+    std::wstring
+    GetFileBeingMonitored() const
+    {
+        return L"app_offline.htm";
+    }
 
     // TODO protected
     bool                                         m_detectedAppOffline;

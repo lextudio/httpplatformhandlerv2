@@ -1,4 +1,4 @@
-LIBRARY aspnetcorev2_outofprocess
+LIBRARY httpbridge_outofprocess
 
 EXPORTS
     CreateApplication

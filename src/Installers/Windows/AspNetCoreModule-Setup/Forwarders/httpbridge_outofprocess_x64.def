@@ -1,0 +1,2 @@
+EXPORTS
+    CreateApplication = httpbridge_outofprocess_x64.CreateApplication

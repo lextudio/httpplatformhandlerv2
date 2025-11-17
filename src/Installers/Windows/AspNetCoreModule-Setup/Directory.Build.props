@@ -34,13 +34,13 @@
     <DefineConstants>BLDVERMAJOR=$(BLDVERMAJOR);BLDVERMINOR=$(BLDVERMINOR);BLDNUMMAJOR=$(BLDNUMMAJOR);BLDNUMMINOR=$(BLDNUMMINOR);$(DefineConstants)</DefineConstants>
     <DefineConstants>ArtifactsDir=$(ArtifactsDir);ANCMMsiVersion=$(ANCMMsiVersion);ANCMFolderVersion=$(ANCMFolderVersion);ANCMOutOfProcessNugetPackageHandlerVersion=$(ANCMOutOfProcessNugetPackageHandlerVersion);$(DefineConstants)</DefineConstants>
     <DefineConstants>
-      AspNetCoreSchemaPath=$(_ServerIISBasePath)AspNetCoreModuleV2\AspNetCore\aspnetcore_schema_v2.xml;
-      AspNetCoreMofPath=$(_ServerIISBasePath)AspNetCoreModuleV2\AspNetCore\ancm.mof;
+      AspNetCoreSchemaPath=$(_ServerIISBasePath)AspNetCoreModuleV2\AspNetCore\httpplatform_schema.xml;
+      AspNetCoreMofPath=$(_ServerIISBasePath)AspNetCoreModuleV2\AspNetCore\httpbridge.mof;
       $(DefineConstants)
     </DefineConstants>
   </PropertyGroup>
 
- <ItemGroup Condition="'$(BuildNative)' == 'true'">
+ <ItemGroup Condition="'$(BuildNative)' == 'true' AND ('$(DotNetBuild)' != 'true' OR '$(DotNetBuildPass)' == '2') ">
     <ProjectReference Include="$(_ServerIISBasePath)AspNetCoreModuleV2\AspNetCore\AspNetCore.vcxproj">
       <Name>AspNetCoreV2</Name>
       <Private>True</Private>
@@ -70,7 +70,7 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <SetPlatform>Platform=Win32</SetPlatform>
     </ProjectReference>
-   
+
     <ProjectReference Include="$(_ServerIISBasePath)AspNetCoreModuleV2\AspNetCore\AspNetCore.vcxproj">
       <Name>AspNetCoreV2ARM64</Name>
       <Private>True</Private>
@@ -84,6 +84,23 @@
       <DoNotHarvest>True</DoNotHarvest>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <SetPlatform>Platform=ARM64</SetPlatform>
+    </ProjectReference>
+  </ItemGroup>
+
+ <ItemGroup Condition="'$(BuildNative)' == 'true' AND '$(DotNetBuild)' == 'true' AND '$(DotNetBuildPass)' != '2' ">
+    <ProjectReference Include="$(_ServerIISBasePath)AspNetCoreModuleV2\AspNetCore\AspNetCore.vcxproj">
+      <Name>AspNetCoreV2</Name>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <SetPlatform>Platform=$(NativePlatform)</SetPlatform>
+    </ProjectReference>
+    <ProjectReference Include="$(_ServerIISBasePath)AspNetCoreModuleV2\OutOfProcessRequestHandler\OutOfProcessRequestHandler.vcxproj">
+      <Name>AspNetCoreV2Handler</Name>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <SetPlatform>Platform=$(NativePlatform)</SetPlatform>
     </ProjectReference>
   </ItemGroup>
 

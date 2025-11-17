@@ -10,12 +10,13 @@
   </PropertyGroup>
   <Import Project="..\..\build\Build.Dll.Settings" />
   <PropertyGroup>
-    <TargetName>aspnetcorev2_outofprocess</TargetName>
+    <TargetName>httpbridge_outofprocess</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>REQUESTHANDLER_EXPORTS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\IISLib;..\CommonLib;.\Inc;..\RequestHandlerLib</AdditionalIncludeDirectories>
+      <AdditionalOptions>/guard:cf /Qspectre</AdditionalOptions>
     </ClCompile>
     <Link>
 <AdditionalDependencies>kernel32.lib;user32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;ahadmin.lib;ws2_32.lib;iphlpapi.lib;version.lib;Rpcrt4.lib;winhttp.lib</AdditionalDependencies>

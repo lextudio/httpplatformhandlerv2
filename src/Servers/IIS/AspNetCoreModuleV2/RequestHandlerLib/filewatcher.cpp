@@ -99,7 +99,7 @@ FILE_WATCHER::Create(
         (LPTHREAD_START_ROUTINE)ChangeNotificationThread,
         this,
         0,
-        NULL));
+        nullptr));
 
     if (pszDirectoryToMonitor == nullptr ||
         pszFileNameToMonitor == nullptr ||
@@ -128,7 +128,7 @@ FILE_WATCHER::Create(
         nullptr,
         OPEN_EXISTING,
         FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED,
-        NULL);
+        nullptr);
 
     RETURN_LAST_ERROR_IF(_hDirectory == INVALID_HANDLE_VALUE);
 
@@ -165,26 +165,28 @@ Win32 error
 --*/
 {
     FILE_WATCHER* pFileMonitor = (FILE_WATCHER*)pvArg;
-    
+
     LOG_INFO(L"Starting file watcher thread");
     DBG_ASSERT(pFileMonitor != nullptr);
 
     while (true)
     {
 
-        DWORD       cbCompletion = 0;
+        DWORD       bytesTransferred = 0;
         OVERLAPPED* pOverlapped = nullptr;
         ULONG_PTR   completionKey;
 
         BOOL success = GetQueuedCompletionStatus(
             pFileMonitor->m_hCompletionPort,
-            &cbCompletion,
+            &bytesTransferred,
             &completionKey,
             &pOverlapped,
             INFINITE);
 
-        DBG_ASSERT(success);
-        (void)success;
+        if (!success)
+        {
+            LOG_INFOF(L"Failure when watching app directory. HR: 0x%x", HRESULT_FROM_WIN32(GetLastError()));
+        }
 
         if (completionKey == FILE_WATCHER_SHUTDOWN_KEY)
         {
@@ -194,7 +196,7 @@ Win32 error
         DBG_ASSERT(pOverlapped != nullptr);
         if (pOverlapped != nullptr)
         {
-            pFileMonitor->HandleChangeCompletion(cbCompletion);
+            pFileMonitor->HandleChangeCompletion(bytesTransferred);
 
             if (!pFileMonitor->_lStopMonitorCalled)
             {
@@ -222,7 +224,7 @@ Win32 error
 
 HRESULT
 FILE_WATCHER::HandleChangeCompletion(
-    _In_ DWORD          cbCompletion
+    _In_ DWORD          bytesTransferred
 )
 /*++
 
@@ -234,7 +236,7 @@ need to be flushed)
 Arguments:
 
 dwCompletionStatus - Completion status
-cbCompletion - Bytes of completion
+bytesTransferred - Bytes of completion
 
 Return Value:
 
@@ -242,8 +244,9 @@ HRESULT
 
 --*/
 {
-    BOOL                        fAppOfflineChanged = FALSE;
+    BOOL                        fFileChanged = FALSE;
     BOOL                        fDllChanged = FALSE;
+    BOOL                        fIsAppOfflineFile = IsAppOfflineMonitoring();
 
     // When directory handle is closed then HandleChangeCompletion
     // happens with cbCompletion = 0 and dwCompletionStatus = 0
@@ -259,13 +262,33 @@ HRESULT
     }
 
     //
-    // There could be a FCN overflow
-    // Let assume the file got changed instead of checking files
-    // Otherwise we have to cache the file info
+    // There could be a FCN overflow, see https://learn.microsoft.com/windows/win32/api/winbase/nf-winbase-readdirectorychangesw#remarks
+    // specifically about lpBytesReturned being zero on a successful call
     //
-    if (cbCompletion == 0)
+    // We'll do a manual check for the existence of app_offline.htm since it's possible the file was added
+    // When ShadowCopy is enabled we also look for .dll changes, in order to detect a dll change in this edge case we'd need to cache all dll information
+    // and manually iterate over the directory and compare the file attributes. For now we'll assume that if dlls are changing we'll get another
+    // file change notification in that case
+    //
+    if (bytesTransferred == 0)
     {
-        fAppOfflineChanged = TRUE;
+        LOG_INFO(L"0 bytes transferred for file notifications. Falling back to manually looking for app_offline.");
+        DWORD fileAttr = GetFileAttributesW(_strFullName.QueryStr());
+        if (fileAttr != INVALID_FILE_ATTRIBUTES && !(fileAttr & FILE_ATTRIBUTE_DIRECTORY))
+        {
+            fFileChanged = TRUE;
+
+            // Mark as app_offline detected if this is app_offline.htm
+            if (fIsAppOfflineFile)
+            {
+                auto app = _pApplication.get();
+                app->m_detectedAppOffline = true;
+            }
+        }
+        else
+        {
+            return S_OK;
+        }
     }
     else
     {
@@ -277,13 +300,19 @@ HRESULT
             //
             // check whether the monitored file got changed
             //
-            if (_wcsnicmp(pNotificationInfo->FileName,
+            if (_strFileName.QuerySizeCCH() == (pNotificationInfo->FileNameLength / sizeof(WCHAR))
+                && _wcsnicmp(pNotificationInfo->FileName,
                 _strFileName.QueryStr(),
                 pNotificationInfo->FileNameLength / sizeof(WCHAR)) == 0)
             {
-                fAppOfflineChanged = TRUE;
-                auto app = _pApplication.get();
-                app->m_detectedAppOffline = true;
+                fFileChanged = TRUE;
+
+                // Mark as app_offline detected if this is app_offline.htm
+                if (fIsAppOfflineFile)
+                {
+                    auto app = _pApplication.get();
+                    app->m_detectedAppOffline = true;
+                }
                 break;
             }
 
@@ -317,11 +346,22 @@ HRESULT
         }
     }
 
-    if (fAppOfflineChanged && !_lStopMonitorCalled)
+    if (fFileChanged && !_lStopMonitorCalled)
     {
         // Reference application before
         _pApplication->ReferenceApplication();
-        RETURN_LAST_ERROR_IF(!QueueUserWorkItem(RunNotificationCallback, _pApplication.get(), WT_EXECUTEDEFAULT));
+
+        LOG_INFOF(L"Detected change in file '%s'", _strFileName.QueryStr());
+
+        // Use appropriate callback based on whether this is app_offline.htm or another file
+        if (fIsAppOfflineFile)
+        {
+            RETURN_LAST_ERROR_IF(!QueueUserWorkItem(RunNotificationCallback, _pApplication.get(), WT_EXECUTEDEFAULT));
+        }
+        else
+        {
+            RETURN_LAST_ERROR_IF(!QueueUserWorkItem(RunFileChangedCallback, _pApplication.get(), WT_EXECUTEDEFAULT));
+        }
     }
 
     if (fDllChanged && m_fShadowCopyEnabled && !_lStopMonitorCalled)
@@ -427,7 +467,7 @@ FILE_WATCHER::Monitor(VOID)
         _buffDirectoryChanges.QueryPtr(),
         _buffDirectoryChanges.QuerySize(),
         FALSE,        // Watching sub dirs. Set to False now as only monitoring app_offline
-        FILE_NOTIFY_VALID_MASK & ~FILE_NOTIFY_CHANGE_LAST_ACCESS,
+        FILE_NOTIFY_VALID_MASK & ~FILE_NOTIFY_CHANGE_LAST_ACCESS & ~FILE_NOTIFY_CHANGE_SECURITY & ~FILE_NOTIFY_CHANGE_ATTRIBUTES,
         &cbRead,
         &_overlapped,
         nullptr));
@@ -457,7 +497,7 @@ FILE_WATCHER::StopMonitor()
     LOG_INFO(L"Stopping file watching.");
 
     // Signal the file watcher thread to exit
-    PostQueuedCompletionStatus(m_hCompletionPort, 0, FILE_WATCHER_SHUTDOWN_KEY, NULL);
+    PostQueuedCompletionStatus(m_hCompletionPort, 0, FILE_WATCHER_SHUTDOWN_KEY, nullptr);
     WaitForWatcherThreadExit();
 
     if (m_fShadowCopyEnabled)
@@ -468,4 +508,25 @@ FILE_WATCHER::StopMonitor()
 
     // Release application reference
     _pApplication.reset(nullptr);
+}
+
+bool
+FILE_WATCHER::IsAppOfflineMonitoring() const
+{
+    return _wcsicmp(_strFileName.QueryStr(), L"app_offline.htm") == 0;
+}
+
+DWORD
+WINAPI
+FILE_WATCHER::RunFileChangedCallback(
+    LPVOID  pvArg
+)
+{
+    // Recapture application instance into unique_ptr
+    auto pApplication = std::unique_ptr<AppOfflineTrackingApplication, IAPPLICATION_DELETER>(static_cast<AppOfflineTrackingApplication*>(pvArg));
+
+    // Call the appropriate handler for configuration file changes
+    pApplication->OnConfigurationFileChange();
+
+    return 0;
 }

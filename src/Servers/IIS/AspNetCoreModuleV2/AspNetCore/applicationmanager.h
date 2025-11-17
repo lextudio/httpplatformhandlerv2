@@ -8,7 +8,7 @@
 #include <unordered_map>
 
 //
-// This class will manage the lifecycle of all Asp.Net Core application
+// This class will manage the lifecycle of all HTTP Bridge Module hosted application
 // It should be global singleton.
 // Should always call GetInstance to get the object instance
 //
@@ -31,7 +31,7 @@ public:
 
     VOID
     ShutDown();
-    
+
     APPLICATION_MANAGER(HMODULE hModule, IHttpServer& pHttpServer) :
                             m_pApplicationInfoHash(NULL),
                             m_fDebugInitialize(FALSE),
@@ -45,6 +45,16 @@ public:
     ShouldRecycleOnConfigChange()
     {
         return !m_handlerResolver.GetDisallowRotationOnConfigChange();
+    }
+
+    std::chrono::milliseconds GetShutdownDelay() const
+    {
+        return m_handlerResolver.GetShutdownDelay();
+    }
+
+    bool UseLegacyShutdown() const
+    {
+        return m_handlerResolver.GetShutdownDelay() == std::chrono::milliseconds::zero();
     }
 
 private:

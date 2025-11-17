@@ -1,4 +1,5 @@
 // Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) LeXtudio Inc. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 #pragma once
@@ -80,7 +81,7 @@ private:
     TryCreateApplication(IHttpContext& pHttpContext, const ShimOptions& options, ErrorContext& error);
 
     std::filesystem::path
-    HandleShadowCopy(const ShimOptions& options, IHttpContext& pHttpContext);
+    HandleShadowCopy();//const ShimOptions& options, IHttpContext& pHttpContext);
 
     IHttpServer            &m_pServer;
     HandlerResolver        &m_handlerResolver;

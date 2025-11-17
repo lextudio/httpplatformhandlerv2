@@ -1,4 +1,5 @@
 // Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) LeXtudio Inc. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 #include "ShimOptions.h"
@@ -12,6 +13,8 @@
 #define CS_ASPNETCORE_SHADOW_COPY_DIRECTORY              L"shadowCopyDirectory"
 #define CS_ASPNETCORE_CLEAN_SHADOW_DIRECTORY_CONTENT     L"cleanShadowCopyDirectory"
 #define CS_ASPNETCORE_DISALLOW_ROTATE_CONFIG             L"disallowRotationOnConfigChange"
+#define CS_ASPNETCORE_SHUTDOWN_DELAY                     L"shutdownDelay"
+#define CS_ASPNETCORE_SHUTDOWN_DELAY_ENV                 L"HTTP_PLATFORM_shutdownDelay"
 
 ShimOptions::ShimOptions(const ConfigurationSource &configurationSource) :
         m_hostingModel(HOSTING_UNKNOWN),
@@ -42,23 +45,23 @@ ShimOptions::ShimOptions(const ConfigurationSource &configurationSource) :
         m_strHandlerVersion = find_element(handlerSettings, CS_ASPNETCORE_HANDLER_VERSION).value_or(std::wstring());
     }
 
-    auto enableShadowCopyElement = find_element(handlerSettings, CS_ASPNETCORE_SHADOW_COPY).value_or(std::wstring());
-    m_fEnableShadowCopying = equals_ignore_case(L"true", enableShadowCopyElement);
+    //auto enableShadowCopyElement = find_element(handlerSettings, CS_ASPNETCORE_SHADOW_COPY).value_or(std::wstring());
+    //m_fEnableShadowCopying = equals_ignore_case(L"true", enableShadowCopyElement);
 
-    auto cleanShadowCopyDirectory = find_element(handlerSettings, CS_ASPNETCORE_CLEAN_SHADOW_DIRECTORY_CONTENT).value_or(std::wstring());
-    m_fCleanShadowCopyDirectory = equals_ignore_case(L"true", cleanShadowCopyDirectory);
+    //auto cleanShadowCopyDirectory = find_element(handlerSettings, CS_ASPNETCORE_CLEAN_SHADOW_DIRECTORY_CONTENT).value_or(std::wstring());
+    //m_fCleanShadowCopyDirectory = equals_ignore_case(L"true", cleanShadowCopyDirectory);
 
-    m_strShadowCopyingDirectory = find_element(handlerSettings, CS_ASPNETCORE_SHADOW_COPY_DIRECTORY)
-        .value_or(m_fEnableShadowCopying ? L"ShadowCopyDirectory" : std::wstring());
+    //m_strShadowCopyingDirectory = find_element(handlerSettings, CS_ASPNETCORE_SHADOW_COPY_DIRECTORY)
+    //    .value_or(m_fEnableShadowCopying ? L"ShadowCopyDirectory" : std::wstring());
 
     auto disallowRotationOnConfigChange = find_element(handlerSettings, CS_ASPNETCORE_DISALLOW_ROTATE_CONFIG).value_or(std::wstring());
     m_fDisallowRotationOnConfigChange = equals_ignore_case(L"true", disallowRotationOnConfigChange);
-                
+
     m_strProcessPath = section->GetRequiredString(CS_ASPNETCORE_PROCESS_EXE_PATH);
     m_strArguments = section->GetString(CS_ASPNETCORE_PROCESS_ARGUMENTS).value_or(CS_ASPNETCORE_PROCESS_ARGUMENTS_DEFAULT);
     m_fStdoutLogEnabled = section->GetRequiredBool(CS_ASPNETCORE_STDOUT_LOG_ENABLED);
     m_struStdoutLogFile = section->GetRequiredString(CS_ASPNETCORE_STDOUT_LOG_FILE);
-    m_fDisableStartupPage = section->GetRequiredBool(CS_ASPNETCORE_DISABLE_START_UP_ERROR_PAGE);
+    /*m_fDisableStartupPage = section->GetRequiredBool(CS_ASPNETCORE_DISABLE_START_UP_ERROR_PAGE);*/
 
     auto environmentVariables = section->GetMap(CS_ASPNETCORE_ENVIRONMENT_VARIABLES);
 
@@ -82,4 +85,38 @@ ShimOptions::ShimOptions(const ConfigurationSource &configurationSource) :
     auto dotnetEnvironmentEnabled = equals_ignore_case(L"Development", dotnetEnvironment);
 
     m_fShowDetailedErrors = detailedErrorsEnabled || aspnetCoreEnvironmentEnabled || dotnetEnvironmentEnabled;
+
+    // Specifies how long to delay (in milliseconds) after IIS tells us to stop before starting the application shutdown.
+    // See StartShutdown in globalmodule to see how it's used.
+    auto shutdownDelay = find_element(handlerSettings, CS_ASPNETCORE_SHUTDOWN_DELAY).value_or(std::wstring());
+    if (shutdownDelay.empty())
+    {
+        // Fallback to environment variable if process specific config wasn't set
+        shutdownDelay = Environment::GetEnvironmentVariableValue(CS_ASPNETCORE_SHUTDOWN_DELAY_ENV)
+            .value_or(environmentVariables[CS_ASPNETCORE_SHUTDOWN_DELAY_ENV]);
+        if (shutdownDelay.empty())
+        {
+            // Default if neither process specific config or environment variable aren't set
+            m_fShutdownDelay = std::chrono::seconds(1);
+        }
+        else
+        {
+            SetShutdownDelay(shutdownDelay);
+        }
+    }
+    else
+    {
+        SetShutdownDelay(shutdownDelay);
+    }
+}
+
+void ShimOptions::SetShutdownDelay(const std::wstring& shutdownDelay)
+{
+    auto millsecondsValue = std::stoi(shutdownDelay);
+    if (millsecondsValue < 0)
+    {
+        throw ConfigurationLoadException(format(
+            L"'shutdownDelay' in web.config or '%s' environment variable is less than 0.", CS_ASPNETCORE_SHUTDOWN_DELAY_ENV));
+    }
+    m_fShutdownDelay = std::chrono::milliseconds(millsecondsValue);
 }

@@ -1,4 +1,5 @@
 // Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) LeXtudio Inc. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 #include "stdafx.h"
@@ -11,10 +12,10 @@
 
 REQUESTHANDLER_CONFIG::~REQUESTHANDLER_CONFIG()
 {
-    if (m_ppStrArguments != NULL)
+    if (m_ppStrArguments != nullptr)
     {
         delete[] m_ppStrArguments;
-        m_ppStrArguments = NULL;
+        m_ppStrArguments = nullptr;
     }
 }
 
@@ -27,19 +28,19 @@ REQUESTHANDLER_CONFIG::CreateRequestHandlerConfig(
 )
 {
     HRESULT                 hr = S_OK;
-    REQUESTHANDLER_CONFIG  *pRequestHandlerConfig = NULL;
+    REQUESTHANDLER_CONFIG  *pRequestHandlerConfig = nullptr;
     STRU                    struHostFxrDllLocation;
     STRU                    struExeLocation;
 
     try
     {
-        if (ppAspNetCoreConfig == NULL)
+        if (ppAspNetCoreConfig == nullptr)
         {
             hr = E_INVALIDARG;
             goto Finished;
         }
 
-        *ppAspNetCoreConfig = NULL;
+        *ppAspNetCoreConfig = nullptr;
 
         pRequestHandlerConfig = new REQUESTHANDLER_CONFIG;
 
@@ -58,7 +59,7 @@ REQUESTHANDLER_CONFIG::CreateRequestHandlerConfig(
         }
 
         *ppAspNetCoreConfig = pRequestHandlerConfig;
-        pRequestHandlerConfig = NULL;
+        pRequestHandlerConfig = nullptr;
     }
     catch (std::bad_alloc&)
     {
@@ -67,10 +68,10 @@ REQUESTHANDLER_CONFIG::CreateRequestHandlerConfig(
 
 Finished:
 
-    if (pRequestHandlerConfig != NULL)
+    if (pRequestHandlerConfig != nullptr)
     {
         delete pRequestHandlerConfig;
-        pRequestHandlerConfig = NULL;
+        pRequestHandlerConfig = nullptr;
     }
 
     return hr;
@@ -89,21 +90,26 @@ REQUESTHANDLER_CONFIG::Populate(
     STRU                            strEnvValue;
     STRU                            strExpandedEnvValue;
     STRU                            strApplicationFullPath;
-    IAppHostAdminManager           *pAdminManager = NULL;
-    IAppHostElement                *pAspNetCoreElement = NULL;
-    IAppHostElement                *pWindowsAuthenticationElement = NULL;
-    IAppHostElement                *pBasicAuthenticationElement = NULL;
-    IAppHostElement                *pAnonymousAuthenticationElement = NULL;
+    IAppHostAdminManager           *pAdminManager = nullptr;
+    IAppHostElement                *pAspNetCoreElement = nullptr;
+    IAppHostElement                *pWindowsAuthenticationElement = nullptr;
+    IAppHostElement                *pBasicAuthenticationElement = nullptr;
+    IAppHostElement                *pAnonymousAuthenticationElement = nullptr;
     ULONGLONG                       ullRawTimeSpan = 0;
     DWORD                           dwCounter = 0;
     DWORD                           dwPosition = 0;
-    WCHAR*                          pszPath = NULL;
-    BSTR                            bstrWindowAuthSection = NULL;
-    BSTR                            bstrBasicAuthSection = NULL;
-    BSTR                            bstrAnonymousAuthSection = NULL;
-    BSTR                            bstrAspNetCoreSection = NULL;
+    WCHAR*                          pszPath = nullptr;
+    BSTR                            bstrWindowAuthSection = nullptr;
+    BSTR                            bstrBasicAuthSection = nullptr;
+    BSTR                            bstrAnonymousAuthSection = nullptr;
+    BSTR                            bstrAspNetCoreSection = nullptr;
     std::optional<std::wstring> launcherPathEnv;
     std::optional<std::wstring> launcherArgsEnv;
+    IAppHostElement                *pRecycleOnFileChangeFileList = nullptr;
+    IAppHostElementCollection      *pRecycleOnFileChangeFileCollection = nullptr;
+    IAppHostElement                *pRecycleOnFileChangeFile = nullptr;
+    ENUM_INDEX                      index{};
+    STRU                            strFilePath;
 
     pAdminManager = pHttpServer->GetAdminManager();
     try
@@ -161,7 +167,7 @@ REQUESTHANDLER_CONFIG::Populate(
     }
 
     bstrWindowAuthSection = SysAllocString(CS_WINDOWS_AUTHENTICATION_SECTION);
-    if (bstrWindowAuthSection == NULL)
+    if (bstrWindowAuthSection == nullptr)
     {
         hr = E_OUTOFMEMORY;
         goto Finished;
@@ -188,7 +194,7 @@ REQUESTHANDLER_CONFIG::Populate(
     }
 
     bstrBasicAuthSection = SysAllocString(CS_BASIC_AUTHENTICATION_SECTION);
-    if (bstrBasicAuthSection == NULL)
+    if (bstrBasicAuthSection == nullptr)
     {
         hr = E_OUTOFMEMORY;
         goto Finished;
@@ -213,7 +219,7 @@ REQUESTHANDLER_CONFIG::Populate(
     }
 
     bstrAnonymousAuthSection = SysAllocString(CS_ANONYMOUS_AUTHENTICATION_SECTION);
-    if (bstrAnonymousAuthSection == NULL)
+    if (bstrAnonymousAuthSection == nullptr)
     {
         hr = E_OUTOFMEMORY;
         goto Finished;
@@ -238,7 +244,7 @@ REQUESTHANDLER_CONFIG::Populate(
     }
 
     bstrAspNetCoreSection = SysAllocString(CS_ASPNETCORE_SECTION);
-    if (bstrAspNetCoreSection == NULL)
+    if (bstrAspNetCoreSection == nullptr)
     {
         hr = E_OUTOFMEMORY;
         goto Finished;
@@ -294,30 +300,30 @@ REQUESTHANDLER_CONFIG::Populate(
         }
     }
 
-    hr = GetElementStringProperty(pAspNetCoreElement,
-        CS_ASPNETCORE_HOSTING_MODEL,
-        &strHostingModel);
-    if (FAILED(hr))
-    {
-        // Swallow this error for backward compatability
-        // Use default behavior for empty string
-        hr = S_OK;
-    }
+    // hr = GetElementStringProperty(pAspNetCoreElement,
+    //     CS_ASPNETCORE_HOSTING_MODEL,
+    //     &strHostingModel);
+    // if (FAILED(hr))
+    // {
+    //     // Swallow this error for backward compatability
+    //     // Use default behavior for empty string
+    //     hr = S_OK;
+    // }
 
-    if (strHostingModel.IsEmpty() || strHostingModel.Equals(L"outofprocess", TRUE))
-    {
+    // if (strHostingModel.IsEmpty() || strHostingModel.Equals(L"outofprocess", TRUE))
+    // {
         m_hostingModel = HOSTING_OUT_PROCESS;
-    }
-    else if (strHostingModel.Equals(L"inprocess", TRUE))
-    {
-        m_hostingModel = HOSTING_IN_PROCESS;
-    }
-    else
-    {
-        // block unknown hosting value
-        hr = HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
-        goto Finished;
-    }
+    // }
+    // else if (strHostingModel.Equals(L"inprocess", TRUE))
+    // {
+    //     m_hostingModel = HOSTING_IN_PROCESS;
+    // }
+    // else
+    // {
+    //     // block unknown hosting value
+    //     hr = HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
+    //     goto Finished;
+    // }
 
     hr = GetElementDWORDProperty(pAspNetCoreElement,
         CS_ASPNETCORE_RAPID_FAILS_PER_MINUTE,
@@ -355,7 +361,7 @@ REQUESTHANDLER_CONFIG::Populate(
 
     m_dwStartupTimeLimitInMS *= MILLISECONDS_IN_ONE_SECOND;
 
-    hr = GetElementDWORDProperty(
+    /*hr = GetElementDWORDProperty(
         pAspNetCoreElement,
         CS_ASPNETCORE_PROCESS_SHUTDOWN_TIME_LIMIT,
         &m_dwShutdownTimeLimitInMS
@@ -363,7 +369,8 @@ REQUESTHANDLER_CONFIG::Populate(
     if (FAILED(hr))
     {
         goto Finished;
-    }
+    }*/
+    m_dwShutdownTimeLimitInMS = 10;
     m_dwShutdownTimeLimitInMS *= MILLISECONDS_IN_ONE_SECOND;
 
     hr = GetElementBoolProperty(pAspNetCoreElement,
@@ -374,13 +381,14 @@ REQUESTHANDLER_CONFIG::Populate(
         goto Finished;
     }
 
-    hr = GetElementBoolProperty(pAspNetCoreElement,
-        CS_ASPNETCORE_DISABLE_START_UP_ERROR_PAGE,
-        &m_fDisableStartUpErrorPage);
-    if (FAILED(hr))
-    {
-        goto Finished;
-    }
+    //hr = GetElementBoolProperty(pAspNetCoreElement,
+    //    CS_ASPNETCORE_DISABLE_START_UP_ERROR_PAGE,
+    //    &m_fDisableStartUpErrorPage);
+    //if (FAILED(hr))
+    //{
+    //    goto Finished;
+    //}
+    m_fDisableStartUpErrorPage = FALSE;
 
     hr = GetElementRawTimeSpanProperty(
         pAspNetCoreElement,
@@ -421,30 +429,87 @@ REQUESTHANDLER_CONFIG::Populate(
         goto Finished;
     }
 
+    //
+    // let's disable this feature for now
+    //
+    // get all files listed in recycleOnFileChange
+    //*
+    hr = GetElementChildByName(pAspNetCoreElement,
+        CS_ASPNETCORE_RECYCLE_ON_FILE_CHANGE,
+        &pRecycleOnFileChangeFileList);
+    if (FAILED(hr))
+    {
+        goto Finished;
+    }
+
+    hr = pRecycleOnFileChangeFileList->get_Collection(&pRecycleOnFileChangeFileCollection);
+    if (FAILED(hr))
+    {
+        goto Finished;
+    }
+
+    for (hr = FindFirstElement(pRecycleOnFileChangeFileCollection, &index, &pRecycleOnFileChangeFile);
+        SUCCEEDED(hr);
+        hr = FindNextElement(pRecycleOnFileChangeFileCollection, &index, &pRecycleOnFileChangeFile))
+    {
+        if (hr == S_FALSE)
+        {
+            hr = S_OK;
+            break;
+        }
+
+        hr = GetElementStringProperty(pRecycleOnFileChangeFile,
+            CS_ASPNETCORE_RECYCLE_ON_FILE_CHANGE_FILE_PATH,
+            &strFilePath);
+        if (FAILED(hr))
+        {
+            goto Finished;
+        }
+
+        m_pRecycleOnFileChangeFiles.push_back(strFilePath.QueryStr());
+
+        strFilePath.Reset();
+        pRecycleOnFileChangeFile->Release();
+        pRecycleOnFileChangeFile = nullptr;
+    }
+    //*/
+
 Finished:
 
-    if (pAspNetCoreElement != NULL)
+    if (pAspNetCoreElement != nullptr)
     {
         pAspNetCoreElement->Release();
-        pAspNetCoreElement = NULL;
+        pAspNetCoreElement = nullptr;
     }
 
-    if (pWindowsAuthenticationElement != NULL)
+    if (pWindowsAuthenticationElement != nullptr)
     {
         pWindowsAuthenticationElement->Release();
-        pWindowsAuthenticationElement = NULL;
+        pWindowsAuthenticationElement = nullptr;
     }
 
-    if (pAnonymousAuthenticationElement != NULL)
+    if (pAnonymousAuthenticationElement != nullptr)
     {
         pAnonymousAuthenticationElement->Release();
-        pAnonymousAuthenticationElement = NULL;
+        pAnonymousAuthenticationElement = nullptr;
     }
 
-    if (pBasicAuthenticationElement != NULL)
+    if (pBasicAuthenticationElement != nullptr)
     {
         pBasicAuthenticationElement->Release();
-        pBasicAuthenticationElement = NULL;
+        pBasicAuthenticationElement = nullptr;
+    }
+
+    if (pRecycleOnFileChangeFile != nullptr)
+    {
+        pRecycleOnFileChangeFile->Release();
+        pRecycleOnFileChangeFile = nullptr;
+    }
+
+    if (pRecycleOnFileChangeFileCollection != nullptr)
+    {
+        pRecycleOnFileChangeFileCollection->Release();
+        pRecycleOnFileChangeFileCollection = nullptr;
     }
 
     return hr;
